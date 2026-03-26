@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* Default = Light Theme */
+:root {
+    --color-bg: rgb(255, 255, 255);
+    --color-bg-hover: rgb(230, 230, 230);
+    --color-text: #111827;
+    --color-text1: gray;
+    --color-text2: rgba(75, 85, 99, 1);
+    --color-white: white;
+
+    --color-primary: #2563EB;
+    --color-secondary: #14B8A6;
+    --color-text-color: #ffffff;
+    --color-primary-gradient: 135deg, #1E3A8A 0%, #3B82F6 100%;
+}
+
+/* Dark Theme */
+.dark {
+    --color-bg: #111827;
+    --color-text: #F9FAFB;
+    --color-primary: rgba(95, 111, 255, 1);
+    --color-secondary: #2DD4BF;
+    --color-primary-gradient: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: "Outfit", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
