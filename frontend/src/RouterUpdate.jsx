@@ -20,9 +20,9 @@ export const router = createBrowserRouter([
                 index: true,
                 element: <Home />,
             },
-                        {
+            {
                 path: '/login',
-                element: <Login/>
+                element: <Login />
             },
             {
                 path: "/home",
