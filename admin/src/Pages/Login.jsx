@@ -1,9 +1,38 @@
 import React from 'react'
+import { useContext } from 'react';
 import { useState } from 'react'
+import { AdminContext } from '../context/AdminContext';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function Login() {
 
-  const [state, setState] = useState("Admin")
+  const [state, setState] = useState("Admin");
+
+  const { setAToken, BackendUrl } = useContext(AdminContext);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+
+      if (state === "Admin") {
+        const {data} = await axios.post(BackendUrl + '/api/admin/login', {email, password});
+        if (data.success) {
+          console.log(data.token);
+        }
+      }
+
+    } catch (error) {
+
+    }
+
+
+  }
+
 
   const useFuntion = (e) => {
     e.preventDefault();
@@ -14,15 +43,22 @@ function Login() {
       <section className='flex flex-col items-center justify-center h-[80vh]'>
 
 
-        <form action="" className='flex flex-col w-[90%] md:w-[70%] sm:w-[80%] lg:w-[35%] border-2 border-gray-200 p-8 rounded-lg my-auto'>
+        <form action="" className='flex flex-col w-[90%] md:w-[70%] sm:w-[80%] lg:w-[35%] border-2 border-gray-200 p-8 rounded-lg my-auto shadow-md'>
           <div className='w-full mx-auto flex justify-center'>
-            <p><span>{state}</span> Login</p>
+            <p><span className='text-(--color-primary) font-semibold mr-1'>{state}</span> Login</p>
           </div>
           <label htmlFor="EmailID">EmailID</label>
-          <input type="text" placeholder='Enter Email ID' className='input bg-gray-300 px-2 py-2 rounded-md ' />
+          <input type="text" placeholder='Enter Email ID' className='input bg-gray-300 px-4 py-2 rounded-md' onChange={(e) => setEmail(e.target.value)} value={email} />
+
           <label htmlFor="Password" className='mt-5'>Password</label>
-          <input type="text" placeholder='Enter Passoword' className='input bg-gray-300 px-2 py-2 rounded-md ' />
-          <button className={`flex py-2 bg-(--color-primary) w-[50%] items-center justify-center rounded-md text-(--color-white) mt-6 mx-auto hover:scale-105 transition ease-in-out duration-200 cursor-pointer`} type='submit' onClick={useFuntion}>Login</button>
+          <input type="text" placeholder='Enter Passoword' className='input bg-gray-300 px-4 py-2 rounded-md ' onChange={(e) => setPassword(e.target.value)} value={password} />
+          <button className={`flex py-2 bg-(--color-primary) w-[50%] items-center justify-center rounded-md text-(--color-white) mt-6 mx-auto hover:scale-105 transition ease-in-out duration-200 cursor-pointer hover:shadow-[0_4px_10px_var(--color-primary)] `} type='submit' onClick={useFuntion}>Login</button>
+
+          {
+            state === "Admin" ?
+              <p className='text-(--color-text1) font-light text-[14px] mt-5'>Doctor Login? <span className='text-(--color-primary) cursor-pointer' onClick={() => setState("Doctor")}>Click Here</span></p> :
+              <p className='text-(--color-text1) font-light text-[14px] mt-5'>Admin Login? <span className='text-(--color-primary) cursor-pointer' onClick={() => setState("Admin")}>Click Here</span></p>
+          }
         </form>
       </section>
     </>
