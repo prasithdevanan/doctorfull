@@ -1,9 +1,8 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useContext } from 'react';
 import AdminContextProvider from './context/AdminContext';
 import AppContextProvider from './context/AppContent';
 import DoctorContextProvider from './context/DoctorContext';
-import { ToastContainer, toast } from 'react-toastify';
+import MainConnet from './MainConnet';
 
 
 function App() {
@@ -11,8 +10,7 @@ function App() {
     <AdminContextProvider>
       <DoctorContextProvider>
         <AppContextProvider>
-          <Outlet />
-          <ToastContainer />
+          <MainConnet />
         </AppContextProvider>
       </DoctorContextProvider>
     </AdminContextProvider>
