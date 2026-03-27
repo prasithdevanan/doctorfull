@@ -2,7 +2,9 @@ import React from 'react'
 
 function Appoiment() {
   return (
-    <div>Appoiment</div>
+    <div>
+      <h1>Changes</h1>
+    </div>
   )
 }
 

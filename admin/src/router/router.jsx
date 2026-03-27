@@ -1,7 +1,7 @@
 import { Children } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../App';
-import Dashboard from '../Pages/Admin/dashboard';
+import Dashboard from '../Pages/Admin/Dashboard';
 import Login from '../Pages/login/Login';
 import ProductorRouter from './ProductorRouter';
 import Appoiment from '../Pages/Admin/Appoiment';
