@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Images } from '../../Components/Images';
 import { AddDoctorLable, speciality } from '../../assets/Data';
+import { AdminContext } from '../../context/AdminContext';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 function AddDoctor() {
 
@@ -16,6 +19,10 @@ function AddDoctor() {
   const [address2, setAddress2] = useState('');
   const [about, setAbout] = useState('');
 
+  const { BackendUrl, aToken } = useContext(AdminContext);
+
+  console.log(BackendUrl, aToken)
+
 
   useEffect(() => {
     console.log("Doctor Email changed:", doctorEmail);
@@ -26,10 +33,44 @@ function AddDoctor() {
     console.log("Doctor Name changed:", doctorExperience);
   }, [doctorName, doctorExperience]);
 
-  const handleChange = (e) => {
+  const onSubmitHandle = async (e) => {
     e.preventDefault();
-    
-    console.log([profile, doctorEmail, doctorName, doctorSpeciality, fees, education, address1, address2, about])
+
+    try {
+      //form Data
+      const formData = new FormData();
+
+      formData.append('name', doctorName);
+      formData.append('email', doctorEmail);
+      formData.append('profile', profile);
+      formData.append('password', doctorPassword);
+      formData.append('experience', doctorExperience);
+      formData.append('fees', Number(fees));
+      formData.append('speciality', doctorSpeciality);
+      formData.append('address', JSON.stringify({ "address1": address1, "address2": address2 }));
+      formData.append('about', about);
+      formData.append('degree', education);
+
+      formData.forEach((item, key) => {
+        console.log(item, key)
+      })
+
+      const { data } = await axios.post(BackendUrl + '/api/admin/add-doctor', formData, { headers: { aToken } })
+
+      if (data.success) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      if (error) {
+        toast.error(error)
+      }
+
+    }
+
+
+    // console.log([profile, doctorEmail, doctorName, doctorSpeciality, fees, education, address1, address2, about])
   }
 
   return (
@@ -42,12 +83,12 @@ function AddDoctor() {
         <section className='w-[80%] flex-1 overflow-y-auto overflow-x-hidden'>
           <div className='p-4 w-fit'>
             <label htmlFor="img_doc" className='flex items-center gap-2'>
-              <img src={Images.AdminProfile} alt="img" className='w-m' />
+              <img src={profile ? URL.createObjectURL(profile) : Images.AdminProfile} alt="img" className='w-[60px]' />
               <input type="file" name="Profile" id="img_doc" hidden className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setProfile(e.target.files[0])} />
               <span className='text-blue-600 underline underline-offset-1'>Upload Profile</span>
             </label>
           </div>
-          <form action="" onSubmit={handleChange}>
+          <form action="" onSubmit={onSubmitHandle}>
             <section className='grid grid-cols-2 gap-4'>
 
               <div className='flex flex-col'>
@@ -108,11 +149,11 @@ function AddDoctor() {
             </section>
             <div className='flex flex-col'>
               <label htmlFor="">About</label>
-              <textarea name="" id="" placeholder='Enter about' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400 w-[50%]' onChange={(e) => setAbout(e.target.value)} />
+              <textarea name="" id="" placeholder='write about yourself' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400 w-[50%]' onChange={(e) => setAbout(e.target.value)} />
             </div>
 
             <div className='flex w-full justify-center mt-4'>
-              <button className='bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md cursor-pointer' type='submit'>Submit</button>
+              <button className='bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md cursor-pointer hover:box-shadow' type='submit'>Add Doctor</button>
             </div>
           </form>
         </section>
