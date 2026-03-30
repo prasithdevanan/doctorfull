@@ -3,3 +3,24 @@ export const AddDoctorLable = {
     placeholder: ['Enter Name', 'Enter Email', 'Enter Password', 'Enter Speciality', 'Enter Degree', 'Enter Experience', 'Enter About', 'Enter Fees', 'Enter Address'],
     type: ['text', 'email', 'password', 'text', 'text', 'text', 'text', 'number', 'text']
 }
+
+export const speciality = [
+    {
+        name: "General physician",
+    },
+    {
+        name: "Dermatologist",
+    },
+    {
+        name: "Gastroenterologist",
+    },
+    {
+        name: "Gynecologist",
+    },
+    {
+        name: "Neurologist",
+    },
+    {
+        name: "Pediatricians",
+    },
+]

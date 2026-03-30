@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { AdminContext } from '../../context/AdminContext';
 
 function Navbar() {
+    const body = document.querySelector('body')
+    body.style.overflow = 'hidden';
     const navigate = useNavigate();
     const { setAToken } = useContext(AdminContext);
 
@@ -26,7 +28,7 @@ function Navbar() {
 
     return (
         <>
-            <nav className='relative bg-gray-200'>
+            <nav className='relative bg-gray-200 sticky'>
                 <section className='flex justify-between px-8 py-4 items-center pr-10'>
                     <div>
                         <h1>Logo</h1>
