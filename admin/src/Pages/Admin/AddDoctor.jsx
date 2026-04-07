@@ -153,7 +153,7 @@ function AddDoctor() {
             </div>
 
             <div className='flex w-full justify-center mt-4'>
-              <button className='bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md cursor-pointer hover:box-shadow' type='submit'>Add Doctor</button>
+              <button className='bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md cursor-pointer hover:box-shadow mb-6' type='submit'>Add Doctor</button>
             </div>
           </form>
         </section>

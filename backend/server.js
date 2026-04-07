@@ -4,6 +4,7 @@ import cors from 'cors';
 import connetDB from './config/mongodb.js';
 import connectCloudinary from './config/cloudinary.js';
 import adminRouter from './routes/adminRoutes.js';
+import doctorRouter from './routes/doctorRoutes.js';
 
 //app config
 const app = express();
@@ -17,7 +18,8 @@ app.use(cors());
 
 //API Endpoint
 
-app.use('/api/admin', adminRouter)
+app.use('/api/admin', adminRouter);
+app.use('/api/doctor', doctorRouter);
 
 
 // routes
