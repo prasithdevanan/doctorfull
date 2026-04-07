@@ -10,12 +10,21 @@ import { AppContext } from './CreateContext';
 
 function Navbar() {
     const navigate = useNavigate();
-    const { token, setToken } = useContext(AppContext);
+    const { token, setToken, user } = useContext(AppContext);
     const [load, setLoad] = useState(<i className="bi bi-plus-circle-dotted"></i>);
+   const [slice, setSlice] = useState('');
 
     useEffect(() => {
         localStorage.setItem("token", token);
-    }, [token]);
+        const slice = user?.email.slice(0, 1).toUpperCase();
+        setSlice(slice);
+    }, [token, user?.email]);
+
+    const logout = () => {
+        localStorage.removeItem('userId');
+        setToken(false);
+        navigate('/login');
+    }
 
     return (
         <>
@@ -35,14 +44,15 @@ function Navbar() {
                 {
                     token ?
                         <div className='relative cursor-pointer group'>
-                            <div>
-                                <img src={Images.Doc1} alt="img" className='w-8 h-8 object-cover rounded-full' />
+                            <div className='border border-gray-300 w-5 h-5 p-4 rounded-full flex justify-center items-center bg-gray-100'>
+                                <p>{slice}</p>
+                                {/* <img src={Images.Doc1} alt="img" className='w-8 h-8 object-cover rounded-full' /> */}
                             </div>
                             <div className='absolute top-0 right-0 hidden group-hover:block z-50 p-2 rounded-md w-fit pt-14'>
                                 <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                                     <h4 onClick={() => navigate('/profile')} className='text-gray-400 hover:text-(--color-primary) cursor-pointer'>My Profile</h4>
                                     <h4 className='text-gray-400 hover:text-(--color-primary) cursor-pointer'>Appoinment</h4>
-                                    <h4 onClick={() => setToken(false)} className='text-gray-400 hover:text-red-500 cursor-pointer'>Logout</h4>
+                                    <h4 onClick={() => logout()} className='text-gray-400 hover:text-red-500 cursor-pointer'>Logout</h4>
                                 </div>
 
                             </div>

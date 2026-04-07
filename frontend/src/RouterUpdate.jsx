@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import { useContext } from "react";
 import App from "./App";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
@@ -10,6 +11,10 @@ import { Navigate } from "react-router-dom";
 import DoctorBooking from "./pages/DoctorBooking";
 import Payment from "./pages/Payment";
 import Login from "./pages/Login/Sign/Login";
+import Signin from "./pages/Login/Sign/Signin";
+import PubilcRouter from "./Production/CheckLogin/PubilcRouter";
+
+
 
 export const router = createBrowserRouter([
     {
@@ -22,7 +27,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/login',
-                element: <Login />
+                element: <PubilcRouter><Login /></PubilcRouter>
+            },
+            {
+                path: '/signin',
+                element: <PubilcRouter><Signin /></PubilcRouter>
             },
             {
                 path: "/home",
