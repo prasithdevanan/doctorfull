@@ -24,20 +24,24 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/',
-                element: <ProductorRouter><Dashboard /></ProductorRouter>
+                element: (<ProductorRouter><Dashboard /></ProductorRouter>)
             },
             {
                 path: '/appoinment',
-                element: <Appoiment />
+                element: <ProductorRouter><Appoiment /></ProductorRouter>
             },
             {
                 path: '/adddoctor',
-                element: <AddDoctor />
+                element: <ProductorRouter><AddDoctor /></ProductorRouter>
             },
             {
                 path: '/doctorList',
-                element: <DoctorList />
+                element: <ProductorRouter><DoctorList /></ProductorRouter>
             }
         ]
+    },
+    {
+        path: '*',
+        element: <Navigate to="/login" />
     }
 ])
