@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AppContext } from '../../../component/CreateContext';
 
 function Login() {
-    const { BackendUrl, setToken, user } = useContext(AppContext);
+    const { BackendUrl, setToken, user, setUser } = useContext(AppContext);
     const navigate = useNavigate();
     const [status, setStatus] = useState("Login");
 
@@ -24,6 +24,7 @@ function Login() {
                 toast.success(res.data.message);
                 localStorage.setItem('userId', res.data.user.id);
                 setToken(true);
+                setUser(res.data.user); 
                 navigate('/dashboard');
             } else {
                 toast.error(res.data.message);

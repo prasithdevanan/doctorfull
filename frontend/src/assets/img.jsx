@@ -13,10 +13,11 @@ import Doc3 from '../assets/img/doctor3.png';
 import Doc4 from '../assets/img/doctor4.png';
 import Doc5 from '../assets/img/doctor5.png';
 import AboutImg from '../assets/img/about_image.png';
+import DoctorNotFound from '../assets/img/doctor_not_found.svg';
 
 
 export const Images = {
-    Header, Group, Doc1, Doc2, Doc3, Doc4, Doc5, AboutImg
+    Header, Group, Doc1, Doc2, Doc3, Doc4, Doc5, AboutImg, DoctorNotFound
 }
 
 

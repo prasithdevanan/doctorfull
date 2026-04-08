@@ -13,8 +13,8 @@ function TopDoctor() {
                     <h1 className='text-3xl font-semibold'>Top Doctors to Book</h1>
                     <p className='font-light'>Simply browse through our extensive list of trusted doctors.</p>
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-5 sm:grid-cols-2 justify-between max-w-[90%]  gap-3 mt-5 py-2 '>
-                    <DoctorList selectSpeciality={visibleDoctor} />
+                <div className='mt-5 mb-4'>
+                <DoctorList selectSpeciality={visibleDoctor} />
                 </div>
             </section>
 

@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Icons, Images } from '../assets/img';
+import axios from 'axios';
+import { AppContext } from '../component/CreateContext';
 
 export const navItems = [
     {
@@ -19,6 +21,7 @@ export const navItems = [
         link: '/contact'
     }
 ]
+
 
 
 export const speciality = [

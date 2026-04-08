@@ -44,9 +44,7 @@ function Doctor() {
         {
           selectSpeciality ? <p>{selectSpeciality.name}</p> : <p>General Doctor</p>
         }
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 px-6 gap-6'>
-          <DoctorList selectSpeciality={visibleDoctor} />
-        </div>
+        <DoctorList selectSpeciality={visibleDoctor} />
 
         {
           filterDoctor.length > 6 && <Button children={btnName} primary='bg-linear-(--color-primary-gradient) px-4 py-2 rounded-full flex gap-2 items-center text-(--color-text-color) hover:bg-(--color-text-color) w-fit hover:scale-105 cursor-pointer transition ease-in-out duration-300 mt-6 mb-6' onclick={() => setShow(show ? false : true)} />

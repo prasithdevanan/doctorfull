@@ -56,7 +56,7 @@ function Navbar() {
                                 </div>
 
                             </div>
-                        </div> : <Button children='Create Account' primary='bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md flex gap-1 justify-center items-center' onclick={() => navigate('/login')} icon={load} />
+                        </div> : <Button children='Login' primary='bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md flex gap-1 justify-center items-center' onclick={() => navigate('/login')} icon={load} />
                 }
 
 
