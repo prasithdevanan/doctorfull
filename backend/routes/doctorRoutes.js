@@ -2,6 +2,7 @@ import Login from '../controller/loginController.js';
 import Signin from '../controller/signinController.js';
 import express from 'express';
 import LoginId from '../controller/loginIdController.js';
+import getDoctors from '../controller/doctorController.js';
 
 
 const expressRouter = express.Router();
@@ -9,5 +10,6 @@ const expressRouter = express.Router();
 expressRouter.post('/signin', Signin);
 expressRouter.post('/login', Login);
 expressRouter.get('/signin/:id', LoginId);
+expressRouter.get('/list', getDoctors);
 
 export default expressRouter;

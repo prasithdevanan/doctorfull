@@ -11,7 +11,12 @@ const addDoctor = async (req, res) => {
 
     try {
         const { name, email, password, speciality, degree, experience, about, fees, address } = req.body;
-        // const imageFile = req.file
+        const imageFile = req.file;
+        if (!imageFile) {
+            console.log("image file missing");
+            return res.json({ success: false, message: "Missing data" })
+        }
+
 
         console.log({ name, email, password, speciality, degree, experience, about, fees, address });
 
@@ -37,8 +42,8 @@ const addDoctor = async (req, res) => {
 
 
         // upload image to cloudinary
-        // const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' });
-        // const imageUrl = imageUpload.secure_url;
+         const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' });
+        const imageUrl = imageUpload.secure_url;
 
 
         // final doctor data
@@ -50,6 +55,7 @@ const addDoctor = async (req, res) => {
             degree,
             experience,
             about,
+            image: imageUrl,
             fees,
             address: JSON.parse(address),
             date: Date.now()
