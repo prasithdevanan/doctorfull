@@ -7,10 +7,12 @@ export const AdminContext = createContext();
 const AdminContextProvider = (props) => {
 
     const [aToken, setAToken] = useState(localStorage.getItem("aToken") || "");
+    const [dToken, setDToken] = useState(localStorage.getItem("dToken") || "");
 
     useEffect(() => {
         const handleStorageChange = () => {
             setAToken(localStorage.getItem('aToken') || "");
+            setDToken(localStorage.getItem('dToken') || "");
         };
         window.addEventListener('storage', handleStorageChange);
         return () => window.removeEventListener('storage', handleStorageChange);
@@ -21,7 +23,7 @@ const AdminContextProvider = (props) => {
 
     const value = {
 
-        aToken, setAToken, BackendUrl
+        aToken, setAToken, BackendUrl, dToken, setDToken
 
     }
 

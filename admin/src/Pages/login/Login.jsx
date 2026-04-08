@@ -45,9 +45,14 @@ function Login() {
         }
       } else if (state === "Doctor") {
         const { data } = await axios.post(BackendUrl + '/api/doctor/doctor/login', { email, password });
+        console.log(data);
         if (!data.success) {
           toast.error(data.message);
           console.log(data.message);
+        }
+        if (data.success) {
+          localStorage.setItem("dToken", data.token);
+          navigate('/doctor');
         }
       }
 

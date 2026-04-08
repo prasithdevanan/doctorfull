@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import doctorModel from "../models/doctorModel.js";
 import bcrypt from 'bcrypt';
 
@@ -22,9 +23,12 @@ const doctorLogin = async (req, res) => {
         if (!isMatch) {
             return res.json({ success: false, message: "Invalid Password" });
         }
+        const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
         return res.json({
             success: true,
-            message: "Doctor logged in successfully", doctor
+            message: "Doctor logged in successfully",
+            token,
+            doctor
         });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });

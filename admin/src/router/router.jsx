@@ -9,7 +9,7 @@ import AddDoctor from '../Pages/Admin/AddDoctor';
 import DoctorList from '../Pages/Admin/DoctorList';
 
 
-const token = localStorage.getItem('aToken');
+const token = localStorage.getItem('aToken') || localStorage.getItem('dToken');
 
 export const router = createBrowserRouter([
     {

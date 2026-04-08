@@ -8,13 +8,13 @@ import { useEffect } from 'react';
 
 function MainConnet() {
 
-    const { aToken } = useContext(AdminContext);
+    const { aToken, dToken } = useContext(AdminContext);
 
     return (
         <>
-            {aToken && <Navbar />}
+            {aToken || dToken && <Navbar />}
             <div className='flex w-full h-fit'>
-                {aToken && <Sidebar />}
+                {aToken || dToken && <Sidebar />}
                 <Outlet />
             </div>
             <ToastContainer />

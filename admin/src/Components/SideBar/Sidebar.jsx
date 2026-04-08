@@ -3,8 +3,10 @@ import { AdminContext } from '../../context/AdminContext';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { AppContext } from '../../context/AppContent';
 
 function Sidebar() {
+    const { aToken } = useContext(AdminContext);
 
     const featues = [
         {
@@ -17,11 +19,11 @@ function Sidebar() {
             path: "/appoinment",
             iconClass: "bi bi-calendar"
         },
-        {
+        ...(aToken ? [{
             name: "Add Doctor",
-            path: "/adddoctor",
-            iconClass: "bi bi-plus-square"
-        },
+            path: "/add-doctor",
+            iconClass: "bi bi-person-plus"
+        }] : []),
         {
             name: "Doctor List",
             path: "/doctorlist",

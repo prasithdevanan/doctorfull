@@ -4,12 +4,15 @@ import { Navigate } from "react-router-dom";
 
 
 function ProductorRouter({ children }) {
-    const { aToken } = useContext(AdminContext);
+    const { aToken, dToken } = useContext(AdminContext);
     
     if (aToken) {
         console.log(aToken)
         return children;
-    } else {
+    } else if(dToken) {
+        console.log(dToken)
+        return children;
+    }else {
         return <Navigate to="/login" />
     }
 }
