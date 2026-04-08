@@ -43,11 +43,17 @@ function Login() {
         } else {
           toast.error(data.message);
         }
+      } else if (state === "Doctor") {
+        const { data } = await axios.post(BackendUrl + '/api/doctor/doctor/login', { email, password });
+        if (!data.success) {
+          toast.error(data.message);
+          console.log(data.message);
+        }
       }
 
     } catch (error) {
       toast.error(error.message);
-      console.log(error);
+      console.log(error.message);
     }
 
 

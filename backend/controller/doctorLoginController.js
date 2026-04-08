@@ -1,0 +1,34 @@
+import doctorModel from "../models/doctorModel.js";
+import bcrypt from 'bcrypt';
+
+
+const comparePassword = async (password, hashedPassword) => {
+    return await bcrypt.compare(password, hashedPassword);
+}
+const doctorLogin = async (req, res) => {
+
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ success: false, message: "Email and password are required" });
+    }
+    try {
+        const doctor = await doctorModel.findOne({ email });
+        console.log(doctor);
+        if (!doctor) {
+            return res.status(400).json({ success: false, message: "Doctor not found" });
+        }
+        const isMatch = await comparePassword(password, doctor?.password);
+        console.log(isMatch);
+        if (!isMatch) {
+            return res.json({ success: false, message: "Invalid Password" });
+        }
+        return res.json({
+            success: true,
+            message: "Doctor logged in successfully", doctor
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export default doctorLogin;
