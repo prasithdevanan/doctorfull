@@ -7,6 +7,7 @@ import axios from 'axios';
 
 function AddDoctor() {
 
+  const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState(null);
   const [doctorName, setDoctorName] = useState();
   const [doctorEmail, setDoctorEmail] = useState();
@@ -21,28 +22,17 @@ function AddDoctor() {
 
   const { BackendUrl, aToken } = useContext(AdminContext);
 
-  console.log(BackendUrl, aToken)
-
-
-  useEffect(() => {
-    console.log("Doctor Email changed:", doctorEmail);
-  }, [doctorEmail]);
-
-  useEffect(() => {
-    console.log("Doctor Name changed:", doctorName);
-    console.log("Doctor Name changed:", doctorExperience);
-  }, [doctorName, doctorExperience]);
 
   const onSubmitHandle = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       //form Data
       const formData = new FormData();
 
       formData.append('name', doctorName);
       formData.append('email', doctorEmail);
-      formData.append('profile', profile);
+      formData.append('image', profile);
       formData.append('password', doctorPassword);
       formData.append('experience', doctorExperience);
       formData.append('fees', Number(fees));
@@ -51,22 +41,20 @@ function AddDoctor() {
       formData.append('about', about);
       formData.append('degree', education);
 
-      formData.forEach((item, key) => {
-        console.log(item, key)
-      })
-
       const { data } = await axios.post(BackendUrl + '/api/admin/add-doctor', formData, { headers: { aToken } })
 
       if (data.success) {
         toast.success(data.message);
+        e.target.reset();
       } else {
         toast.error(data.message);
       }
-    } catch (error) {
-      if (error) {
-        toast.error(error)
-      }
 
+    } catch (error) {
+      toast.error(error);
+      console.log(error)
+    } finally {
+      setLoading(false);
     }
 
 
@@ -84,7 +72,7 @@ function AddDoctor() {
           <div className='p-4 w-fit'>
             <label htmlFor="img_doc" className='flex items-center gap-2'>
               <img src={profile ? URL.createObjectURL(profile) : Images.AdminProfile} alt="img" className='w-[60px]' />
-              <input type="file" name="Profile" id="img_doc" hidden className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setProfile(e.target.files[0])} />
+              <input type="file" name="image" id="img_doc" hidden className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setProfile(e.target.files[0])} />
               <span className='text-blue-600 underline underline-offset-1'>Upload Profile</span>
             </label>
           </div>
@@ -153,7 +141,7 @@ function AddDoctor() {
             </div>
 
             <div className='flex w-full justify-center mt-4'>
-              <button className='bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md cursor-pointer hover:box-shadow mb-6' type='submit'>Add Doctor</button>
+              <button className='bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md cursor-pointer hover:box-shadow' type='submit'>{loading ? "Uploading..." : "Add Doctor"}</button>
             </div>
           </form>
         </section>

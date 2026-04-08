@@ -22,4 +22,4 @@ function MainConnet() {
     )
 }
 
-export default MainConnet
+export default MainConnet;
