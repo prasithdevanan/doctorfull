@@ -22,7 +22,7 @@ const authAdmin = async (req, res, next) => {
 
 
     } catch (error) {
-        res.json({ success: false, message: error });
+        res.json({ success: false, message: error.response.data });
         console.log(error);
     }
 }

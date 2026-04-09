@@ -23,7 +23,7 @@ const doctorLogin = async (req, res) => {
         if (!isMatch) {
             return res.json({ success: false, message: "Invalid Password" });
         }
-        const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return res.json({
             success: true,
             message: "Doctor logged in successfully",

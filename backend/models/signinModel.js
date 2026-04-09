@@ -5,6 +5,6 @@ const signinSchema = new mongoose.Schema({
     password: {type:String, required:true}
 })
 
-const signinModel = mongoose.models.signin || mongoose.model('signin', signinSchema);
+const signinModel = mongoose.models.patients || mongoose.model('patients', signinSchema);
 
 export default signinModel;
