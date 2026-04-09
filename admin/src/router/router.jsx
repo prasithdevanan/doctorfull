@@ -1,5 +1,5 @@
-import { Children } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { createBrowserRouter, useNavigate, Navigate } from 'react-router-dom';
 import App from '../App';
 import Dashboard from '../Pages/Admin/Dashboard';
 import Login from '../Pages/login/Login';
@@ -7,9 +7,12 @@ import ProductorRouter from './ProductorRouter';
 import Appoiment from '../Pages/Admin/Appoiment';
 import AddDoctor from '../Pages/Admin/AddDoctor';
 import DoctorList from '../Pages/Admin/DoctorList';
+import axios from 'axios';
 
 
+//get Token from the Localstorage
 const token = localStorage.getItem('aToken') || localStorage.getItem('dToken');
+
 
 export const router = createBrowserRouter([
     {
@@ -24,15 +27,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/',
-                element: (<ProductorRouter><Dashboard /></ProductorRouter>)
+                element: <ProductorRouter><Dashboard /></ProductorRouter>
             },
             {
                 path: '/appoinment',
                 element: <ProductorRouter><Appoiment /></ProductorRouter>
             },
             {
-                path: '/adddoctor',
-                element: <ProductorRouter><AddDoctor /></ProductorRouter>
+                path: '/add-doctor',
+                element: <ProductorRouter adminOnly = {true}><AddDoctor /></ProductorRouter>
             },
             {
                 path: '/doctorList',

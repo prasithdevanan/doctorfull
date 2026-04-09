@@ -8,11 +8,10 @@ function Navbar() {
     const body = document.querySelector('body')
     body.style.overflow = 'hidden';
     const navigate = useNavigate();
-    const { setAToken } = useContext(AdminContext);
+    const { setAToken, setDToken } = useContext(AdminContext);
 
     const atoken = localStorage.getItem("aToken") ? "Admin" : "Doctor";
     const [logout, setLogout] = useState(false);
-    console.log(logout);
 
     const logOutHandle = () => {
         console.log("calling function working")
@@ -20,8 +19,11 @@ function Navbar() {
     }
 
     const logoutFunction = () => {
+        console.log("logout");
         localStorage.removeItem('aToken');
+        localStorage.removeItem('dToken');
         setAToken('')
+        setDToken('')
         navigate('/login');
         setLogout(false);
     }

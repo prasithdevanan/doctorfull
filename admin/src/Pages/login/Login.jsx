@@ -13,7 +13,7 @@ function Login() {
   const navigate = useNavigate();
   const [state, setState] = useState("Admin");
 
-  const { setAToken, BackendUrl } = useContext(AdminContext);
+  const { setAToken, BackendUrl, setDToken } = useContext(AdminContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -52,7 +52,9 @@ function Login() {
         }
         if (data.success) {
           localStorage.setItem("dToken", data.token);
-          navigate('/doctor');
+          setDToken(data.token);
+          navigate('/');
+          toast.success("successfully login");
         }
       }
 
