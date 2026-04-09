@@ -15,7 +15,7 @@ export const AppProvider = ({ children }) => {
 
     const feach = async () => {
       try {
-        const res = await axios.get(`${BackendUrl}/api/doctor/signin/${userId}`);
+        const res = await axios.get(`${BackendUrl}/api/patient/signin/${userId}`);
         if (res.data.success) {
           console.log(res.data.user);
           localStorage.setItem("userId", res.data.user.id);

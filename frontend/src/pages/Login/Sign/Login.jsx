@@ -18,7 +18,7 @@ function Login() {
         if (!email || !password) {
             return toast.error("Missing data")
         }
-         await axios.post(BackendUrl + '/api/doctor/login', { email, password }).then((res) => {
+         await axios.post(BackendUrl + '/api/patient/login', { email, password }).then((res) => {
             toast.warning(res.data);
             if (res.data.success) {
                 toast.success(res.data.message);

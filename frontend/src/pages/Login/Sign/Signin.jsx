@@ -32,7 +32,7 @@ function signin() {
                 toast.error("Enter strong password")
             )
         } else {
-            await axios.post(BackendUrl + '/api/doctor/signin', { email, password }).then((res) => {
+            await axios.post(BackendUrl + '/api/patient/signin', { email, password }).then((res) => {
                 toast.warning(res.data);
                 if (res.data.success) {
                     toast.success(res.data.message);
@@ -42,7 +42,7 @@ function signin() {
                 }
             }).catch((err) => {
                 console.log(err);
-                toast.error(err.message);
+                toast.error(err.response?.data?.message || "Login failed");
             })
         }
     }
