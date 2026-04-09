@@ -16,11 +16,16 @@ function Dashboard() {
       console.log("feach");
       try {
         const res = await axios.get(`${BackendUrl}/api/doctor/list`);
-        // const resPatient = await axios.get(`${BackendUrl}/api/patient/list`);
-        if (!res.data.success) {
+        const resPatient = await axios.get(`${BackendUrl}/api/patient/list`);
+        if (!res.data.success || !resPatient.data.success) {
           console.log(res.data.message);
         }
+        //set the data to the doctorsList
         setDoctorsList(res.data.doctorsList);
+
+        //set the data to the patientsList
+        setPatientsList(resPatient.data.patientsList);
+        console.log(resPatient.data.patientsList);
         console.log(res.data.doctorsList);
       } catch (error) {
         console.log(error?.response?.data?.message);
@@ -51,7 +56,7 @@ function Dashboard() {
             </div>
             <div>
               <h1 className='text-gray-600'>Total Patients</h1>
-              <p className='font-bold text-blue-700'>{doctorsList.length}</p>
+              <p className='font-bold text-blue-700'>{patientsList.length}</p>
             </div>
           </div>
         </div>

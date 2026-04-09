@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate();
   const [state, setState] = useState("Admin");
+  const [load, setLoad] = useState(false);
 
   const { setAToken, BackendUrl, setDToken } = useContext(AdminContext);
 
@@ -19,6 +20,7 @@ function Login() {
   const [password, setPassword] = useState('');
 
   const onSubmitHandler = async (event) => {
+    setLoad(true);
     event.preventDefault();
     console.log("work")
     try {
@@ -61,6 +63,8 @@ function Login() {
     } catch (error) {
       toast.error(error.message);
       console.log(error.message);
+    } finally {
+      setLoad(false);
     }
 
 
@@ -80,7 +84,7 @@ function Login() {
 
           <label htmlFor="Password" className='mt-5'>Password</label>
           <input type="text" placeholder='Enter Passoword' className='input bg-gray-300 px-4 py-2 rounded-md ' onChange={(e) => setPassword(e.target.value)} value={password} />
-          <button className={`flex py-2 bg-(--color-primary) w-[50%] items-center justify-center rounded-md text-(--color-white) mt-6 mx-auto hover:scale-105 transition ease-in-out duration-200 cursor-pointer hover:shadow-[0_4px_10px_var(--color-primary)] `} type='submit'>Login</button>
+          <button className={`flex py-2 bg-(--color-primary) w-[50%] items-center justify-center rounded-md text-(--color-white) mt-6 mx-auto hover:scale-105 transition ease-in-out duration-200 cursor-pointer hover:shadow-[0_4px_10px_var(--color-primary)] `} type='submit'>{load ? 'Verifying...' : 'Login'}</button>
 
           {
             state === "Admin" ?

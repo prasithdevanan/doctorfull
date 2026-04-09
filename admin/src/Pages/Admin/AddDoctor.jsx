@@ -56,9 +56,6 @@ function AddDoctor() {
     } finally {
       setLoading(false);
     }
-
-
-    // console.log([profile, doctorEmail, doctorName, doctorSpeciality, fees, education, address1, address2, about])
   }
 
   return (
