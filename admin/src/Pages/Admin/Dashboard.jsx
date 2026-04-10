@@ -36,12 +36,11 @@ function Dashboard() {
 
 
 
-
   return (
     <>
-      <section>
-        <div className='flex mt-3'>
-          <div className='flex border border-gray-200 px-3 py-2 justify-center items-center rounded-md'>
+      <section className='w-full'>
+        <div className='flex mt-3 justify-center gap-3'>
+          <div className='flex border border-gray-200 px-3 py-2 justify-center items-center rounded-md bg-linear-(--color-gradient)'>
             <div className='mr-3'>
               <img src={Images.Doctor} alt="Doctoer" className='w-10'/>
             </div>
@@ -50,7 +49,7 @@ function Dashboard() {
               <p className='font-bold text-blue-700'>{doctorsList.length}</p>
             </div>
           </div>
-          <div className='flex border border-gray-200 px-3 py-2 justify-center items-center rounded-md'>
+          <div className='flex border border-gray-200 px-3 py-2 justify-center items-center rounded-md bg-linear-(--color-gradient)'>
             <div className='mr-3'>
               <img src={Images.Doctor} alt="Doctoer" className='w-10'/>
             </div>

@@ -21,7 +21,7 @@ function AddDoctor() {
   const [about, setAbout] = useState('');
 
   const { BackendUrl, aToken } = useContext(AdminContext);
-
+ 
 
   const onSubmitHandle = async (e) => {
     e.preventDefault();
@@ -46,6 +46,17 @@ function AddDoctor() {
       if (data.success) {
         toast.success(data.message);
         e.target.reset();
+        setProfile(null);
+        setDoctorName('');
+        setDoctorEmail('');
+        setDoctorPassword('');
+        setDoctorExperience('');
+        setFees('');
+        setDoctorSpeciality('');
+        setEducation('');
+        setAddress1('');
+        setAddress2('');
+        setAbout('');
       } else {
         toast.error(data.message);
       }
@@ -68,9 +79,9 @@ function AddDoctor() {
         <section className='w-[80%] flex-1 overflow-y-auto overflow-x-hidden'>
           <div className='p-4 w-fit'>
             <label htmlFor="img_doc" className='flex items-center gap-2'>
-              <img src={profile ? URL.createObjectURL(profile) : Images.AdminProfile} alt="img" className='w-[60px]' />
-              <input type="file" name="image" id="img_doc" hidden className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setProfile(e.target.files[0])} />
-              <span className='text-blue-600 underline underline-offset-1'>Upload Profile</span>
+              <img src={profile ? URL.createObjectURL(profile) : Images.Profile} alt="img" className='w-10' />
+              <input type="file" name="image" id="img_doc" hidden className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200' onChange={(e) => setProfile(e.target.files[0])} />
+              <span className='text-blue-600 underline underline-offset-1 cursor-pointer'>Upload Profile</span>
             </label>
           </div>
           <form action="" onSubmit={onSubmitHandle}>
@@ -78,22 +89,23 @@ function AddDoctor() {
 
               <div className='flex flex-col'>
                 <label htmlFor="">Doctor name</label>
-                <input type="text" placeholder='Enter Doctor Name' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setDoctorName(e.target.value)} value={doctorName} />
+                <input type="text" placeholder='Enter Doctor Name' className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200' onChange={(e) => setDoctorName(e.target.value)} value={doctorName} />
               </div>
 
               <div className='flex flex-col'>
                 <label htmlFor="">Doctor Email</label>
-                <input type="text" placeholder='Enter Doctor Email' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setDoctorEmail(e.target.value)} value={doctorEmail} />
+                <input type="text" placeholder='Enter Doctor Email' className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200' onChange={(e) => setDoctorEmail(e.target.value)} value={doctorEmail} />
               </div>
 
               <div className='flex flex-col'>
                 <label htmlFor="">Doctor Password</label>
-                <input type="text" placeholder='Enter Doctor Password' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setDoctorPassword(e.target.value)} value={doctorPassword} />
+                <input type="text" placeholder='Enter Doctor Password' className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200' onChange={(e) => setDoctorPassword(e.target.value)} value={doctorPassword} />
               </div>
 
               <div className='flex flex-col'>
-                <label htmlFor="">Doctor Experience</label>
-                <select name="" id="" className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setDoctorExperience(e.target.value)} value={doctorExperience}>
+                <label>Doctor Experience</label>
+                <select name="" id="" className={`border bg-gray-100 py-2 pl-4 rounded-md border-gray-200 invaild:text-red-600`} onChange={(e) => setDoctorExperience(e.target.value)} value={doctorExperience} placeholder='Select Experience'>
+                  <option value="" disabled hidden>Select Experience</option>
                   <option value="1 Years">1 Years</option>
                   <option value="2 Years">2 Years</option>
                   <option value="3 Years">3 Years</option>
@@ -108,11 +120,12 @@ function AddDoctor() {
               </div>
               <div className='flex flex-col'>
                 <label htmlFor="">Fees</label>
-                <input type="text" placeholder='Your fees' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setFees(e.target.value)} />
+                <input type="text" placeholder='Your fees' className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200' onChange={(e) => setFees(e.target.value)} />
               </div>
               <div className='flex flex-col'>
                 <label htmlFor="">Speciality</label>
-                <select name="" id="" className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setDoctorSpeciality(e.target.value)}>
+                <select name="" id="" className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200' onChange={(e) => setDoctorSpeciality(e.target.value)}>
+                  <option value="" disable hidden>Select Speciality</option>
                   {
                     speciality.map((items, index) => {
                       return (
@@ -124,17 +137,17 @@ function AddDoctor() {
               </div>
               <div className='flex flex-col'>
                 <label htmlFor="">Education</label>
-                <input type="text" placeholder='Education' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setEducation(e.target.value)} />
+                <input type="text" placeholder='Education' className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200' onChange={(e) => setEducation(e.target.value)} />
               </div>
               <div className='flex flex-col'>
                 <label htmlFor="">Address</label>
-                <input type="text" placeholder='Addesss 1' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400 mb-2' onChange={(e) => setAddress1(e.target.value)} />
-                <input type="text" placeholder='Addesss 2' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400' onChange={(e) => setAddress2(e.target.value)} />
+                <input type="text" placeholder='Addesss 1' className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200 mb-2' onChange={(e) => setAddress1(e.target.value)} />
+                <input type="text" placeholder='Addesss 2' className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200' onChange={(e) => setAddress2(e.target.value)} />
               </div>
             </section>
             <div className='flex flex-col'>
               <label htmlFor="">About</label>
-              <textarea name="" id="" placeholder='write about yourself' className='border bg-gray-200 py-2 pl-4 rounded-md border-gray-400 w-[50%]' onChange={(e) => setAbout(e.target.value)} />
+              <textarea name="" id="" placeholder='write about yourself' className='border bg-(--color-input) py-2 pl-4 rounded-md border-gray-200 w-[50%]' onChange={(e) => setAbout(e.target.value)} />
             </div>
 
             <div className='flex w-full justify-center mt-4'>

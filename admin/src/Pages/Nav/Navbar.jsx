@@ -37,7 +37,7 @@ function Navbar() {
                     </div>
                     <div>
                         <div className='flex gap-2 items-center  relative group'>
-                            <img src={Images.AdminProfile} alt="img" />
+                            <img src={Images.Profile} alt="img" className='w-10'/>
                             <p>{atoken}</p>
 
                             <div className='absolute hidden group-hover:block top-0 right-0'>

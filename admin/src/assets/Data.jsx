@@ -23,4 +23,7 @@ export const speciality = [
     {
         name: "Pediatricians",
     },
+    {
+        name: "Orthopedic",
+    },
 ]
