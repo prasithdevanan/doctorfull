@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Icons, Images } from '../assets/img';
-import axios from 'axios';
-import { AppContext } from '../component/CreateContext';
+import {useDoctors} from '../component/DataFeach';
+
 
 export const navItems = [
     {
@@ -56,7 +56,7 @@ export const speciality = [
 ]
 
 
-export const doctorList = [
+export const doctorList1 = [
     {
         id: 1,
         name: "Dr. Arjun Kumar",
@@ -138,3 +138,7 @@ export const doctorList = [
         fees: "$50",
     },
 ]
+
+
+export const doctorList = [];
+

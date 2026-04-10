@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react';
 import DoctorList from '../component/DoctorList';
 import Button from '../component/Button';
 import { useLocation } from 'react-router-dom';
-import { speciality, doctorList } from '../assets/data';
+import { speciality } from '../assets/data';
+import { useDoctors } from '../component/DataFeach';
 
 function Doctor() {
+  const doctorList = useDoctors();
   const location = useLocation();
+  console.log(location);
   // const selectSpeciality = location.state ? location.state.speciality : null;
   const [selectSpeciality, setSelectSpeciality] = useState(location.state ? location.state.speciality : null);
-  console.log(selectSpeciality);
 
-  const filterDoctor = selectSpeciality ? doctorList.filter((doc) => doc.special === selectSpeciality.name) : doctorList;
+
+  const filterDoctor = selectSpeciality ? doctorList.filter((doc) => doc.speciality === selectSpeciality.name) : doctorList;
 
 
   const [show, setShow] = useState(false);

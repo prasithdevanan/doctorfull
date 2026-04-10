@@ -9,7 +9,6 @@ function DoctorBooking() {
     const location = useLocation();
     const navigate = useNavigate();
     const element = location.state ? location.state.element : false;
-    console.log(element);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedTimeslot, setSelectedTimeslot] = useState(null);
 
@@ -66,19 +65,19 @@ function DoctorBooking() {
             <section className='flex px-6 py-4 flex-col items-center justify-center'>
                 <div className='flex gap-5 justify-center items-center'>
                     <div className={`overflow-hidden border rounded-md border-(--color-text1) h-fit max-w-3xs`}>
-                        <img src={element.img} alt="img" className='w-full h-auto object-cover' />
+                        <img src={element.image} alt="img" className='w-full h-auto object-cover' />
                     </div>
                     <div className=' flex flex-col justify-center w-[60%] gap-4'>
                         {
-                            element.available ?
+                            element.avilable ?
                                 <p className='text-green-600 w-full'>Available</p> :
                                 <p className='text-red-600 w-full'>Unavailable</p>
                         }
                         <div className='w-full'>
                             <TextAnimation text={element.name} className='text-2xl font-light justify-baseline' icon={<i className="bi bi-patch-check-fill text-blue-700"></i>} />
                             {/* <h1 className='text-2xl font-light'>{element.name} <i className="bi bi-patch-check-fill text-blue-700"></i></h1> */}
-                            <p className='text-xl font-medium text-(--color-text)'>{element.special}
-                                <span className='font-light px-2 border-2 ml-2 border-(--color-text1) rounded-full text-(--color-text1)'>{element.experiences}</span>
+                            <p className='text-xl font-medium text-(--color-text)'>{element.speciality}
+                                <span className='font-light px-2 border-2 ml-2 border-(--color-text1) rounded-full text-(--color-text1)'>{element.experience}</span>
                             </p>
                         </div>
                         <div className='w-full'>
@@ -133,7 +132,7 @@ function DoctorBooking() {
             </section>
 
             <section className='flex mx-auto px-6 justify-center mt-6 mb-6'>
-                <Link to={selectedTimeslot !== null ? `/doctor/${element.id}/payment` : "#  "} state={{ element, fromBooking: true }}>
+                <Link to={selectedTimeslot !== null ? `/doctor/${element._id}/payment` : "#"} state={{ element, fromBooking: true }}>
                     <Button children="Book Appoiment" icon={<i className="bi bi-arrow-right-short text-2xl flex items-center"></i>} primary={`${selectedTimeslot !== null ? "bg-(--color-primary) hover:scale-105 text-(--color-white)" : "bg-(--color-text1)"} flex rounded-full px-3 py-2 transition ease-in-out duration-300 cursor-pointer text-(--color-text2)`} />
                 </Link>
             </section>

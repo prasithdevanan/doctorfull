@@ -1,8 +1,9 @@
 import React from 'react';
 import DoctorList from '../../component/DoctorList';
-import { doctorList } from '../../assets/data';
+import { useDoctors } from '../../component/DataFeach';
 
 function TopDoctor() {
+    const doctorList = useDoctors();
     const visibleDoctor = doctorList.slice(0, 5);
     return (
         <>

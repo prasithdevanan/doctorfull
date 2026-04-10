@@ -3,16 +3,18 @@ import { NavLink } from 'react-router-dom';
 import Button from './Button';
 import Theme from '../pages/Theme';
 import { Images } from '../assets/img';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { navItems } from '../assets/data';
 import { AppContext } from './CreateContext';
 
 
 function Navbar() {
+    const location = useLocation();
     const navigate = useNavigate();
     const { token, setToken, user } = useContext(AppContext);
     const [load, setLoad] = useState(<i className="bi bi-plus-circle-dotted"></i>);
-   const [slice, setSlice] = useState('');
+    const [slice, setSlice] = useState('');
+    console.log(location)
 
     useEffect(() => {
         localStorage.setItem("token", token);
@@ -48,6 +50,8 @@ function Navbar() {
                                 <p>{slice}</p>
                                 {/* <img src={Images.Doc1} alt="img" className='w-8 h-8 object-cover rounded-full' /> */}
                             </div>
+
+                             {/* popup screen */} 
                             <div className='absolute top-0 right-0 hidden group-hover:block z-50 p-2 rounded-md w-fit pt-14'>
                                 <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                                     <h4 onClick={() => navigate('/profile')} className='text-gray-400 hover:text-(--color-primary) cursor-pointer'>My Profile</h4>
