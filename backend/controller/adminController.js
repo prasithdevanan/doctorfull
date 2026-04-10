@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken'
 
 
 const addDoctor = async (req, res) => {
+    const allowTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
     try {
         const { name, email, password, speciality, degree, experience, about, fees, address } = req.body;
@@ -17,8 +18,10 @@ const addDoctor = async (req, res) => {
             return res.json({ success: false, message: "Missing data" })
         }
 
-
-        console.log({ name, email, password, speciality, degree, experience, about, fees, address });
+        //check the image format
+        if (!allowTypes.includes(imageFile.mimetype)) {
+            return res.json({ success: false, message: "Invalid image format only jpg, png, jpeg" })
+        }
 
         //check the all file data doctor
         if (!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address) {

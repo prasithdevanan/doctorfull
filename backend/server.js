@@ -28,7 +28,7 @@ app.use('/api/patient', patientRouter);
 
 //**Post****/api/doctor/signin ----------check the signIn*/
 //**Post*** /api/doctor/login ----------check the login*/
-//**Get*** /api/list -------------------Get the doctors List*/
+//**Get*** /api/doctor/list ------------Get the doctors List*/
 
 // routes
 app.post('/api/validation', validate); 
