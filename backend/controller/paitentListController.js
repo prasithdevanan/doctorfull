@@ -1,4 +1,5 @@
 import signinModel from "../models/signinModel.js";
+import { v2 as cloudinary } from 'cloudinary';
 
 const PatientList = async (req, res) => {
     try {
@@ -7,7 +8,32 @@ const PatientList = async (req, res) => {
             return res.status(400).json({ success: false, message: "No patients found" });
         }
         res.json({ success: true, message: "Patients list fetched successfully", patientsList });
-        
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+
+export const patientUpdate = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { DOB, phone, gender } = req.body;
+        const image = req.file ? req.file : undefined;
+
+
+        //upload image to cloudinary if image file is provided
+        const imageUpload = await cloudinary.uploader.upload(image.path, { resource_type: 'image' });
+        const imageUrl = imageUpload.secure_url;
+
+
+        const updatedPatient = await signinModel.findByIdAndUpdate(id, { image: imageUrl, DOB, phone, gender }, { new: true });
+        if (!updatedPatient) {
+            return res.status(404).json({ success: false, message: "Patient not found" });
+        }
+
+
+        res.json({ success: true, message: "Patient updated successfully", updatedPatient });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

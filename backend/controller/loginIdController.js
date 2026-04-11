@@ -12,7 +12,11 @@ const LoginId = async (req, res) => {
         res.json({
             success: true, message: "User logged in successfully", user: {
                 id: user._id,
-                email: user.email
+                email: user.email,
+                phone: user.phone,
+                DOB: user.DOB,
+                gender: user.gender,
+                image: user.image
             }
         });
     } catch (error) {

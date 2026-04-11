@@ -6,11 +6,7 @@ import { Link } from 'react-router-dom';
 
 function DoctorList({ selectSpeciality }) {
 
-
-
-
     const newFilter = selectSpeciality ? selectSpeciality : doctorList;
-
 
     return (
         <>

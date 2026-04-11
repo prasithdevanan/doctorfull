@@ -1,9 +1,13 @@
 import mongoose from "mongoose";
 
 const signinSchema = new mongoose.Schema({
-    email: {type:String, required:true, unique:true},
-    password: {type:String, required:true}
-})
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    image: { type: String },
+    gender: { type: String, default: "Not Selectes" },
+    DOB: { type: String, default: "Not Selectes" },
+    phone: { type: String, default: "00000000000" },
+}, { timestamps: true });
 
 const signinModel = mongoose.models.patients || mongoose.model('patients', signinSchema);
 

@@ -14,13 +14,16 @@ import Doc4 from '../assets/img/doctor4.png';
 import Doc5 from '../assets/img/doctor5.png';
 import AboutImg from '../assets/img/about_image.png';
 import DoctorNotFound from '../assets/img/doctor_not_found.svg';
+import Login from '../assets/img/login.svg';
+import LoginBg from '../assets/img/login_bg.jpg';
+import Profile from '../assets/img/Icons/profile.png';
 
 
 export const Images = {
-    Header, Group, Doc1, Doc2, Doc3, Doc4, Doc5, AboutImg, DoctorNotFound
+    Header, Group, Doc1, Doc2, Doc3, Doc4, Doc5, AboutImg, DoctorNotFound, Login, LoginBg
 }
 
 
 export const Icons = {
-    Dermatologist, Gastroenterologist, GeneralPhysician, Gynecologist, Neurologist, Pediatricians
+    Dermatologist, Gastroenterologist, GeneralPhysician, Gynecologist, Neurologist, Pediatricians, Profile
 }
