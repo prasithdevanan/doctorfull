@@ -11,8 +11,7 @@ function Profile() {
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState('');
   const [image, setImage] = useState('');
-  console.log(user);
-  console.log(phone, dob, gender, image);
+  const [load, setLoad] = useState(false);
 
   ///user firtLetter capital
   const UserName = useName?.charAt(0).toUpperCase() + useName?.slice(1);
@@ -24,7 +23,6 @@ function Profile() {
       setDob(user.DOB ?? '');
       setGender(user.gender ?? '');
       setImage(user.image ?? '');
-      console.log(user?.image + "-----------");
     }
   }, [user]);
 
@@ -37,6 +35,7 @@ function Profile() {
 
   //update profile function
   const updateProfile = async () => {
+    setLoad(true);
     try {
       const formData = new FormData();
       formData.append('name', useName);
@@ -59,6 +58,8 @@ function Profile() {
       console.log(res.data);
     } catch (error) {
       console.log(error?.response?.data?.message || error.message);
+    } finally {
+      setLoad(false);
     }
   };
   return (
@@ -76,7 +77,7 @@ function Profile() {
         <div className='grid grid-cols-2 gap-4 w-[90%] md:w-[70%] sm:w-[80%] lg:w-[50%] border-2 border-gray-200 px-4 pt-4 pb-2 rounded-lg bg-white/50 backdrop-blur-md'>
           <input type="text" placeholder='Full Name' value={useName} className='py-2 bg-(--color-input) px-3 rounded-md' />
           <input type="email" placeholder="Email Address" value={user?.email} readOnly className='py-2 bg-(--color-input) px-3 rounded-md' />
-          <input type="tel" placeholder="Phone Number" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setPhone(e.target.value)} value={phone} />
+          <input type="tel" placeholder="Phone Number" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setPhone(e.target.value)} value={phone} maxLength={10}/>
 
           <input type="date" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setDob(e.target.value)} value={dob ? dob : user?.DOB ?? ''} />
 
@@ -90,7 +91,7 @@ function Profile() {
         </div>
 
         <div>
-          <button className='bg-(--color-primary) py-2 px-3 text-(--color-white) rounded-md hover:shadow-md hover:shadow-blue-200 hover:scale-105 ease-in-out duration-300 cursor-pointer' onClick={updateProfile}>Update Profile</button>
+          <button className='bg-(--color-primary) py-2 px-3 text-(--color-white) rounded-md hover:shadow-md hover:shadow-blue-200 hover:scale-105 ease-in-out duration-300 cursor-pointer' onClick={updateProfile}>{load ? "Uploding....." : "Update Profile"}</button>
         </div>
       </section>
     </>
