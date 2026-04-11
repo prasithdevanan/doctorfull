@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { AppContext } from '../../../component/CreateContext';
@@ -8,6 +8,9 @@ import { Images } from '../../../assets/img';
 function Login() {
     const { BackendUrl, setToken, user, setUser } = useContext(AppContext);
     const navigate = useNavigate();
+    const location = useLocation();
+    console.log(location?.state?.from);
+    const pathCheck = ['/pa']
     const [status, setStatus] = useState("Login");
 
     const [email, setEmail] = useState('');

@@ -75,7 +75,7 @@ function Profile() {
           </label>
         </div>
         <div className='grid grid-cols-2 gap-4 w-[90%] md:w-[70%] sm:w-[80%] lg:w-[50%] border-2 border-gray-200 px-4 pt-4 pb-2 rounded-lg bg-white/50 backdrop-blur-md'>
-          <input type="text" placeholder='Full Name' value={useName} className='py-2 bg-(--color-input) px-3 rounded-md' />
+          <input type="text" placeholder='Full Name' value={UserName} className='py-2 bg-(--color-input) px-3 rounded-md'  readOnly disabled/>
           <input type="email" placeholder="Email Address" value={user?.email} readOnly className='py-2 bg-(--color-input) px-3 rounded-md' />
           <input type="tel" placeholder="Phone Number" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setPhone(e.target.value)} value={phone} maxLength={10}/>
 

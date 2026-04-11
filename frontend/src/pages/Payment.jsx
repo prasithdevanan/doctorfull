@@ -31,7 +31,7 @@ function Payment() {
         ) : (
           <div className={`w-full flex flex-col justify-center items-center mt-3 h-[calc(100vh-120px)] `}>
             <img src={Images.Login} alt="Login" className='w-md mx-auto'/>
-            <p className='mx-auto'>Please <Link to="/login" className='text-(--color-primary) font-bold underline'>login</Link> to access the payment page.</p>
+            <p className='mx-auto'>Please <Link to="/login" className='text-(--color-primary) font-bold underline' state={{from:location}}>login</Link> to access the payment page.</p>
           </div>
         )
     }
