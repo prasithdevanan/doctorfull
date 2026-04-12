@@ -8,7 +8,7 @@ import { useDoctors } from '../component/DataFeach';
 function Doctor() {
   const doctorList = useDoctors();
   const location = useLocation();
-  console.log(location);
+  
   // const selectSpeciality = location.state ? location.state.speciality : null;
   const [selectSpeciality, setSelectSpeciality] = useState(location.state ? location.state.speciality : null);
 
