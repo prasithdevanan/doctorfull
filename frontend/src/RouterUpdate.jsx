@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, createHashRouter } from "react-router-dom";
 import { useContext } from "react";
 import App from "./App";
 import Home from "./pages/Home";
@@ -13,10 +13,11 @@ import Payment from "./pages/Payment";
 import Login from "./pages/Login/Sign/Login";
 import Signin from "./pages/Login/Sign/Signin";
 import PubilcRouter from "./Production/CheckLogin/PubilcRouter";
+import PatientDetails from "./pages/PatientDetails";
 
 
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter ([
     {
         path: "/",
         element: <App />,
@@ -42,11 +43,15 @@ export const router = createBrowserRouter([
                 element: <Doctor />,
             },
             {
+                path: "/doctor/:id/patientdetails",
+                element: <PatientDetails />,
+            },
+            {
                 path: "doctor/:id",
                 element: <DoctorBooking />,
             },
             {
-                path: "doctor/:id/payment",
+                path: "/doctor/:id/patientdetails/payment",
                 element: <Payment />,
             },
             {
@@ -67,8 +72,5 @@ export const router = createBrowserRouter([
         path: "*",
         element: <NotFound />,
     }
-],
-    {
-        basename: "/doctorfull/",
-    }
+]
 );

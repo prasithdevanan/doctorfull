@@ -12,6 +12,11 @@ function DoctorBooking() {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedTimeslot, setSelectedTimeslot] = useState(null);
 
+    ///select the time and date
+    const [selectDate, setSelectDate] = useState(null);
+    const [selectTime, setSelectTime] = useState(null);
+
+
     const dates = [];
     const baseDate = new Date();
 
@@ -75,7 +80,6 @@ function DoctorBooking() {
                         }
                         <div className='w-full'>
                             <TextAnimation text={element.name} className='text-2xl font-light justify-baseline' icon={<i className="bi bi-patch-check-fill text-blue-700"></i>} />
-                            {/* <h1 className='text-2xl font-light'>{element.name} <i className="bi bi-patch-check-fill text-blue-700"></i></h1> */}
                             <p className='text-xl font-medium text-(--color-text)'>{element.speciality}
                                 <span className='font-light px-2 border-2 ml-2 border-(--color-text1) rounded-full text-(--color-text1)'>{element.experience}</span>
                             </p>
@@ -97,7 +101,7 @@ function DoctorBooking() {
                         {
                             dates.map((item, index) => {
                                 return (
-                                    <div key={index} onClick={() => setSelectedIndex(index)} className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition ${selectedIndex === index ? 'bg-blue-500 text-white border-blue-500'
+                                    <div key={index} onClick={() => { setSelectedIndex(index); setSelectDate(item); }} className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition ${selectedIndex === index ? 'bg-blue-500 text-white border-blue-500'
                                         : 'border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)'
                                         }`}>
                                         <h1>{item.day}</h1>
@@ -113,7 +117,7 @@ function DoctorBooking() {
                             {
                                 timeSlots.map((item, index) => {
                                     return (
-                                        <div key={index} onClick={() => setSelectedTimeslot(index)} className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition ${selectedTimeslot === index ? 'bg-blue-500 text-white border-blue-500'
+                                        <div key={index} onClick={() => {setSelectedTimeslot(index); setSelectTime(item);}} className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition ${selectedTimeslot === index ? 'bg-blue-500 text-white border-blue-500'
                                             : 'border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)'
                                             }`}>
                                             <h2>{item}</h2>
@@ -132,7 +136,8 @@ function DoctorBooking() {
             </section>
 
             <section className='flex mx-auto px-6 justify-center mt-6 mb-6'>
-                <Link to={selectedTimeslot !== null ? `/doctor/${element._id}/payment` : "#"} state={{ element, fromBooking: true }}>
+                <Link to={selectedTimeslot !== null ? `/doctor/${element._id}/patientdetails` : "#"} state={{ element, fromBooking: true, selectDate: selectDate, selectTime: selectTime }}>
+
                     <Button children="Book Appoiment" icon={<i className="bi bi-arrow-right-short text-2xl flex items-center"></i>} primary={`${selectedTimeslot !== null ? "bg-(--color-primary) hover:scale-105 text-(--color-white)" : "bg-(--color-text1)"} flex rounded-full px-3 py-2 transition ease-in-out duration-300 cursor-pointer text-(--color-text2)`} />
                 </Link>
             </section>
