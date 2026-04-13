@@ -5,20 +5,47 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 function Profile() {
-  const { user, token, BackendUrl } = useContext(AppContext);
-  const useName = user?.email.split('@')[0];
+  const { token, BackendUrl } = useContext(AppContext);
+
   const [phone, setPhone] = useState('');
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState('');
   const [image, setImage] = useState('');
   const [load, setLoad] = useState(false);
 
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    const feach = async () => {
+      try {
+        const res = await axios.get(`${BackendUrl}/api/patient/signin/${userId}`);
+        if (res.data.success) {
+          return setUser(res.data.user);
+        }
+        toast.error(res.data.message);
+      } catch (error) {
+        console.log(error?.response?.data?.message || error.message);
+      }
+    };
+    feach();
+  }, []);
+
+
+
+
+
+
   ///user firtLetter capital
-  const UserName = useName?.charAt(0).toUpperCase() + useName?.slice(1);
+
+  const useName = user?.email?.split('@')[0] ?? "";
+  const UserName = useName ? useName.charAt(0).toUpperCase() + useName.slice(1) : "";
+
+
 
 
   useEffect(() => {
-    if (user) {
+    if (user?.email) {
       setPhone(user.phone ?? '');
       setDob(user.DOB ?? '');
       setGender(user.gender ?? '');
@@ -55,9 +82,9 @@ function Profile() {
       }
 
       toast.success(res.data.message);
-      console.log(res.data);
+  
     } catch (error) {
-      console.log(error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || error.message);
     } finally {
       setLoad(false);
     }
@@ -75,9 +102,9 @@ function Profile() {
           </label>
         </div>
         <div className='grid grid-cols-2 gap-4 w-[90%] md:w-[70%] sm:w-[80%] lg:w-[50%] border-2 border-gray-200 px-4 pt-4 pb-2 rounded-lg bg-white/50 backdrop-blur-md'>
-          <input type="text" placeholder='Full Name' value={UserName} className='py-2 bg-(--color-input) px-3 rounded-md'  readOnly disabled/>
-          <input type="email" placeholder="Email Address" value={user?.email} readOnly className='py-2 bg-(--color-input) px-3 rounded-md' />
-          <input type="tel" placeholder="Phone Number" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setPhone(e.target.value)} value={phone} maxLength={10}/>
+          <input type="text" placeholder='Full Name' value={UserName} className='py-2 bg-(--color-input) px-3 rounded-md' readOnly disabled />
+          <input type="email" placeholder="Email Address" value={user?.email ?? ''} readOnly className='py-2 bg-(--color-input) px-3 rounded-md' autoComplete='email' />
+          <input type="tel" placeholder="Phone Number" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setPhone(e.target.value)} value={phone} maxLength={10} />
 
           <input type="date" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setDob(e.target.value)} value={dob ? dob : user?.DOB ?? ''} />
 

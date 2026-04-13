@@ -1,8 +1,8 @@
 {
+  "home": "https://prasithdevanan.github.io/doctorfull/",
   "name": "front-end",
   "private": true,
   "version": "0.0.0",
-   "homepage": "https://prasith.github.io/doctorfull",
   "type": "module",
   "scripts": {
     "dev": "vite",

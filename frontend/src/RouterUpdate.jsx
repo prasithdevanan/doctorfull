@@ -67,4 +67,8 @@ export const router = createBrowserRouter([
         path: "*",
         element: <NotFound />,
     }
-]);
+],
+    {
+        basename: "/doctorfull/",
+    }
+);

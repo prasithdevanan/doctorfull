@@ -11,14 +11,11 @@ function Login() {
     const location = useLocation();
     const [status, setStatus] = useState("Login");
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const from = location.state?.from || '/';
-    console.log(from);
+    const [password, setPassword] = useState('');;
 
 
     const useFuntion = async (e) => {
         e.preventDefault();
-        console.log(e.target);
         if (!email || !password) {
             return toast.error("Missing data")
         }
