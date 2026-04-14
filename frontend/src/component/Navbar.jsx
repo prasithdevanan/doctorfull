@@ -58,7 +58,7 @@ function Navbar() {
                                 <div className='absolute top-0 right-0 hidden group-hover:block z-50 p-2 rounded-md w-fit pt-14'>
                                     <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                                         <h4 onClick={() => navigate('/profile')} className='text-gray-400 hover:text-(--color-primary) cursor-pointer'>My Profile</h4>
-                                        <h4 className='text-gray-400 hover:text-(--color-primary) cursor-pointer'>Appoinment</h4>
+                                        <h4 className='text-gray-400 hover:text-(--color-primary) cursor-pointer' onClick={() => navigate('/appointment')}>Appoinment</h4>
                                         <h4 onClick={() => logout()} className='text-gray-400 hover:text-red-500 cursor-pointer'>Logout</h4>
                                     </div>
 

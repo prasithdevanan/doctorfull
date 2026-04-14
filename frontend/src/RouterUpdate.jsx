@@ -14,7 +14,7 @@ import Login from "./pages/Login/Sign/Login";
 import Signin from "./pages/Login/Sign/Signin";
 import PubilcRouter from "./Production/CheckLogin/PubilcRouter";
 import PatientDetails from "./pages/PatientDetails";
-
+import Appointment from "./pages/Appointment";
 
 
 export const router = createBrowserRouter ([
@@ -66,6 +66,10 @@ export const router = createBrowserRouter ([
                 path: "/profile",
                 element: <Profile />,
             },
+            {
+                path: "/appointment",
+                element: <Appointment />,
+            }
         ],
     },
     {

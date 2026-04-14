@@ -86,8 +86,7 @@ function Payment() {
                   </p>
                   <h2
                     className="font-medium text-xs tracking-wide">
-                    {date?.day},
-                    {date?.fulldate},
+                    {date},
                     {time}
                   </h2>
                 </div>

@@ -157,7 +157,7 @@ function DoctorBooking() {
                                                 : 'border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)'
                                                 }`}>
                                             <h2>{item}</h2>
-                                            {isBooked && <span className='text-red-600 text-sm'>Booked</span>}
+                                            {isBooked && <span className='text-gray-400 text-sm'>Booked</span>}
                                         </div>
 
                                     )
@@ -175,7 +175,7 @@ function DoctorBooking() {
             <section className='flex mx-auto px-6 justify-center mt-6 mb-6'>
                 <Link to={selectedTimeslot !== null ? `/doctor/${element._id}/patientdetails` : "#"} state={{ element, fromBooking: true, selectDate: selectDate, selectTime: selectTime }}>
 
-                    <Button children="Book Appoiment" icon={<i className="bi bi-arrow-right-short text-2xl flex items-center"></i>} primary={`${selectedTimeslot !== null ? "bg-(--color-primary) hover:scale-105 text-(--color-white)" : "bg-(--color-text1)"} flex rounded-full px-3 py-2 transition ease-in-out duration-300 cursor-pointer text-(--color-text2)`} />
+                    <Button children="Book Appoiment" icon={<i className="bi bi-arrow-right-short text-2xl flex items-center"></i>} primary={`${selectedTimeslot !== null ? "bg-(--color-primary) hover:scale-105 text-(--color-white)" : "bg-(--color-input)"} flex rounded-full px-3 py-2 transition ease-in-out duration-300 cursor-pointer text-(--color-text2)`} />
                 </Link>
             </section>
 

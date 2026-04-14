@@ -28,7 +28,7 @@ const getAppointments = async (req, res) => {
         
         const newAppointment = new appointmentModel(appointment);
         await newAppointment.save();
-        res.status(201).json({ success: true, message: "Appointment created successfully", newAppointment });
+        res.status(201).json({ success: true, message: "Appointment created successfully", newAppointment, appointmentId: newAppointment._id });
         
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

@@ -39,8 +39,6 @@ function PatientDetails() {
 
     //get the data from the previous screen
     const element = location?.state?.element || false;
-    const selectDate1 = location?.state?.selectDate;
-
     const selectTime = location?.state?.selectTime;
 
     useEffect(() => {
@@ -88,10 +86,11 @@ function PatientDetails() {
                 toast.error(res.data.message);
                 return
             }
+            console.log(res.data.appointmentId);
 
             toast.success(res.data.message);
 
-            // navigate('/payment', { state: { appointmentId: res.data.appointmentId, fees: element?.fees } });
+            navigate(`/doctor/${doctorId}/patientdetails/payment`, { state: { appointmentId: res.data.appointmentId, fees: element?.fees,  element: element, selectTime: appointmentTime, selectDate: appointmentDate, fromBooking: true } });
 
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);
@@ -106,10 +105,17 @@ function PatientDetails() {
             {
                 token ? (
                     < div className='w-full h-[calc(100vh-120px)]'>
+
+
                         <form action="" onSubmit={submitHandle} className='my-auto mx-auto w-full h-full flex flex-col justify-center items-center'>
-                            <div className='grid grid-cols-2 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 gap-4 mb-4 px-4'>
+                            <div className='px-4 w-1/2 text-center mb-4'>
+                                <h2 className='font-medium text-(--color-text)'>Patient Details</h2>
+                                <p className='text-(--color-text1)'>Please provide your primary contact and identification details. This information is protected under HIPAA regulations and will only be used for clinical coordination.</p>
+                            </div>
+                            <p className='py-1 px-4 mb-3 bg-(--color-primary)/20 rounded-full text-(--color-primary)'>Intake Department</p>
+                            <div className='grid grid-cols-2 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 gap-4 mb-4 px-4 border border-gray-200 py-4 rounded-md bg-(--color-white) shadow-md shadow-gray-100'>
                                 <div>
-                                    <p>Patient Name</p>
+                                    <p className='text-sm'>PATIENT NAME</p>
                                     <input
                                         type="text"
                                         placeholder='Enter Patient Name'
@@ -119,7 +125,7 @@ function PatientDetails() {
                                         value={patientName} />
                                 </div>
                                 <div>
-                                    <p>PatientPhone</p>
+                                    <p className='text-sm'>PATIENT PHONE</p>
                                     <input type="tel"
                                         maxLength={10}
                                         placeholder='Enter Patient Name'
@@ -129,16 +135,16 @@ function PatientDetails() {
                                         value={patientPhone} />
                                 </div>
                                 <div>
-                                    <p>Reason</p>
+                                    <p className='text-sm'>REASON</p>
                                     <textarea name="" id=""
                                         placeholder='Enter Reason'
-                                        className='bg-(--color-input) px-2 py-2 border border-gray-200 rounded-md w-full'
+                                        className='bg-(--color-input) px-2 py-2 border border-gray-200 rounded-md w-full h-24 resize-none'
                                         required
                                         onChange={(e) => setReason(e.target.value)}
                                         value={reason} />
                                 </div>
                                 <div>
-                                    <p>Doctor Name</p>
+                                    <p className='text-sm'>DOCTOR NAME</p>
                                     <input
                                         type="text"
                                         placeholder='Enter Patient Name'
@@ -149,7 +155,7 @@ function PatientDetails() {
                                 </div>
                             </div>
                             <div className='flex justify-center items-center'>
-                                <button className='px-4 py-2 bg-(--color-primary) text-(--color-white) rounded-md cursor-pointer' type='submit' >Submit Details</button>
+                                <button className='px-4 py-2 bg-(--color-primary) text-(--color-white) rounded-md cursor-pointer hover:scale-110 hover:transform transition ease-in-out duration-300 hover:shadow-[0px_2px_8px] hover:shadow-(color:--color-primary)/50' type='submit' >Submit Details</button>
                             </div>
                         </form>
                     </div >
