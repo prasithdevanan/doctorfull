@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 
 const appointmentSchema = new mongoose.Schema({
@@ -22,6 +22,8 @@ appointmentSchema.index(
     { doctorId: 1, appointmentDate: 1, appointmentTime: 1 },
     { unique: true }
 );
+
+// appointmentSchema.set('autoIndex', true);
 
 const appointmentModel = mongoose.models.appointment || mongoose.model("appointment", appointmentSchema);
 

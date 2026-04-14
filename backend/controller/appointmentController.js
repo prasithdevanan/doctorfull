@@ -3,7 +3,7 @@ import appointmentModel from "../models/appoimentModel.js";
 
 const getAppointments = async (req, res) => {
     try {
-        const {patientName, patientEmail, patientPhone, doctorName, doctorEmail, doctorSpeciality, appointmentDate, appointmentTime, reason, status, paymentStatus, paymentId, fees} = req.body;
+        const {patientName, patientEmail, patientPhone, doctorName, doctorEmail, doctorSpeciality, appointmentDate, appointmentTime, reason, status, paymentStatus, paymentId, fees, doctorId} = req.body;
 
         if (!patientName || !patientEmail || !patientPhone || !doctorName || !doctorEmail || !doctorSpeciality || !appointmentDate || !appointmentTime || !reason || !status || !paymentStatus || !paymentId || !fees) {
             return res.status(400).json({ success: false, message: "All fields are required" });
@@ -15,6 +15,7 @@ const getAppointments = async (req, res) => {
             patientPhone,
             doctorName,
             doctorEmail,
+            doctorId,
             doctorSpeciality,
             appointmentDate,
             appointmentTime,

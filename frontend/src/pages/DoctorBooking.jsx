@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useLocation, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../component/Button';
 import TextAnimation from '../component/TextAnimation';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { AppContext } from '../component/CreateContext';
 
 function DoctorBooking() {
+    const { BackendUrl } = useContext(AppContext);
     const location = useLocation();
     const navigate = useNavigate();
     const element = location.state ? location.state.element : false;
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedTimeslot, setSelectedTimeslot] = useState(null);
+    const [bookedSlots, setBookedSlots] = useState([]);
 
     ///select the time and date
     const [selectDate, setSelectDate] = useState(null);
@@ -62,6 +67,34 @@ function DoctorBooking() {
     }
 
     const timeSlots = generateTimeSlot();
+
+    useEffect(() => {
+        console.log(selectDate);
+        if (!selectDate) return;
+        const dateFormate = selectDate.day + "," + selectDate.fulldate;
+        const featchBookedSlots = async () => {
+            try {
+                const res = await axios.get(`${BackendUrl}/api/patient/appointment/timeslot`, {
+                    params: {
+                        doctorId: element._id,
+                        appointmentDate: dateFormate
+                    }
+                });
+
+                if (res.data.success) {
+                    setBookedSlots(res.data.bookedSlots);
+                }
+                console.log("Booked Slots:", res.data.bookedSlots);
+
+                console.log(res.data);
+
+            } catch (error) {
+                console.error('Error fetching booked slots:', error);
+                toast.error('Failed to fetch booked slots. Please try again later.');
+            }
+        }
+        featchBookedSlots();
+    }, [selectDate]);
 
 
 
@@ -116,11 +149,15 @@ function DoctorBooking() {
                         <div className='flex gap-2 mt-3 mb-2'>
                             {
                                 timeSlots.map((item, index) => {
+                                    const isBooked = bookedSlots.includes(item);
                                     return (
-                                        <div key={index} onClick={() => {setSelectedTimeslot(index); setSelectTime(item);}} className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition ${selectedTimeslot === index ? 'bg-blue-500 text-white border-blue-500'
-                                            : 'border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)'
-                                            }`}>
+                                        <div key={index}
+                                            onClick={() => { if (isBooked) return; setSelectedTimeslot(index); setSelectTime(item); }}
+                                            className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition justify-center ${isBooked ? 'bg-gray-100 text-gray-500 border-gray-200' : selectedTimeslot === index ? 'bg-blue-500 text-white border-blue-500'
+                                                : 'border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)'
+                                                }`}>
                                             <h2>{item}</h2>
+                                            {isBooked && <span className='text-red-600 text-sm'>Booked</span>}
                                         </div>
 
                                     )
