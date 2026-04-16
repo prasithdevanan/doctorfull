@@ -9,6 +9,7 @@ const appointmentSchema = new mongoose.Schema({
     doctorName: { type: String },
     doctorEmail: { type: String },
     doctorSpeciality: { type: String },
+    image: { type: String, default:'https://res.cloudinary.com/dxw2bf8ns/image/upload/v1776318986/default_img_fzahth.png' },
     appointmentDate: { type: String },
     appointmentTime: { type: String },
     reason: { type: String },
