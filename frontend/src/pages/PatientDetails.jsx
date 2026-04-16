@@ -29,6 +29,7 @@ function PatientDetails() {
     const [doctorName, setDoctorName] = useState('');
     const [doctorEmail, setDoctorEmail] = useState('');
     const [doctorSpeciality, setDoctorSpeciality] = useState('');
+    const [image, setImage] = useState('');
     const [appointmentDate, setAppointmentDate] = useState('');
     const [appointmentTime, setAppointmentTime] = useState('');
     const [paymentStatus, setPaymentStatus] = useState('unpaid');
@@ -40,6 +41,8 @@ function PatientDetails() {
     //get the data from the previous screen
     const element = location?.state?.element || false;
     const selectTime = location?.state?.selectTime;
+    console.log(element);
+    console.log(selectTime);
 
     useEffect(() => {
         const selectDate = location?.state?.selectDate.day + ',' + location?.state?.selectDate.fulldate;
@@ -49,6 +52,7 @@ function PatientDetails() {
         setDoctorId(element?._id);
         setDoctorName(element?.name);
         setDoctorEmail(element?.email);
+        setImage(element?.image);
         setDoctorSpeciality(element?.speciality);
         setFees(element?.fees);
     }, [user, location])
@@ -66,6 +70,7 @@ function PatientDetails() {
             doctorName,
             doctorEmail,
             doctorSpeciality,
+            image,
             reason,
             status,
             paymentStatus,
