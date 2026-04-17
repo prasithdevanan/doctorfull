@@ -23,7 +23,7 @@ function TrustCard() {
 
                             <button className='bg-(--color-white) text-(--color-primary) px-4 py-2 rounded-full flex gap-1 justify-center items-center w-[70%] hover:scale-105 transition ease-in-out duration-300 cursor-pointer'  onClick={() => navigate('/login')}>Create Account</button>
                         </div>
-                        <div>
+                        <div className='hidden lg:block'>
                             <img src={Images.Doc1} alt="Img" className='absolute bottom-0 right-0 max-w-[30vh]' />
                         </div>
                     </div>

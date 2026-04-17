@@ -12,7 +12,7 @@ function Header() {
                     <div className='py-5 flex gap-4 flex-col'>
                         <h1 className='text-2xl md:text-4xl font-semibold leading-tight flex flex-col text-(--color-text-color)'>
                             Book Appointment <br />With Trusted Doctors</h1>
-                        <div className='flex gap-2'>
+                        <div className='flex gap-2 items-center'>
                             <img src={Images.Group} alt="img" className='w-[15%] object-contain' />
                             <p className='text-1xl font-light text-(--color-text-color)'>Simply browse through our extensive list of trusted doctors,
                                 schedule your appointment hassle-free.</p>
@@ -23,9 +23,9 @@ function Header() {
 
                     </div>
 
-                    <div className='w-1/2 relative h-full'>
+                    {/* <div className='hidden md:block w-1/2 relative h-full'>
                         <img src={Images.Header} alt="logo" className='w-full md:absolute bottom-0 right-0' />
-                    </div>
+                    </div> */}
                 </div>
 
             </header >

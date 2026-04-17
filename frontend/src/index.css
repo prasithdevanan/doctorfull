@@ -13,6 +13,7 @@
     --color-secondary: #14B8A6;
     --color-text-color: #ffffff;
     --color-primary-gradient: 135deg, #1E3A8A 0%, #3B82F6 100%;
+    --color-gray: rgb(246, 246, 246);
 }
 
 /* Dark Theme */

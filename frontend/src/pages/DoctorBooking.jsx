@@ -146,7 +146,7 @@ function DoctorBooking() {
                     </div>
                     {/* //---------------time slot----------- */}
                     {selectedIndex !== null &&
-                        <div className='flex gap-2 mt-3 mb-2'>
+                        <div className='flex gap-2 mt-3 mb-2 overflow-scroll'>
                             {
                                 timeSlots.map((item, index) => {
                                     const isBooked = bookedSlots.includes(item);

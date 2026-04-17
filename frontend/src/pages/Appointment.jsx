@@ -10,7 +10,7 @@ function Appointment() {
     const [searchTerm, setSearchTerm] = useState('');
     const [updateAppointments, setUpdatedAppointments] = useState([]);
 
-     
+
     ///check the user is login or not
     useEffect(() => {
         if (!token) {
@@ -25,7 +25,7 @@ function Appointment() {
         if (!dateStr) return "";
 
         const cleanDate = dateStr.split(",")[1]; // "4/22/2026"
-        const date = new Date(cleanDate); 
+        const date = new Date(cleanDate);
 
         const year = date.getFullYear();
         // in case month or day is single digit, we need to pad it with 0
@@ -51,7 +51,7 @@ function Appointment() {
                     return console.log(res.data.message);
                 }
                 setAppointments(res.data.appointments);
-               
+
 
             } catch (error) {
                 console.log(error?.response?.data?.message || error.message);
@@ -106,16 +106,26 @@ function Appointment() {
             {
                 updateAppointments.length > 0 ? (
 
-                    <div className='w-full'>
+                    <div className='w-full h-[calc(100vh-120px)]'>
                         <p className='text-sm mx-auto'>Appointment: {updateAppointments.length}</p>
-                        <ul className='h-[calc(100vh-120px)] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 px-2'>
+                        <ul className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 px-2'>
                             {updateAppointments.map((items, index) => {
                                 return (
-                                    <li key={index} className='border p-2 border-gray-200 relative rounded-md flex flex-col gap-1'>
-                                        <p className={`${items.appointmentStatus === 'Completed' ? 'bg-red-100 text-red-800' : items.appointmentStatus === 'Upcoming' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'} px-2 w-fit rounded-full text-sm absolute top-2 right-2`}>{items.appointmentStatus}</p>
-                                        <p>Doctor: {items.doctorName}</p>
-                                        <p><i className="bi bi-calendar"></i> {items.appointmentDate}</p>
-                                        <p><i className="bi bi-clock"></i> {items.appointmentTime}</p>
+                                    <li key={index} className='border p-2 border-gray-200 relative rounded-lg flex flex-col gap-1 py-2 bg-(--color-gray)'>
+                                        <div className='flex gap-4  items-center'>
+                                            <img src={items.image} alt="img" className='w-30 bg-gray-200 rounded-md' />
+                                            <div className='flex flex-col'>
+                                                <p className={`${items.appointmentStatus === 'Completed' ? 'bg-red-100 text-red-800' : items.appointmentStatus === 'Upcoming' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'} px-2 w-fit rounded-full text-sm absolute top-2 right-2`}>{items.appointmentStatus}</p>
+                                                <p className='font-medium'>{items.doctorName}</p>
+                                                <p className=''>{items.doctorSpeciality}</p>
+                                                <div className='flex gap-2 mt-2'>
+                                                    <p className='text-sm text-gray-500'><i className="bi bi-calendar text-(--color-primary)"></i> {items.appointmentDate}</p>
+                                                    <p className='text-sm text-gray-500'><i className="bi bi-clock text-(--color-primary)"></i> {items.appointmentTime}</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </li>
                                 )
                             })}
