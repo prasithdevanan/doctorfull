@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 });
 
 app.get("/home", (req, res) => {
-    res.status(404).send("this screen not define")
+    res.status(200).send("This is the home page");
 })
 
 
