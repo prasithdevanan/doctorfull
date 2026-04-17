@@ -1,6 +1,6 @@
 import validator from 'validator';
 import bycrypt from 'bcrypt';
-import { v2 as cloudinary } from 'cloudinary';
+import { uploadToCloudinary } from '../utils/cloudinary.js';
 import doctorModel from '../models/doctorModel.js';
 import jwt from 'jsonwebtoken'
 
@@ -45,7 +45,7 @@ const addDoctor = async (req, res) => {
 
 
         // upload image to cloudinary
-         const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' });
+        const imageUpload = await uploadToCloudinary(imageFile);
         const imageUrl = imageUpload.secure_url;
 
 
