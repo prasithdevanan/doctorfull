@@ -12,8 +12,8 @@ function DoctorList({ selectSpeciality, isHome }) {
         <>
             {
                 newFilter.length === 0 ?
-                    <div className='flex w-[50%] flex-col justify-center items-center h-full mt-3'>
-                        <img src={Images.DoctorNotFound} alt="img" />
+                    <div className='flex w-full flex-col justify-center items-center h-full mt-3'>
+                        <img src={Images.DoctorNotFound} alt="img" className={`${isHome ? 'w-1/3 mx-auto' : 'w-1/3'}`} />
                         <h1 className='text-2xl font-semibold text-gray-600 mt-5'>No Doctors Found</h1>
                     </div>
                     :
