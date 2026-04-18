@@ -8,7 +8,7 @@ function Header() {
             {/* //------------------------------------------header----------------------- */}
             < header className='flex justify-center' >
 
-                <div className="w-full md:w-[90%] sm:w-[95%] lg:w-[80%] mx-auto px-6 sm:px-6 md:px-10 py-10 bg-linear-(--color-primary-gradient) flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 rounded-2xl">
+                <div className="w-full md:w-[90%] sm:w-[95%] lg:w-[80%] max-w-[1200px] mx-auto px-6 sm:px-6 md:px-10 py-10 bg-linear-(--color-primary-gradient) flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 rounded-2xl">
                     <div className='py-5 flex gap-4 flex-col'>
                         <h1 className='text-2xl md:text-4xl font-semibold leading-tight flex flex-col text-(--color-text-color)'>
                             Book Appointment <br />With Trusted Doctors</h1>

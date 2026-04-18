@@ -14,7 +14,7 @@ function TopDoctor() {
                     <h1 className='text-3xl font-semibold'>Top Doctors to Book</h1>
                     <p className='font-light'>Simply browse through our extensive list of trusted doctors.</p>
                 </div>
-                <div className='mt-5 mb-4 overflow-hidden w-full'>
+                <div className='mt-5 mb-4 overflow-hidden w-full flex justify-center items-center'>
                 <DoctorList selectSpeciality={visibleDoctor} isHome={true} />
                 </div>
             </section>
