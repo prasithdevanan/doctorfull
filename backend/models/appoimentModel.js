@@ -24,7 +24,7 @@ appointmentSchema.index(
     { unique: true }
 );
 
-// appointmentSchema.set('autoIndex', true);
+
 
 const appointmentModel = mongoose.models.appointment || mongoose.model("appointment", appointmentSchema);
 

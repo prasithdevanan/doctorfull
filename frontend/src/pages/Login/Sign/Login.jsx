@@ -14,6 +14,8 @@ function Login() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
 
     const useFuntion = async (e) => {
         e.preventDefault();
@@ -45,12 +47,18 @@ function Login() {
         <>
             <section className='flex items-center justify-center h-[100vh] relative'>
                 <img src={Images.LoginBg} alt="Login Background" className='absolute inset-0 object-cover w-full h-full z-[-1] ' />
-                <form action="" className='flex flex-col w-[90%] md:w-[70%] sm:w-[80%] lg:w-[35%] border-2 border-gray-200 px-4 pt-4 pb-2 rounded-lg my-auto  bg-white/50 backdrop-blur-md' onSubmit={useFuntion}>
+                <form action="" className='flex flex-col w-[90%] md:w-[70%] sm:w-[80%] lg:w-[35%] border-2 border-gray-200 px-4 pt-4 pb-2 rounded-lg my-auto  bg-white/50 backdrop-blur-md' onSubmit={useFuntion} autoComplete='on'>
                     <p className='font-semibold mx-auto'>{status}</p>
                     <label htmlFor="EmailID">EmailID</label>
-                    <input type="text" placeholder='Enter Email ID' className='input bg-gray-100/70 border border-gray-200 px-3 py-2 rounded-md' onChange={(e) => setEmail(e.target.value)} value={email} required />
+                    <input type="email" placeholder='Enter Email ID' className='input bg-gray-100/70 border border-gray-200 px-3 py-2 rounded-md' onChange={(e) => setEmail(e.target.value)} value={email} autoComplete="email" required />
                     <label htmlFor="Password" className='mt-5'>Password</label>
-                    <input type="text" placeholder='Enter Passoword' className='input bg-gray-100/70 border border-gray-200 px-3 py-2 rounded-md' onChange={(e) => setPassword(e.target.value)} value={password} required />
+                    <div className='relative w-full'>
+                        <input type={passwordVisible ? 'text' : 'password'} placeholder='Enter Passoword' className='input bg-gray-100/70 border border-gray-200 px-3 py-2 rounded-md w-full' onChange={(e) => setPassword(e.target.value)} value={password} autoComplete="current-password" required />
+                        <span onClick={() => setPasswordVisible(!passwordVisible)} className='absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 cursor-pointer'>
+                            {`${passwordVisible ? 'Hide' : 'Show'}`}
+                        </span>
+                    </div>
+
                     <button
                         className={`flex py-2 bg-(--color-primary) w-[50%] items-center justify-center rounded-md text-(--color-white) mt-6 mx-auto hover:scale-105 transition ease-in-out duration-200 cursor-pointer`} type='submit' disabled={loading}>
                         {loading ? 'Signing in...' : "Login"}

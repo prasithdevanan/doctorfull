@@ -77,6 +77,10 @@ function Appointment() {
         return 'Today';
     }
 
+    const appointmentReschedule = () => {
+        alert("Reschedule feature is coming soon!");
+    }
+
 
 
     ///processed get Satatus + filter + search + sort
@@ -91,13 +95,26 @@ function Appointment() {
         console.log(processedAppointments);
     }, [appointments, searchTerm])
 
+    const [filter, setFilter] = useState(true);
+    const upcomingAppointments = updateAppointments.filter((item) => item.appointmentStatus === 'Upcoming');
+    const pastAppointments = updateAppointments.filter((item) => item.appointmentStatus === 'Completed');
+    const filteredAppointments = filter ? upcomingAppointments : pastAppointments;
+
 
     return (
         <>
 
 
             <div className='flex justify-between px-4'>
-                <h1>My Appointments</h1>
+                <div>
+                    <h1 className='text-2xl font-medium text-(--color-text)'>My Appointments</h1>
+                    <p className='text-sm mx-auto flex items-center'>
+                        <div className={`${filter ? 'bg-green-600' : 'bg-red-400'} w-3 h-3 rounded-full mr-1`}></div>
+                        You have {filter ? upcomingAppointments.length : pastAppointments.length}
+                        <span className={`${filter ? 'text-green-600' : 'text-red-400'} ml-1 mr-1 font-medium`}> {filter ? 'Upcoming' : 'Completed'}</span> 
+                        Appointments</p>
+                </div>
+
                 <div className='bg-(--color-input) border border-gray-200 focus:outline-none px-2 py-1 flex items-center gap-1.5 rounded-md'>
                     <i className="bi bi-search text-gray-300"></i>
                     <input type="text" className='focus:outline-none py-1' placeholder='Search Doctor' onChange={(e) => setSearchTerm(e.target.value)} />
@@ -106,12 +123,15 @@ function Appointment() {
             {
                 updateAppointments.length > 0 ? (
 
-                    <div className='w-full h-[calc(100vh-120px)]'>
-                        <p className='text-sm mx-auto'>Appointment: {updateAppointments.length}</p>
-                        <ul className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 px-2'>
-                            {updateAppointments.map((items, index) => {
+                    <div className='w-full h-[calc(100vh-120px)] px-4 py-6'>
+                        <div className='flex gap-2 bg-gray-100 w-fit px-1 py-1 rounded-md mt-2'>
+                            <button className={`px-4 cursor-pointer rounded-md py-1 bg-${filter ? '(--color-primary)' : 'gray-100'} text-${filter ? 'white' : 'black'}`} onClick={() => setFilter(true)}>Upcoming</button>
+                            <button className={`px-4 cursor-pointer rounded-md py-1 bg-${!filter ? '(--color-primary)' : 'gray-100'} text-${!filter ? 'white' : 'black'}`} onClick={() => setFilter(false)}>Completed</button>
+                        </div>
+                        <ul className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 px-2 grid-justify-items-center'>
+                            {filteredAppointments.map((items, index) => {
                                 return (
-                                    <li key={index} className='border p-2 border-gray-200 relative rounded-lg flex flex-col gap-1 py-2 bg-(--color-gray)'>
+                                    <li key={index} className='border p-1 border-gray-100 relative rounded-lg flex flex-col gap-1 bg-(--color-gray) max-w-xl'>
                                         <div className='flex gap-4  items-center'>
                                             <img src={items.image} alt="img" className='w-30 bg-gray-200 rounded-md' />
                                             <div className='flex flex-col'>
@@ -123,6 +143,7 @@ function Appointment() {
                                                     <p className='text-sm text-gray-500'><i className="bi bi-clock text-(--color-primary)"></i> {items.appointmentTime}</p>
 
                                                 </div>
+                                                <button className='bg-(--color-primary) text-white px-4 py-1 rounded-md mt-2 w-fit cursor-pointer hover:bg-(--color-primary)/90' onClick={() => appointmentReschedule()}>Reschedule</button>
                                             </div>
                                         </div>
 

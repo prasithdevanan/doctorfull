@@ -31,7 +31,7 @@ function Payment() {
         token ? (
           <div className='px-4 h-[calc(100vh-120px)] flex gap-5 w-full'>
             <div
-              className="bg-purple-100 px-4 flex flex-col gap-3 py-4 h-full rounded-md w-1/5">
+              className="bg-purple-100 px-4 flex flex-col gap-3 py-4 h-full rounded-md w-fit">
               <p
                 className="font-medium">
                 Appointment Summary
@@ -39,7 +39,7 @@ function Payment() {
 
               {/* doctor information */}
               <div
-                className="flex items-center gap-2 p-2 bg-white rounded-md relative">
+                className="flex items-center gap-2 p-2 bg-white rounded-md relative w-max">
                 <img
                   src={element.image}
                   alt="profile"
@@ -56,13 +56,13 @@ function Payment() {
                 </div>
 
                 <div
-                  className="flex flex-col">
+                  className="flex flex-col items-start w-full">
                   <h2
                     className="font-medium text-sm text-(--color-text)">
                     {element.name}
                   </h2>
                   <p
-                    className="font-light text-sm text-(--color-text1)">
+                    className="w-full font-light text-sm text-(--color-text1)">
                     {element.speciality}
                   </p>
                 </div>
@@ -72,7 +72,7 @@ function Payment() {
               <div
                 className="flex items-center gap-2">
                 <h2
-                  className="bg-blue-600/20 px-3 py-2 rounded-md">
+                  className="bg-blue-600/20 px-3 py-2 rounded-full">
                   <i
                     className="bi bi-calendar4 text-blue-600">
                   </i>
@@ -96,7 +96,7 @@ function Payment() {
               <div
                 className="flex items-start gap-2">
                 <h1
-                  className="bg-blue-600/20 px-3 py-2 rounded-md">
+                  className="bg-blue-600/20 px-3 py-2 rounded-full">
                   <i
                     className="bi bi-geo-alt text-blue-600">
                   </i>
@@ -120,7 +120,7 @@ function Payment() {
 
             {/* //Payment side */}
             <div className='bg-purple-50 w-2/2'>
-              <h1>
+              <h1 className='font-medium mx-auto text-xl text-(--color-text) w-fit mb-4'>
                 Payment
               </h1>
               <div
@@ -143,7 +143,10 @@ function Payment() {
               {
                 paymentMethod &&
                 <div>
-                  <p>This is an Apple pay</p>
+                  <h1 className='font-semibold'>Apple Pay</h1>
+                  <div>
+                    <p>This is the Apple Pay section</p>
+                  </div>
                 </div>
 
               }
