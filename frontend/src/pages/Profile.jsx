@@ -82,7 +82,7 @@ function Profile() {
       }
 
       toast.success(res.data.message);
-  
+
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     } finally {
@@ -91,35 +91,96 @@ function Profile() {
   };
   return (
     <>
-      <section className='w-screen h-[calc(100vh-120px)] items-center flex flex-col gap-5'>
-        <h1>welcome <span className='font-semibold'>{UserName}</span></h1>
-        <div className='flex items-end gap-2'>
-          <img src={image instanceof File ? URL.createObjectURL(image) : image || user?.image || Icons.Profile} alt="profile" className="w-32 h-32 rounded-full border-2 border-gray-200"
+      <section className="w-screen min-h-[calc(100vh-120px)] flex flex-col items-center justify-center gap-6 px-4">
+
+        {/* Heading */}
+        <h1 className="text-xl md:text-2xl text-gray-700">
+          Welcome <span className="font-semibold text-gray-900">{UserName}</span>
+        </h1>
+
+        {/* Profile Image */}
+        <div className="flex items-end gap-3">
+          <img
+            src={image instanceof File ? URL.createObjectURL(image) : image || user?.image || Icons.Profile}
+            alt="profile"
+            className="w-28 h-28 md:w-32 md:h-32 rounded-full border-2 border-gray-200 object-cover"
           />
-          <input type="file" className='hidden' id='imageUpload' onChange={(e) => setImage(e.target.files[0])} />
-          <label htmlFor='imageUpload' className='bg-blue-500 text-white py-1 px-2 rounded-md cursor-pointer mt-2 inline-block h-fit'>
-            <i className="bi bi-pencil-square"></i>
+
+          <input
+            type="file"
+            className="hidden"
+            id="imageUpload"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+
+          <label
+            htmlFor="imageUpload"
+            className="bg-(--color-primary) text-white p-2 rounded-full cursor-pointer hover:opacity-90 transition"
+          >
+            <i className="bi bi-pencil-square text-sm"></i>
           </label>
         </div>
-        <div className='grid grid-cols-2 gap-4 w-[90%] md:w-[70%] sm:w-[80%] lg:w-[50%] border-2 border-gray-200 px-4 pt-4 pb-2 rounded-lg bg-white/50 backdrop-blur-md'>
-          <input type="text" placeholder='Full Name' value={UserName} className='py-2 bg-(--color-input) px-3 rounded-md' readOnly disabled />
-          <input type="email" placeholder="Email Address" value={user?.email ?? ''} readOnly className='py-2 bg-(--color-input) px-3 rounded-md' autoComplete='email' />
-          <input type="tel" placeholder="Phone Number" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setPhone(e.target.value)} value={phone} maxLength={10} />
 
-          <input type="date" className='py-2 bg-(--color-input) px-3 rounded-md' onChange={(e) => setDob(e.target.value)} value={dob ? dob : user?.DOB ?? ''} />
+        {/* Form */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl border border-gray-200 p-4 rounded-xl bg-white/70 backdrop-blur-md shadow-sm">
 
-          <select className='py-2 bg-(--color-input) px-3 rounded-md' value={gender ? gender : user?.gender ?? ''} onChange={(e) => setGender(e.target.value)}>
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={UserName}
+            readOnly
+            disabled
+            className="py-2 px-3 rounded-md bg-(--color-input) text-gray-600 cursor-not-allowed"
+          />
 
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={user?.email ?? ""}
+            readOnly
+            className="py-2 px-3 rounded-md bg-(--color-input) text-gray-600"
+            autoComplete="email"
+          />
+
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            maxLength={10}
+            className="py-2 px-3 rounded-md bg-(--color-input) focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+          />
+
+          <input
+            type="date"
+            value={dob ? dob : user?.DOB ?? ""}
+            onChange={(e) => setDob(e.target.value)}
+            className="py-2 px-3 rounded-md bg-(--color-input) focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+          />
+
+          <select
+            value={gender ? gender : user?.gender ?? ""}
+            onChange={(e) => setGender(e.target.value)}
+            className="py-2 px-3 rounded-md bg-(--color-input) focus:outline-none focus:ring-2 focus:ring-(--color-primary) col-span-1 sm:col-span-2"
+          >
             <option value="" hidden>Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+
         </div>
 
+        {/* Button */}
         <div>
-          <button className='bg-(--color-primary) py-2 px-3 text-(--color-white) rounded-md hover:shadow-md hover:shadow-blue-200 hover:scale-105 ease-in-out duration-300 cursor-pointer' onClick={updateProfile}>{load ? "Uploding....." : "Update Profile"}</button>
+          <button
+            onClick={updateProfile}
+            className="bg-(--color-primary) text-white py-2 px-4 rounded-md hover:shadow-md hover:scale-105 transition duration-300 cursor-pointer"
+          >
+            {load ? "Uploading..." : "Update Profile"}
+          </button>
         </div>
+
       </section>
     </>
   )

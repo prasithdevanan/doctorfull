@@ -54,8 +54,6 @@ function Navbar() {
                     </ul>
 
                     <div className='flex'>
-
-
                         {
                             token ?
                                 <div className='relative cursor-pointer group'>

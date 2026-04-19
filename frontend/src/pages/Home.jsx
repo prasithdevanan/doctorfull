@@ -5,6 +5,7 @@ import TopDoctor from './Home/TopDoctor';
 import TrustCard from './Home/TrustCard';
 import { AppContext } from '../component/CreateContext';
 import { toast } from 'react-toastify';
+import Footer from './Home/Footer';
 
 
 
@@ -73,6 +74,7 @@ function Home() {
       <Speciality />
       <TopDoctor />
       <TrustCard />
+      <Footer />
     </>
   )
 }
