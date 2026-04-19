@@ -15,6 +15,7 @@ import Signin from "./pages/Login/Sign/Signin";
 import PubilcRouter from "./Production/CheckLogin/PubilcRouter";
 import PatientDetails from "./pages/PatientDetails";
 import Appointment from "./pages/Appointment";
+import Reschedule from "./pages/Reschedule";
 
 
 export const router = createBrowserRouter ([
@@ -69,6 +70,10 @@ export const router = createBrowserRouter ([
             {
                 path: "/appointment",
                 element: <Appointment />,
+            },
+            {
+                path:"/appointment/:id/reschedule",
+                element: <Reschedule />,
             }
         ],
     },

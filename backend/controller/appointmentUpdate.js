@@ -1,12 +1,13 @@
-import appointmentModel from "../models/appoimentModel";
+import appointmentModel from "../models/appoimentModel.js";
 
 export const updateSchedule = async (req, res) => {
+    console.log("Received reschedule request:", req.body);
     try {
+        const { id } = req.params;
         const { doctorId, appointmentDate, appointmentTime, status } = req.body;
-
-        const appointment = await appointmentModel.findOneAndUpdate(
-            { doctorId, appointmentDate, appointmentTime },
-            { status },
+      
+        const appointment = await appointmentModel.findByIdAndUpdate(id,
+            { doctorId, appointmentDate, appointmentTime, status },
             { returnDocument: 'after' }
         );
 

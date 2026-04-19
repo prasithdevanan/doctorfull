@@ -2,13 +2,17 @@ import axios from 'axios';
 import React, { use, useEffect, useContext, useState } from 'react';
 import { AppContext } from '../component/CreateContext';
 import { Images } from '../assets/img';
+import { useNavigate } from 'react-router-dom';
+import Reschedule from './Reschedule';
 
 function Appointment() {
+    const navigate = useNavigate();
 
     const { BackendUrl, user, token } = useContext(AppContext);
     const [appointments, setAppointments] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [updateAppointments, setUpdatedAppointments] = useState([]);
+
 
 
     ///check the user is login or not
@@ -65,7 +69,7 @@ function Appointment() {
     const getStatus = (input) => {
         const today = new Date();
         const appointmentDate = new Date(input);
-   
+
 
         today.setHours(0, 0, 0, 0);
         if (appointmentDate < today) {
@@ -77,8 +81,8 @@ function Appointment() {
         return 'Today';
     }
 
-    const appointmentReschedule = () => {
-        alert("Reschedule feature is coming soon!");
+    const appointmentReschedule = (id, item) => {
+        navigate(`/appointment/${id}/reschedule`, { state: {appointment: item} });
     }
 
 
@@ -90,9 +94,9 @@ function Appointment() {
             appointmentStatus: getStatus(formatToISO(item.appointmentDate))
         })).filter((item) => {
             return item.doctorName.toLowerCase().includes(searchTerm.toLowerCase());
-        }).sort((a, b) => new Date(formatToISO(b.appointmentDate)) - new Date(formatToISO(a.appointmentDate)));
+        }).sort((a, b) => new Date(formatToISO(a.appointmentDate)) - new Date(formatToISO(b.appointmentDate)));
         setUpdatedAppointments(processedAppointments);
-       
+
     }, [appointments, searchTerm])
 
     const [filter, setFilter] = useState(true);
@@ -143,7 +147,10 @@ function Appointment() {
                                                         <p className='text-sm text-gray-500'><i className="bi bi-clock text-(--color-primary)"></i> {items.appointmentTime}</p>
 
                                                     </div>
-                                                    <button className='bg-(--color-primary) text-white px-4 py-1 rounded-md mt-2 w-fit cursor-pointer hover:bg-(--color-primary)/90' onClick={() => appointmentReschedule()}>Reschedule</button>
+                                                    {
+                                                        items.appointmentStatus === 'Upcoming' && <button className='bg-(--color-primary) text-white px-4 py-1 rounded-md mt-2 w-fit cursor-pointer hover:bg-(--color-primary)/90' onClick={() => appointmentReschedule(items.doctorId, items)}>Reschedule</button>
+                                                    }
+
                                                 </div>
                                             </div>
 

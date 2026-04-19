@@ -13,6 +13,7 @@ const getDoctorAppointments = async (req, res) => {
 
         const bookedSlots = appointments.map(appointment => appointment.appointmentTime);
         res.json({ success: true, bookedSlots });
+      
 
         
     } catch (error) {

@@ -21,7 +21,6 @@ function DoctorBooking() {
     const [selectDate, setSelectDate] = useState(null);
     const [selectTime, setSelectTime] = useState(null);
 
-
     const dates = [];
     const baseDate = new Date();
 
@@ -68,6 +67,8 @@ function DoctorBooking() {
 
     const timeSlots = generateTimeSlot();
 
+    //-------------------------fetch the booked slot for the doctor------------------------
+
     useEffect(() => {
         console.log(selectDate);
         if (!selectDate) return;
@@ -84,12 +85,9 @@ function DoctorBooking() {
                 if (res.data.success) {
                     setBookedSlots(res.data.bookedSlots);
                 }
-                console.log("Booked Slots:", res.data.bookedSlots);
-
-                console.log(res.data);
 
             } catch (error) {
-                console.error('Error fetching booked slots:', error);
+                // console.error('Error fetching booked slots:', error);
                 toast.error('Failed to fetch booked slots. Please try again later.');
             }
         }
