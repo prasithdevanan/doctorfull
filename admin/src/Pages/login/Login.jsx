@@ -13,7 +13,7 @@ function Login() {
   const navigate = useNavigate();
   const [state, setState] = useState("Admin");
   const [load, setLoad] = useState(false);
-
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const { setAToken, BackendUrl, setDToken } = useContext(AdminContext);
 
   const [email, setEmail] = useState('');
@@ -72,25 +72,71 @@ function Login() {
 
   return (
     <>
-      <section className='flex flex-col items-center justify-center h-[80vh] w-full'>
+      <section className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-teal-400/20">
 
-
-        <form action="" className='flex flex-col w-[90%] md:w-[70%] sm:w-[80%] lg:w-[35%] border-2 border-gray-200 p-8 rounded-lg my-auto shadow-md' onSubmit={onSubmitHandler}>
-          <div className='w-full mx-auto flex justify-center'>
-            <p><span className='text-(--color-primary) font-semibold mr-1'>{state}</span> Login</p>
+        <form
+          className="flex flex-col w-[90%] sm:w-[80%] md:w-[70%] lg:w-[35%] border border-gray-200 p-8 rounded-xl shadow-md bg-white"
+          onSubmit={onSubmitHandler} autoComplete='on'
+        >
+          <div className="w-full flex justify-center mb-4">
+            <p className="text-lg font-medium">
+              <span className="text-(--color-primary) font-semibold mr-1">{state}</span> Login
+            </p>
           </div>
-          <label htmlFor="EmailID">EmailID</label>
-          <input type="text" placeholder='Enter Email ID' className='input bg-gray-300 px-4 py-2 rounded-md' onChange={(e) => setEmail(e.target.value)} value={email} />
 
-          <label htmlFor="Password" className='mt-5'>Password</label>
-          <input type="text" placeholder='Enter Passoword' className='input bg-gray-300 px-4 py-2 rounded-md ' onChange={(e) => setPassword(e.target.value)} value={password} />
-          <button className={`flex py-2 bg-(--color-primary) w-[50%] items-center justify-center rounded-md text-(--color-white) mt-6 mx-auto hover:scale-105 transition ease-in-out duration-200 cursor-pointer hover:shadow-[0_4px_10px_var(--color-primary)] `} type='submit'>{load ? 'Verifying...' : 'Login'}</button>
+          <label className="text-sm text-gray-600">Email ID</label>
+          <input type="email" placeholder="Enter Email ID" className="mt-1 px-4 py-2 rounded-md bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-(--color-primary)" onChange={(e) => setEmail(e.target.value)}
+            value={email} autoComplete='email'
+          />
 
-          {
-            state === "Admin" ?
-              <p className='text-(--color-text1) font-light text-[14px] mt-5'>Doctor Login? <span className='text-(--color-primary) cursor-pointer' onClick={() => setState("Doctor")}>Click Here</span></p> :
-              <p className='text-(--color-text1) font-light text-[14px] mt-5'>Admin Login? <span className='text-(--color-primary) cursor-pointer' onClick={() => setState("Admin")}>Click Here</span></p>
-          }
+          <label className="mt-5 text-sm text-gray-600">Password</label>
+          <div className="relative">
+            <input
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Enter Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+              className="w-full px-3 py-2 rounded-md bg-gray-100/70 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+            />
+
+            <span
+              onClick={() => setPasswordVisible(!passwordVisible)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 cursor-pointer"
+            >
+              {passwordVisible ? "Hide" : "Show"}
+            </span>
+          </div>
+
+          <button
+            className="flex py-2 bg-(--color-primary) w-[50%] cursor-pointer items-center justify-center rounded-md text-white mt-6 mx-auto hover:scale-105 transition duration-200 hover:shadow-lg"
+            type="submit"
+          >
+            {load ? "Verifying..." : "Login"}
+          </button>
+
+          {state === "Admin" ? (
+            <p className="text-gray-500 text-sm mt-5 text-center">
+              Doctor Login?{" "}
+              <span
+                className="text-(--color-primary) cursor-pointer"
+                onClick={() => setState("Doctor")}
+              >
+                Click Here
+              </span>
+            </p>
+          ) : (
+            <p className="text-gray-500 text-sm mt-5 text-center">
+              Admin Login?{" "}
+              <span
+                className="text-(--color-primary) cursor-pointer"
+                onClick={() => setState("Admin")}
+              >
+                Click Here
+              </span>
+            </p>
+          )}
         </form>
       </section>
     </>

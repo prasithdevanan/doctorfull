@@ -25,6 +25,11 @@ function Sidebar() {
             name: "Doctor List",
             path: "/doctorlist",
             iconClass: "bi bi-list"
+        },
+        {
+            name: "Custom",
+            path: "/custom",
+            iconClass: "bi bi-list"
         }
     ];
 

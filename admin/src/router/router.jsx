@@ -8,6 +8,7 @@ import Appoiment from '../Pages/Admin/Appoiment';
 import AddDoctor from '../Pages/Admin/AddDoctor';
 import DoctorList from '../Pages/Admin/DoctorList';
 import axios from 'axios';
+import Custom from '../Pages/Admin/Custom';
 
 
 //get Token from the Localstorage
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
             {
                 path: '/doctorList',
                 element: <ProductorRouter><DoctorList /></ProductorRouter>
+            },
+            {
+                path:"custom",
+                element:<ProductorRouter><Custom /></ProductorRouter>
             }
         ]
     },
