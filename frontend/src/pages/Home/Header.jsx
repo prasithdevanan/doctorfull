@@ -39,7 +39,7 @@ function Header() {
                         <a href="#Speciality" className="w-fit mx-auto md:mx-0">
                             <Button
                                 children="Book Appointment"
-                                primary="bg-(--color-text-color) px-5 py-2 rounded-full flex items-center gap-2 text-(--color-primary) hover:scale-105 transition duration-300"
+                                primary="bg-(--color-text-color) px-5 py-2 rounded-full flex items-center gap-2 text-(--color-primary) hover:scale-105 cursor-pointer transition duration-300"
                                 icon={<i className="bi bi-arrow-right-short text-2xl"></i>}
                             />
                         </a>

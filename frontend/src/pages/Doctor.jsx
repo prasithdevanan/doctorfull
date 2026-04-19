@@ -26,12 +26,12 @@ function Doctor() {
 
           <Button
             children="Filter"
-            primary="bg-(--color-text1) px-4 py-2 rounded-full flex gap-2 items-center text-(--color-text-color) hover:scale-105 transition duration-300 cursor-pointer"
+            primary="bg-(--color-text1) px-4 py-2 rounded-full ml-3 flex gap-2 items-center text-(--color-text-color) hover:scale-105 transition duration-300 cursor-pointer"
             icon={<i className="bi bi-filter"></i>}
           />
 
           {/* Dropdown */}
-          <div className="hidden group-hover:block absolute top-0 left-0 z-50 pt-14">
+          <div className="hidden group-hover:block absolute top-0 left-0 z-50 pt-14 ml-3">
             <div className="bg-(--color-bg) rounded-xl shadow-md border border-gray-100 overflow-hidden min-w-[180px]">
 
               <Button

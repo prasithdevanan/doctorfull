@@ -9,7 +9,7 @@ function signin() {
     const navigate = useNavigate();
 
     //context
-    const  {BackendUrl}  = useContext(AppContext);
+    const { BackendUrl } = useContext(AppContext);
 
     //use states for the inputs
     const [email, setEmail] = useState('');
@@ -51,19 +51,92 @@ function signin() {
 
     return (
         <>
-            <section className='flex items-center justify-center h-[100vh] relative'>
-                <img src={Images.LoginBg} alt="Login Background" className='absolute inset-0 object-cover w-full h-full z-[-1]' />
-                <form action="" className='flex flex-col w-[90%] md:w-[70%] sm:w-[80%] lg:w-[35%] border-2 border-gray-200 px-4 pt-4 pb-2 rounded-lg my-auto bg-white/50 backdrop-blur-md' onSubmit={onsubmit} >
-                    <p className='font-semibold mx-auto'>Signin</p>
-                    <label htmlFor="EmailID">EmailID</label>
-                    <input type="text" placeholder='Enter Email ID' className='input bg-gray-100/70 border border-gray-200 px-3 py-2 rounded-md ' onChange={(e) => setEmail(e.target.value)} value={email} required />
-                    <label htmlFor="Password" className='mt-5'>Password</label>
-                    <input type="text" placeholder='Enter Passoword' className='input bg-gray-100/70 border border-gray-200 px-3 py-2 rounded-md ' onChange={(e) => setPassword(e.target.value)} value={password} required />
-                    <label htmlFor="Password" className='mt-5'>RE-Password</label>
-                    <input type="text" placeholder='Re-Enter Passoword' className='input bg-gray-100/70 border border-gray-200 px-3 py-2 rounded-md ' onChange={(e) => setRePassword(e.target.value)} value={repassword} required />
-                    <button className={`flex py-2 bg-(--color-primary) w-[50%] items-center justify-center rounded-md text-(--color-white) mt-6 mx-auto hover:scale-105 transition ease-in-out duration-200 cursor-pointer`} type='submit'>Signin</button>
-                    <p className='text-gray-500 font-medium mx-auto mt-3'>Don't have an account? <span className='text-(--color-primary) underline cursor-pointer' onClick={() => navigate('/login')}>Login</span></p>
+            <section className="relative w-full min-h-screen flex items-center justify-center px-4">
+
+                {/* Background */}
+                <img
+                    src={Images.LoginBg}
+                    alt="background"
+                    className="absolute inset-0 w-full h-full object-cover -z-10"
+                />
+
+                {/* Form */}
+                <form
+                    onSubmit={onsubmit}
+                    className="w-full max-w-md sm:max-w-lg lg:max-w-md 
+      flex flex-col gap-4 p-6 rounded-xl 
+      bg-white/60 backdrop-blur-md border border-gray-200 shadow-sm"
+                >
+
+                    {/* Title */}
+                    <p className="text-center font-semibold text-(--color-text)">
+                        Signin
+                    </p>
+
+                    {/* Email */}
+                    <div className="flex flex-col gap-1">
+                        <label className="text-sm text-gray-600">Email ID</label>
+                        <input
+                            type="email"
+                            placeholder="Enter Email ID"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="px-3 py-2 rounded-md bg-gray-100/70 border border-gray-200 
+        focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+                        />
+                    </div>
+
+                    {/* Password */}
+                    <div className="flex flex-col gap-1">
+                        <label className="text-sm text-gray-600">Password</label>
+                        <input
+                            type="password"
+                            placeholder="Enter Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="px-3 py-2 rounded-md bg-gray-100/70 border border-gray-200 
+        focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+                        />
+                    </div>
+
+                    {/* Re-Password */}
+                    <div className="flex flex-col gap-1">
+                        <label className="text-sm text-gray-600">Confirm Password</label>
+                        <input
+                            type="password"
+                            placeholder="Re-enter Password"
+                            value={repassword}
+                            onChange={(e) => setRePassword(e.target.value)}
+                            required
+                            className="px-3 py-2 rounded-md bg-gray-100/70 border border-gray-200 
+        focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+                        />
+                    </div>
+
+                    {/* Button */}
+                    <button
+                        type="submit"
+                        className="mt-4 py-2 rounded-md bg-(--color-primary) text-(--color-white) 
+      hover:scale-105 transition duration-200 cursor-pointer"
+                    >
+                        Signin
+                    </button>
+
+                    {/* Footer */}
+                    <p className="text-sm text-gray-500 text-center mt-2">
+                        Already have an account?{" "}
+                        <span
+                            onClick={() => navigate('/login')}
+                            className="text-(--color-primary) underline cursor-pointer"
+                        >
+                            Login
+                        </span>
+                    </p>
+
                 </form>
+
             </section>
         </>
     )

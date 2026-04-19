@@ -98,83 +98,157 @@ function DoctorBooking() {
 
     return (
         <>
-            <section className='flex px-6 py-4 flex-col items-center justify-center'>
-                <div className='flex gap-5 justify-center items-center'>
-                    <div className={`overflow-hidden border rounded-md border-(--color-text1) h-fit max-w-3xs`}>
-                        <img src={element.image} alt="img" className='w-full h-auto object-cover' />
+            <section className="flex px-4 md:px-6 py-6 flex-col items-center">
+
+                <div className="flex flex-col md:flex-row gap-6 items-center max-w-5xl w-full">
+
+                    {/* Image */}
+                    <div className="overflow-hidden border border-(--color-text1) rounded-xl w-full max-w-xs">
+                        <img
+                            src={element.image}
+                            alt="doctor"
+                            className="w-full h-auto object-cover"
+                        />
                     </div>
-                    <div className=' flex flex-col justify-center w-[60%] gap-4'>
-                        {
-                            element.avilable ?
-                                <p className='text-green-600 w-full'>Available</p> :
-                                <p className='text-red-600 w-full'>Unavailable</p>
-                        }
-                        <div className='w-full'>
-                            <TextAnimation text={element.name} className='text-2xl font-light justify-baseline' icon={<i className="bi bi-patch-check-fill text-blue-700"></i>} />
-                            <p className='text-xl font-medium text-(--color-text)'>{element.speciality}
-                                <span className='font-light px-2 border-2 ml-2 border-(--color-text1) rounded-full text-(--color-text1)'>{element.experience}</span>
+
+                    {/* Content */}
+                    <div className="flex flex-col gap-4 w-full md:w-[60%]">
+
+                        {/* Availability */}
+                        <p className={`text-sm font-medium ${element.avilable ? 'text-green-600' : 'text-red-600'}`}>
+                            {element.avilable ? "Available" : "Unavailable"}
+                        </p>
+
+                        {/* Name & speciality */}
+                        <div>
+                            <TextAnimation
+                                text={element.name}
+                                className="text-xl md:text-2xl font-medium"
+                                icon={<i className="bi bi-patch-check-fill text-blue-600"></i>}
+                            />
+
+                            <p className="text-base md:text-lg font-medium text-(--color-text)">
+                                {element.speciality}
+
+                                <span className="ml-2 px-2 py-0.5 border border-(--color-text1) rounded-full text-xs text-(--color-text1)">
+                                    {element.experience}
+                                </span>
                             </p>
                         </div>
-                        <div className='w-full'>
-                            <h1 className='font-semibold'>About <i className="bi bi-info-circle"></i></h1>
-                            <p className='text-(--color-text2)'>{element.about}</p>
+
+                        {/* About */}
+                        <div>
+                            <h1 className="font-semibold text-sm md:text-base">
+                                About <i className="bi bi-info-circle"></i>
+                            </h1>
+
+                            <p className="text-sm text-(--color-text2) leading-relaxed">
+                                {element.about}
+                            </p>
                         </div>
-                        <h2>Appoinment Fees -{element.fees}</h2>
+
+                        {/* Fees */}
+                        <h2 className="font-medium text-(--color-text)">
+                            Appointment Fees - {element.fees}
+                        </h2>
 
                     </div>
+
                 </div>
+
             </section>
 
-            <section className='mt-3'>
-                <div className='flex flex-col items-center'>
-                    <h1 className='mb-2'>Booking Slot</h1>
-                    <div className='w-full flex gap-3 h-auto sm:justify-center overflow-scroll sm:px-3'>
-                        {
-                            dates.map((item, index) => {
+            {/* Booking Section */}
+            <section className="mt-6 px-4">
+
+                <div className="flex flex-col items-center">
+
+                    <h1 className="mb-3 text-lg font-medium text-gray-700">
+                        Booking Slot
+                    </h1>
+
+                    {/* Date Slots */}
+                    <div className="w-full flex gap-3 overflow-x-auto xl:justify-center pb-2">
+
+                        {dates.map((item, index) => (
+                            <div
+                                key={index}
+                                onClick={() => {
+                                    setSelectedIndex(index);
+                                    setSelectDate(item);
+                                }}
+                                className={`min-w-[80px] flex flex-col items-center p-3 border rounded-md cursor-pointer transition
+            ${selectedIndex === index
+                                        ? "bg-blue-500 text-white border-blue-500"
+                                        : "border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)"
+                                    }`}
+                            >
+                                <p className="text-sm">{item.day}</p>
+                                <p className="text-xs">{item.date}</p>
+                            </div>
+                        ))}
+
+                    </div>
+
+                    {/* Time Slots */}
+                    {selectedIndex !== null && (
+                        <div className="flex gap-2 mt-4 mb-2 overflow-x-auto pb-2 w-full xl:justify-center">
+
+                            {timeSlots.map((item, index) => {
+                                const isBooked = bookedSlots.includes(item);
+
                                 return (
-                                    <div key={index} onClick={() => { setSelectedIndex(index); setSelectDate(item); }} className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition ${selectedIndex === index ? 'bg-blue-500 text-white border-blue-500'
-                                        : 'border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)'
-                                        }`}>
-                                        <h1>{item.day}</h1>
-                                        <h1>{item.date}</h1>
+                                    <div
+                                        key={index}
+                                        onClick={() => {
+                                            if (isBooked) return;
+                                            setSelectedTimeslot(index);
+                                            setSelectTime(item);
+                                        }}
+                                        className={`min-w-[90px] flex flex-col items-center justify-center p-3 border rounded-md cursor-pointer transition
+                ${isBooked
+                                                ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                                                : selectedTimeslot === index
+                                                    ? "bg-blue-500 text-white border-blue-500"
+                                                    : "border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)"
+                                            }`}
+                                    >
+                                        <p className="text-sm">{item}</p>
+                                        {isBooked && <span className="text-xs">Booked</span>}
                                     </div>
-                                )
-                            })
-                        }
-                    </div>
-                    {/* //---------------time slot----------- */}
-                    {selectedIndex !== null &&
-                        <div className='flex gap-2 mt-3 mb-2 overflow-scroll'>
-                            {
-                                timeSlots.map((item, index) => {
-                                    const isBooked = bookedSlots.includes(item);
-                                    return (
-                                        <div key={index}
-                                            onClick={() => { if (isBooked) return; setSelectedTimeslot(index); setSelectTime(item); }}
-                                            className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition justify-center ${isBooked ? 'bg-gray-100 text-gray-500 border-gray-200' : selectedTimeslot === index ? 'bg-blue-500 text-white border-blue-500'
-                                                : 'border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)'
-                                                }`}>
-                                            <h2>{item}</h2>
-                                            {isBooked && <span className='text-gray-400 text-sm'>Booked</span>}
-                                        </div>
+                                );
+                            })}
 
-                                    )
-                                })
-                            }
                         </div>
-                    }
-                    <div>
+                    )}
 
-                    </div>
-                    <p className='font-light italic text-(--color-text1) '>Note: Only Book those days only <span className='text-red-600'>*</span></p>
+                    {/* Note */}
+                    <p className="mt-2 text-xs italic text-(--color-text1)">
+                        Note: Only book available days <span className="text-red-600">*</span>
+                    </p>
+
                 </div>
+
             </section>
 
-            <section className='flex mx-auto px-6 justify-center mt-6 mb-6'>
-                <Link to={selectedTimeslot !== null ? `/doctor/${element._id}/patientdetails` : "#"} state={{ element, fromBooking: true, selectDate: selectDate, selectTime: selectTime }}>
+            {/* Button */}
+            <section className="flex justify-center mt-6 mb-8 px-4">
 
-                    <Button children="Book Appoiment" icon={<i className="bi bi-arrow-right-short text-2xl flex items-center"></i>} primary={`${selectedTimeslot !== null ? "bg-(--color-primary) hover:scale-105 text-(--color-white)" : "bg-(--color-input)"} flex rounded-full px-3 py-2 transition ease-in-out duration-300 cursor-pointer text-(--color-text2)`} />
+                <Link
+                    to={selectedTimeslot !== null ? `/doctor/${element._id}/patientdetails` : "#"}
+                    state={{ element, fromBooking: true, selectDate, selectTime }}
+                >
+                    <Button
+                        children="Book Appointment"
+                        icon={<i className="bi bi-arrow-right-short text-2xl"></i>}
+                        primary={`flex items-center gap-2 px-4 py-2 rounded-full transition duration-300 cursor-pointer
+        ${selectedTimeslot !== null
+                                ? "bg-(--color-primary) text-(--color-white) hover:scale-105"
+                                : "bg-(--color-input) text-(--color-text2) cursor-not-allowed"
+                            }`}
+                    />
                 </Link>
+
             </section>
 
         </>

@@ -29,154 +29,196 @@ function Payment() {
     <>
       {
         token ? (
-          <div className='px-4 h-[calc(100vh-120px)] flex gap-5 w-full'>
-            <div
-              className="bg-purple-100 px-4 flex flex-col gap-3 py-4 h-full rounded-md w-fit">
-              <p
-                className="font-medium">
-                Appointment Summary
-              </p>
 
-              {/* doctor information */}
-              <div
-                className="flex items-center gap-2 p-2 bg-white rounded-md relative w-max">
+          <div className="w-full min-h-[calc(100vh-120px)] px-4 py-6 
+      flex flex-col lg:flex-row gap-6 items-start justify-center">
+
+            {/* LEFT - Appointment Summary */}
+            <div className="w-full lg:w-1/3 bg-purple-50 rounded-xl p-5 flex flex-col gap-5">
+
+              <h2 className="font-semibold text-lg text-(--color-text)">
+                Appointment Summary
+              </h2>
+
+              {/* Doctor */}
+              <div className="flex items-center gap-3 bg-white p-3 rounded-lg relative shadow-sm">
+
                 <img
                   src={element.image}
-                  alt="profile"
-                  className="w-16 h-16 rounded-full bg-amber-200 object-contain"
+                  alt="doctor"
+                  className="w-16 h-16 rounded-full object-cover bg-gray-100"
                 />
 
-                {/* availability dot */}
-                <div
-                  className="w-5 h-5 bg-green-800/50 rounded-full absolute top-2 left-2 available flex justify-center items-center">
-                  <div
-                    className="w-3 h-3 bg-green-800 rounded-full">
-
-                  </div>
+                {/* Availability */}
+                <div className="absolute top-2 left-2 w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full"></div>
                 </div>
 
-                <div
-                  className="flex flex-col items-start w-full">
-                  <h2
-                    className="font-medium text-sm text-(--color-text)">
+                <div>
+                  <h3 className="font-medium text-sm text-(--color-text)">
                     {element.name}
-                  </h2>
-                  <p
-                    className="w-full font-light text-sm text-(--color-text1)">
+                  </h3>
+                  <p className="text-xs text-(--color-text1)">
                     {element.speciality}
                   </p>
                 </div>
+
               </div>
 
-              {/* date and time slot */}
-              <div
-                className="flex items-center gap-2">
-                <h2
-                  className="bg-blue-600/20 px-3 py-2 rounded-full">
-                  <i
-                    className="bi bi-calendar4 text-blue-600">
-                  </i>
-                </h2>
+              {/* Date & Time */}
+              <div className="flex items-center gap-3">
+                <div className="bg-blue-500/10 p-2 px-3 rounded-full">
+                  <i className="bi bi-calendar4 text-blue-500"></i>
+                </div>
 
-                <div
-                  className="flex flex-col">
-                  <p
-                    className="font-light text-xs text-(--color-text1)">
-                    DATE & TIME SLOT
+                <div>
+                  <p className="text-xs text-(--color-text1)">
+                    DATE & TIME
                   </p>
-                  <h2
-                    className="font-medium text-xs tracking-wide">
-                    {date},
-                    {time}
-                  </h2>
+                  <p className="text-sm font-medium">
+                    {date}, {time}
+                  </p>
                 </div>
               </div>
 
-              {/* doctor location */}
-              <div
-                className="flex items-start gap-2">
-                <h1
-                  className="bg-blue-600/20 px-3 py-2 rounded-full">
-                  <i
-                    className="bi bi-geo-alt text-blue-600">
-                  </i>
-                </h1>
+              {/* Location */}
+              <div className="flex items-start gap-3">
+                <div className="bg-blue-500/10 p-2 px-3 rounded-full">
+                  <i className="bi bi-geo-alt text-blue-500"></i>
+                </div>
 
-                <div
-                  className="flex flex-col">
-                  <p
-                    className="font-light text-xs text-(--color-text1)">
+                <div>
+                  <p className="text-xs text-(--color-text1)">
                     LOCATION
                   </p>
-                  <h2
-                    className="font-medium text-xs">
+                  <p className="text-sm">
                     {element?.address?.address1},
                     <br />
                     {element?.address?.address2}
-                  </h2>
+                  </p>
                 </div>
               </div>
+
+              {/* Total fees */}
+              <div className="w-full bg-white rounded-xl p-5 shadow-sm flex flex-col gap-3 max-w-md">
+
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Consultation Fees</span>
+                  <span className="font-medium text-gray-800">
+                    ₹ {element.fees}
+                  </span>
+                </div>
+
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Service Charge</span>
+                  <span className="font-medium text-gray-800">
+                    ₹ 200
+                  </span>
+                </div>
+                <hr className="my-1 border-gray-200" />
+                <div className="flex justify-between text-base font-semibold text-gray-900">
+                  <span>Total Amount</span>
+                  <span className="text-(--color-primary)">
+                    ₹ {element.fees + 200}
+                  </span>
+                </div>
+
+              </div>
+
             </div>
 
-            {/* //Payment side */}
-            <div className='bg-purple-50 w-2/2'>
-              <h1 className='font-medium mx-auto text-xl text-(--color-text) w-fit mb-4'>
+            {/* RIGHT - Payment */}
+            <div className="w-full lg:w-2/3 bg-white rounded-xl p-6 shadow-sm flex flex-col gap-6 h-full">
+
+              <h1 className="text-xl font-semibold text-(--color-text) text-center">
                 Payment
               </h1>
-              <div
-                className='flex gap-4 justify-center'>
+
+              {/* Payment Method */}
+              <div className="flex flex-wrap gap-3 justify-center">
+
                 <button
-                  className={`px-4 py-2 ${paymentMethod ? "bg-(--color-primary)  text-white" : "bg-(--color-primary)/20 text-(--color-primary)"} rounded-md cursor-pointer hover:transform  hover:scale-110  duration-200 ease-in`}
-                  onClick={(e) => setPaymentMethod(true)}
+                  onClick={() => setPaymentMethod(true)}
+                  className={`px-5 py-2 rounded-md text-sm flex items-center gap-2 transition duration-200 cursor-pointer
+              ${paymentMethod
+                      ? "bg-(--color-primary) text-(--color-white)"
+                      : "bg-(--color-primary)/20 text-(--color-primary)"
+                    } hover:scale-105`}
                 >
-                  <i className="bi bi-apple mr-1"></i>
+                  <i className="bi bi-apple"></i>
                   Apple Pay
                 </button>
+
                 <button
-                  className={`px-4 py-2 ${!paymentMethod ? 'bg-(--color-primary) text-white' : "bg-(--color-primary)/20 text-(--color-primary)"} rounded-md cursor-pointer hover:transform  hover:scale-110  duration-200 ease-in`}
-                  onClick={(e) => setPaymentMethod(false)}
+                  onClick={() => setPaymentMethod(false)}
+                  className={`px-5 py-2 rounded-md text-sm flex items-center gap-2 transition duration-200 cursor-pointer
+              ${!paymentMethod
+                      ? "bg-(--color-primary) text-(--color-white)"
+                      : "bg-(--color-primary)/20 text-(--color-primary)"
+                    } hover:scale-105`}
                 >
                   Razor Pay
                 </button>
+
               </div>
 
-              {
-                paymentMethod &&
-                <div>
-                  <h1 className='font-semibold'>Apple Pay</h1>
+              {/* Payment Content */}
+              <div className="bg-gray-50 p-4 rounded-lg min-h-[150px] flex items-center justify-center text-center">
+
+                {paymentMethod ? (
                   <div>
-                    <p>This is the Apple Pay section</p>
+                    <h2 className="font-semibold mb-2">Apple Pay</h2>
+                    <p className="text-sm text-gray-500">
+                      Pay securely using Apple Pay.
+                    </p>
                   </div>
-                </div>
+                ) : (
+                  <div>
+                    <h2 className="font-semibold mb-2">Razorpay</h2>
+                    <p className="text-sm text-gray-500">
+                      Pay using UPI, Card, or Net Banking.
+                    </p>
+                  </div>
+                )}
 
-              }
+              </div>
 
-              {
-                !paymentMethod &&
-                <div>
-                  <p>THis is an Razor pay</p>
-                </div>
-              }
+              {/* Pay Button */}
+              <button
+                className="w-full py-3 rounded-md bg-(--color-primary) text-(--color-white)  cursor-pointer
+          hover:scale-[1.02] transition duration-300 shadow-sm"
+              >
+                Proceed to Pay
+              </button>
+
             </div>
+
           </div>
+
         ) : (
-          <div className={` flex flex-col justify-center items-center mt-3 h-[calc(100vh-120px)] `}>
+
+          <div className="flex flex-col items-center justify-center min-h-[calc(100vh-120px)] px-4 text-center">
+
             <img
               src={Images.Login}
-              alt="Login"
-              className='w-md mx-auto' />
-            <p
-              className='mx-auto'>
-              Please
+              alt="login"
+              className="w-60 md:w-80 mb-4"
+            />
+
+            <p className="text-gray-600">
+              Please{" "}
               <Link
                 to="/login"
-                className='text-(--color-primary) font-bold underline'
-                state={{ from: location.pathname }}>
+                state={{ from: location.pathname }}
+                className="text-(--color-primary) font-semibold underline"
+              >
                 login
-              </Link>
+              </Link>{" "}
               to access the payment page.
             </p>
+
           </div>
+
         )
       }
 
