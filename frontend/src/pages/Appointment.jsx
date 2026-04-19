@@ -82,7 +82,7 @@ function Appointment() {
     }
 
     const appointmentReschedule = (id, item) => {
-        navigate(`/appointment/${id}/reschedule`, { state: {appointment: item} });
+        navigate(`/appointment/${id}/reschedule`, { state: { appointment: item } });
     }
 
 
@@ -127,43 +127,117 @@ function Appointment() {
                 {
                     updateAppointments.length > 0 ? (
 
-                        <div className='w-full px-4 py-6'>
-                            <div className='flex gap-2 bg-gray-100 w-fit px-1 py-1 rounded-md mt-2'>
-                                <button className={`px-4 cursor-pointer rounded-md py-1 bg-${filter ? '(--color-primary)' : 'gray-100'} text-${filter ? 'white' : 'black'}`} onClick={() => setFilter(true)}>Upcoming</button>
-                                <button className={`px-4 cursor-pointer rounded-md py-1 bg-${!filter ? '(--color-primary)' : 'gray-100'} text-${!filter ? 'white' : 'black'}`} onClick={() => setFilter(false)}>Completed</button>
+                        <div className="w-full px-4 py-6">
+
+                            {/* Filter Tabs */}
+                            <div className="flex gap-2 bg-gray-100 w-fit p-1 rounded-lg mt-2">
+                                <button
+                                    onClick={() => setFilter(true)}
+                                    className={`px-4 py-1.5 rounded-md text-sm font-medium transition cursor-pointer
+            ${filter
+                                            ? "bg-(--color-primary) text-white shadow-sm"
+                                            : "text-gray-600 hover:text-black"
+                                        }`}
+                                >
+                                    Upcoming
+                                </button>
+
+                                <button
+                                    onClick={() => setFilter(false)}
+                                    className={`px-4 py-1.5 rounded-md text-sm font-medium transition cursor-pointer
+            ${!filter
+                                            ? "bg-(--color-primary) text-white shadow-sm"
+                                            : "text-gray-600 hover:text-black"
+                                        }`}
+                                >
+                                    Completed
+                                </button>
                             </div>
-                            <ul className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 px-2 grid-justify-items-center max-w-[1600px]'>
+
+                            {/* Cards */}
+                            <ul className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 py-6 max-w-[1400px]">
                                 {filteredAppointments.map((items, index) => {
+
+                                    const statusStyle =
+                                        items.appointmentStatus === "Completed"
+                                            ? "bg-red-100 text-red-700"
+                                            : items.appointmentStatus === "Upcoming"
+                                                ? "bg-green-100 text-green-700"
+                                                : "bg-blue-100 text-blue-700";
+
                                     return (
-                                        <li key={index} className='border p-2 border-gray-100 relative rounded-lg flex flex-col gap-1 bg-(--color-gray) max-w-xl'>
-                                            <div className='flex gap-4  items-center'>
-                                                <img src={items.image} alt="img" className='w-30 bg-gray-200 rounded-md' />
-                                                <div className='flex flex-col'>
-                                                    <p className={`${items.appointmentStatus === 'Completed' ? 'bg-red-100 text-red-800' : items.appointmentStatus === 'Upcoming' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'} px-2 w-fit rounded-full text-sm absolute top-2 right-2`}>{items.appointmentStatus}</p>
-                                                    <p className='font-medium'>{items.doctorName}</p>
-                                                    <p className=''>{items.doctorSpeciality}</p>
-                                                    <div className='flex gap-2 mt-2'>
-                                                        <p className='text-sm text-gray-500'><i className="bi bi-calendar text-(--color-primary)"></i> {items.appointmentDate}</p>
-                                                        <p className='text-sm text-gray-500'><i className="bi bi-clock text-(--color-primary)"></i> {items.appointmentTime}</p>
+                                        <li
+                                            key={index}
+                                            className="bg-white border border-gray-100 rounded-xl p-4 flex gap-4 relative shadow-sm hover:shadow-md transition"
+                                        >
 
+                                            {/* Status Badge */}
+                                            <span className={`absolute top-3 right-3 text-xs px-2 py-0.5 rounded-full ${statusStyle}`}>
+                                                {items.appointmentStatus}
+                                            </span>
+
+                                            {/* Image */}
+                                            <img
+                                                src={items.image}
+                                                alt="doctor"
+                                                className="w-24 h-24 object-cover rounded-lg bg-gray-100 my-auto"
+                                            />
+
+                                            {/* Content */}
+                                            <div className="flex flex-col justify-between flex-1">
+
+                                                <div>
+                                                    <p className="font-semibold text-gray-800">
+                                                        {items.doctorName}
+                                                    </p>
+
+                                                    <p className="text-sm text-gray-500">
+                                                        {items.doctorSpeciality}
+                                                    </p>
+
+                                                    <div className="flex gap-4 mt-2 text-sm text-gray-500">
+                                                        <p className="flex items-center gap-1">
+                                                            <i className="bi bi-calendar text-(--color-primary)"></i>
+                                                            {items.appointmentDate}
+                                                        </p>
+
+                                                        <p className="flex items-center gap-1">
+                                                            <i className="bi bi-clock text-(--color-primary)"></i>
+                                                            {items.appointmentTime}
+                                                        </p>
                                                     </div>
-                                                    {
-                                                        items.appointmentStatus === 'Upcoming' && <button className='bg-(--color-primary) text-white px-4 py-1 rounded-md mt-2 w-fit cursor-pointer hover:bg-(--color-primary)/90' onClick={() => appointmentReschedule(items.doctorId, items)}>Reschedule</button>
-                                                    }
-
                                                 </div>
-                                            </div>
 
+                                                {/* Action */}
+                                                {items.appointmentStatus === "Upcoming" && (
+                                                    <button
+                                                        onClick={() => appointmentReschedule(items.doctorId, items)}
+                                                        className="mt-3 w-fit px-4 py-1.5 text-sm rounded-md bg-(--color-primary) text-white hover:opacity-90 transition cursor-pointer"
+                                                    >
+                                                        Reschedule
+                                                    </button>
+                                                )}
+
+                                            </div>
                                         </li>
-                                    )
+                                    );
                                 })}
                             </ul>
                         </div>
+
                     ) : (
-                        <div className='w-full h-[calc(100vh-120px)] mx-auto flex flex-col items-center justify-center'>
-                            <img src={Images.NoAppointment} alt="No Appointments" className='w-70' />
-                            <p className='w-fit mx-auto '>You have no appointments.</p>
+
+                        <div className="w-full h-[calc(100vh-120px)] flex flex-col items-center justify-center text-center">
+                            <img
+                                src={Images.NoAppointment}
+                                alt="No Appointments"
+                                className="w-64 opacity-80"
+                            />
+                            <p className="text-gray-500 mt-2">
+                                You have no appointments.
+                            </p>
                         </div>
+
                     )
                 }
             </section>

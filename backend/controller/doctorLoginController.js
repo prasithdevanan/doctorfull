@@ -14,12 +14,11 @@ const doctorLogin = async (req, res) => {
     }
     try {
         const doctor = await doctorModel.findOne({ email });
-        console.log(doctor);
         if (!doctor) {
             return res.status(400).json({ success: false, message: "Doctor not found" });
         }
         const isMatch = await comparePassword(password, doctor?.password);
-        console.log(isMatch);
+   
         if (!isMatch) {
             return res.json({ success: false, message: "Invalid Password" });
         }

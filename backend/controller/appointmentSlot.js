@@ -18,7 +18,7 @@ const getDoctorAppointments = async (req, res) => {
         
     } catch (error) {
         res.json({ success: false, message: error })
-        console.log(error);
+      
     }
 }
 
@@ -36,7 +36,7 @@ export const getPatientAppointments = async (req, res) => {
         
     } catch (error) {
         res.json({ success: false, message: error })
-        console.log(error);
+       
     }
 }
 

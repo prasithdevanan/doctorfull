@@ -4,7 +4,6 @@ import bycrypt from "bcrypt";
 const Login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log(email, password);
         // Check user exists
         const user = await signinModel.findOne({ email });
 
@@ -26,7 +25,7 @@ const Login = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error });
-        console.log(error);
+        
     }
 }
 

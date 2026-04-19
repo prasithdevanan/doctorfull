@@ -1,7 +1,7 @@
 import appointmentModel from "../models/appoimentModel.js";
 
 export const updateSchedule = async (req, res) => {
-    console.log("Received reschedule request:", req.body);
+    
     try {
         const { id } = req.params;
         const { doctorId, appointmentDate, appointmentTime, status } = req.body;

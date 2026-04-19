@@ -14,7 +14,6 @@ const addDoctor = async (req, res) => {
         const { name, email, password, speciality, degree, experience, about, fees, address } = req.body;
         const imageFile = req.file;
         if (!imageFile) {
-            console.log("image file missing");
             return res.json({ success: false, message: "Missing data" })
         }
 
@@ -71,7 +70,7 @@ const addDoctor = async (req, res) => {
 
     } catch (error) {
         res.json({ success: false, message: error })
-        console.log(error);
+      
     }
 }
 
@@ -87,7 +86,7 @@ const adminLogin = async (req, res) => {
         }
     } catch (error) {
         res.json({ success: false, message: error })
-        console.log(error);
+       
     }
 }
 
