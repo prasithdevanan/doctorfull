@@ -52,16 +52,36 @@ const AdminContextProvider = ({ children }) => {
 
         validateToken();
 
-    }, []); // ✅ fixed
+    }, []);
+
+
+
+    useEffect(() => {
+        const feach = async () => {
+            try {
+                const res = await axios.get(`${BackendUrl}/api/admin/logo`,);
+
+                console.log(res.data.logo.image);
+                setBackendImg(res.data.logo.image);
+                setName(res.data.logo.name);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        feach();
+    }, [BackendUrl, aToken])
+    const [backendImg, setBackendImg] = useState(null);
+    const [name, setName] = useState(null);
 
     const value = {
         aToken,
         setAToken,
         dToken,
         setDToken,
-        BackendUrl
+        BackendUrl,
+        backendImg,
+        name
     };
-
     return (
         <AdminContext.Provider value={value}>
             {children}

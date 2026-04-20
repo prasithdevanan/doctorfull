@@ -48,12 +48,14 @@ function Login() {
       } else if (state === "Doctor") {
         const { data } = await axios.post(BackendUrl + '/api/doctor/doctor/login', { email, password });
         console.log(data);
+
         if (!data.success) {
           toast.error(data.message);
           console.log(data.message);
         }
         if (data.success) {
           localStorage.setItem("dToken", data.token);
+          localStorage.setItem('dEmail', data?.doctor?.email);
           setDToken(data.token);
           navigate('/');
           toast.success("successfully login");
@@ -72,10 +74,10 @@ function Login() {
 
   return (
     <>
-      <section className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-teal-400/20">
+      <section className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-br from-blue-400/40 via-cyan-400/10 to-teal-400/40">
 
         <form
-          className="flex flex-col w-[90%] sm:w-[80%] md:w-[70%] lg:w-[35%] border border-gray-200 p-8 rounded-xl shadow-md bg-white"
+          className="flex flex-col w-[90%] sm:w-[80%] md:w-[70%] lg:w-[35%] border border-gray-200 p-8 rounded-xl shadow-md bg-white/30 backdrop-blur-2xl"
           onSubmit={onSubmitHandler} autoComplete='on'
         >
           <div className="w-full flex justify-center mb-4">

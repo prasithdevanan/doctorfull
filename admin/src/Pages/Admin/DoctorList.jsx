@@ -49,30 +49,57 @@ function DoctorList() {
 
   return (
     <> {
-      load ? (<p>Data Feaching Please Wait...</p>) : (
-        <section className='w-full '>
-          <div className='relative z-[-1]'>
-            <p className='absolute top-2 right-2 -translate-x-1/2 text-(--color-text1)'>Total Doctor:<span className='text-(--color-text)'>{doctorsList.length}</span></p>
-            <h1 className='flex justify-center py-2 text-(--color-primary) font-semibold text-md mx-auto'>DOCTOR LIST</h1>
+      load ? (
+        <p className="text-center py-10 text-gray-500">
+          Data fetching, please wait...
+        </p>
+      ) : (
+        <section className="w-full px-3 sm:px-6">
+
+
+          <div className="relative mb-4">
+            <p className=" text-sm text-gray-500">
+              Total Doctor:
+              <span className="text-black font-semibold">
+                {doctorsList.length}
+              </span>
+            </p>
+
+            <h1 className="text-center text-lg sm:text-xl font-semibold text-blue-600">
+              DOCTOR LIST
+            </h1>
           </div>
 
-          <div className='h-[85vh] overflow-y-auto flex flex-col gap-2 p-4 px-[5%]'>
-            {doctorsList.map((item, index) => {
-              return (
-                <div key={index} className='flex gap-2 border border-gray-200 p-1 rounded-md'>
-                  <img src={item.image} alt="img" className='w-30 rounded-sm' />
-                  <div>
-                    <p>{item.name}</p>
-                    <p>{item.email}</p>
-                    <p>{item.degree}</p>
-                    <p>{item.speciality}</p>
-                  </div>
-                  <button className='px-4 py-2 bg-red-500 text-white ml-auto cursor-pointer h-fit my-auto mr-3 rounded-md' onClick={() => onDeleteHandle(item._id)}>Delete</button>
+
+          <div className="h-[80vh] overflow-y-auto flex flex-col gap-3">
+
+            {doctorsList.map((item, index) => (
+              <div key={index} className="flex flex-col sm:flex-row gap-3 sm:items-center border border-gray-200 rounded-lg p-3 bg-white shadow-sm"
+              >
+
+
+                <img src={item.image} alt="doctor" className="w-full sm:w-28 h-28 object-cover rounded-md" />
+
+                <div className="flex-1 text-sm space-y-1">
+                  <p className="font-semibold text-base">{item.name}</p>
+                  <p className="text-gray-600">{item.email}</p>
+                  <p className="text-gray-600">{item.degree}</p>
+                  <p className="text-gray-600">{item.speciality}</p>
                 </div>
-              )
-            })}
+
+
+                <button onClick={() => onDeleteHandle(item._id)} className="w-full sm:w-auto px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm transition cursor-pointer">
+                  Delete
+                </button>
+
+              </div>
+            ))}
           </div>
-        </section>)
+          <div>
+
+          </div>
+        </section>
+      )
     }
 
     </>

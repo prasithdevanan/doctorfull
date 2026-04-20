@@ -38,20 +38,37 @@ function Sidebar() {
 
     return (
         <>
-            <section className='w-fit h-[90.5vh] bg-gray-200'>
-                <div className='flex flex-col items-start gap-1 w-[160px]'>
-                    {
-                        featues.map((item, index) => {
-                            return (
-                                <NavLink key={index} to={item.path} className="flex w-full relative">
-                                    <button className='py-2 hover:bg-gray-300 w-full cursor-pointer justify-start items-center flex pl-5 text-[14px]'><i className={`${item.iconClass} px-2 text-(--color-text1) mr-1 text-xl font-bold`}></i>{item.name}</button>
-                                    <hr className='border-none border-2 bg-(--color-primary) w-1 outline-none h-full m-auto hidden absolute top-0 right-0 ' />
-                                    <hr className='w-full absolute top-0 left-0 border-none hidden bg-[#2563eb2b] h-full' />
-                                </NavLink>
-                            )
-                        })
-                    }
+            <section className="h-screen w-20 sm:w-40 bg-gray-200 flex flex-col py-4 shrink-0">
+
+                <div className="flex flex-col gap-1">
+
+                    {featues.map((item, index) => (
+                        <NavLink
+                            key={index}
+                            to={item.path}
+                            className="relative flex items-center w-full gap-3 px-3 py-2 text-sm transition hover:bg-gray-300"
+                        >
+                            {({ isActive }) => (
+                                <>
+                                    <span
+                                        className={`absolute left-0 top-0 h-full w-1 bg-blue-600 rounded-r-md transition ${isActive ? "opacity-100" : "opacity-0"
+                                            }`}
+                                    />
+
+                                    <i className={`${item.iconClass} text-xl ${isActive ? "text-blue-600" : "text-gray-700"
+                                        }`} />
+
+                                    <span className={`hidden sm:inline ${isActive ? "font-semibold text-blue-600" : ""
+                                        }`}>
+                                        {item.name}
+                                    </span>
+                                </>
+                            )}
+                        </NavLink>
+                    ))}
+
                 </div>
+
             </section>
         </>
     )
