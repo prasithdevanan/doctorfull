@@ -40,5 +40,19 @@ export const getPatientAppointments = async (req, res) => {
     }
 }
 
+export const getAppointments = async (req, res) => {
+    try {
+        const appointments = await appointmentModel.find();
+        if (!appointments) {
+            return res.json({ success: false, message: "No appointments found" });
+        }
+        res.json({ success: true, appointments });
+        
+    } catch (error) {
+        res.json({ success: false, message: error })
+        
+    }
+}
+
 
 export default getDoctorAppointments;

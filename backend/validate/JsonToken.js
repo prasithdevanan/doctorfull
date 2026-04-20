@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 export const validate = (req, res, next) => {
     const authHeader = req.headers["authorization"]?.split(" ")[1];
-    console.log(authHeader+'----------------');
+  
     if (!authHeader) {
         return res.status(401).json({ success: false, message: "Unauthorized" });
     }
