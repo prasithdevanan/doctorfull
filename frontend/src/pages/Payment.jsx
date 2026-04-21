@@ -2,6 +2,8 @@ import React, { useEffect, useContext, useState } from 'react';
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
 import { AppContext } from '../component/CreateContext';
 import { Images } from '../assets/img';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 function Payment() {
@@ -11,7 +13,7 @@ function Payment() {
       navigate('/doctor');
     }
   }, []);
-  const { token } = useContext(AppContext);
+  const { token, BackendUrl } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
   const height = window.innerHeight - 120; // Subtracting the height of the navbar (assuming it's 120px)
@@ -22,6 +24,70 @@ function Payment() {
 
   ///check the active button
   const [paymentMethod, setPaymentMethod] = useState(true);
+
+  const amount = 500;
+  const currency = "INR";
+  const receiptId = "order_rcptid_11";
+
+
+
+  //handle payment method
+  const handlePayment = async (e) => {
+    e.preventDefault();
+    const res = await axios.post(`${BackendUrl}/api/admin/order`, { amount, currency, receipt: receiptId }, { headers: "Content-Type: application/json" });
+    if (!res.data.success) {
+      return console.log(res.data.message);
+    }
+
+    console.log(res.data.order.id);
+
+    const options = {
+      "key": 'rzp_test_SgAnRohB2gqLpU', // Replace with your Razorpay key_id
+      amount, // Amount is in currency subunits.
+      currency,
+      "name": 'Metix',
+      "description": 'Test Transaction',
+      "order_id": res.data.order.id, // This is the order_id created in the backend
+      "handler": async function (response) {
+        const body = {
+          ...response,
+        };
+
+        const validation = await axios.post(`${BackendUrl}/api/admin/order/verify`, body, { headers: "Content-Type: application/json" });
+        console.log(validation.data);
+      },
+      "prefill": {
+        "name": 'Alex',
+        "email": 'alex@example.com',
+        "contact": '9999999999'
+      },
+      "theme": {
+        "color": '#F37254'
+      },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.on('payment.failed', function (response) {
+      const error = response.error;
+
+      toast.error(error.description || 'Payment failed. Please try again');
+
+
+      ///log full other error
+      console.log('Razorpay Error', {
+        "code": error.code,
+        "description": error.description,
+        "source": error.source,
+        "step": error.step,
+        "reason": error.reason,
+        "order_id": error.metadata?.order_id,
+        "payment_id": error.metadata?.payment_id
+      })
+    });
+    rzp1.open();
+
+
+  }
 
 
 
@@ -186,7 +252,7 @@ function Payment() {
               {/* Pay Button */}
               <button
                 className="w-full py-3 rounded-md bg-(--color-primary) text-(--color-white)  cursor-pointer
-          hover:scale-[1.02] transition duration-300 shadow-sm"
+          hover:scale-[1.02] transition duration-300 shadow-sm"  onClick={(e) => handlePayment(e)}
               >
                 Proceed to Pay
               </button>
