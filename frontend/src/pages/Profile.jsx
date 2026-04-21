@@ -116,7 +116,7 @@ function Profile() {
         </div>
 
         {/* Form */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl border border-gray-200 p-4 rounded-xl bg-white/70 backdrop-blur-md shadow-sm">
+        <div className="flex flex-col sm:grid grid-cols-2 gap-4 w-full max-w-2xl border border-gray-200 p-4 rounded-xl bg-white/70 backdrop-blur-md shadow-sm">
           <input type="text" value={"PAT ID :"+ user?.patientId ?? ""}
             readOnly
             disabled

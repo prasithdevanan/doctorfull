@@ -109,25 +109,60 @@ function Appointment() {
         <>
 
             <section className='h-[calc(100vh-120px)]'>
-                <div className='flex justify-between px-4 xl:px-10 py-2 items-center'>
-                    <div>
-                        <h1 className='text-2xl font-medium text-(--color-text)'>My Appointments</h1>
-                        <p className='text-sm mx-auto flex items-center'>
-                            <span className={`${filter ? 'bg-green-600' : 'bg-red-400'} w-3 h-3 rounded-full mr-1`}></span>
-                            You have {filter ? upcomingAppointments.length : pastAppointments.length}
-                            <span className={`${filter ? 'text-green-600' : 'text-red-400'} ml-1 mr-1 font-medium`}> {filter ? 'Upcoming' : 'Completed'}</span>
-                            Appointments</p>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-4 xl:px-10 py-4">
+
+                    {/* Left Section */}
+                    <div className="space-y-1">
+                        <h1 className="text-xl md:text-2xl font-semibold text-gray-800">
+                            My Appointments
+                        </h1>
+
+                        <p className="text-sm flex items-center text-gray-600 flex-wrap">
+                            <span
+                                className={`${filter ? "bg-green-500" : "bg-red-400"
+                                    } w-2.5 h-2.5 rounded-full mr-2`}
+                            ></span>
+
+                            <span>
+                                You have{" "}
+                                <span className="font-medium">
+                                    {filter
+                                        ? upcomingAppointments.length
+                                        : pastAppointments.length}
+                                </span>
+                            </span>
+
+                            <span
+                                className={`${filter ? "text-green-600" : "text-red-500"
+                                    } ml-1 font-medium`}
+                            >
+                                {filter ? "Upcoming" : "Completed"}
+                            </span>
+
+                            <span className="ml-1">Appointments</span>
+                        </p>
                     </div>
 
-                    <div className='bg-(--color-input) border border-gray-200 focus:outline-none px-2 py-1 flex items-center gap-1.5 rounded-md'>
-                        <i className="bi bi-search text-gray-300"></i>
-                        <input type="text" className='focus:outline-none py-1' placeholder='Search Doctor' onChange={(e) => setSearchTerm(e.target.value)} />
+                    {/* Right Section (Search) */}
+                    <div className="w-full md:w-auto">
+                        <div className="flex items-center bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-400 transition">
+
+                            <i className="bi bi-search text-gray-400 mr-2"></i>
+
+                            <input
+                                type="text"
+                                placeholder="Search Doctor"
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="bg-transparent outline-none text-sm w-full md:w-48 placeholder-gray-400"
+                            />
+                        </div>
                     </div>
+
                 </div>
                 {
                     updateAppointments.length > 0 ? (
 
-                        <div className="w-full px-4 py-6">
+                        <div className="w-full px-4 md:py-6">
 
                             {/* Filter Tabs */}
                             <div className="flex gap-2 bg-gray-100 w-fit p-1 rounded-lg mt-2">
