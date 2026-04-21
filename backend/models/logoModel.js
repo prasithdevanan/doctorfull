@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const LogoSchema = new Schema({
     name: { type: String, required: true },
-    image: { type: String, required: true },
+    image: { type: String },
     key: { type: String, default: "main", unique: true }
 }, { timestamps: true });
 

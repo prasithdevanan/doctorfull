@@ -6,7 +6,8 @@ const signinSchema = new mongoose.Schema({
     image: { type: String },
     gender: { type: String, default: "Not Selectes" },
     DOB: { type: String, default: "Not Selectes" },
-    phone: { type: String, default: "00000000000" },
+    phone: { type: String, default: "" },
+    patientId: { type: String, unique: true, required: true },
 }, { timestamps: true });
 
 const signinModel = mongoose.models.patients || mongoose.model('patients', signinSchema);

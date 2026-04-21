@@ -16,7 +16,8 @@ const LoginId = async (req, res) => {
                 phone: user.phone,
                 DOB: user.DOB,
                 gender: user.gender,
-                image: user.image
+                image: user.image,
+                patientId: user.patientId
             }
         });
     } catch (error) {
