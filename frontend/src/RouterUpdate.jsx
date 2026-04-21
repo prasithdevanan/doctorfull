@@ -16,6 +16,7 @@ import PubilcRouter from "./Production/CheckLogin/PubilcRouter";
 import PatientDetails from "./pages/PatientDetails";
 import Appointment from "./pages/Appointment";
 import Reschedule from "./pages/Reschedule";
+import PaymentSuccess from "./pages/PaymentStatus";
 
 
 export const router = createBrowserRouter ([
@@ -54,6 +55,10 @@ export const router = createBrowserRouter ([
             {
                 path: "/doctor/:id/patientdetails/payment",
                 element: <Payment />,
+            },
+            {
+                path: "/doctor/:id/patientdetails/payment/success",
+                element: <PaymentSuccess />,
             },
             {
                 path: "/about",

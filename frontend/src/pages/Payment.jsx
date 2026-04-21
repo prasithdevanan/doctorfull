@@ -24,6 +24,7 @@ function Payment() {
 
   ///check the active button
   const [paymentMethod, setPaymentMethod] = useState(true);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   const amount = 500;
   const currency = "INR";
@@ -55,6 +56,10 @@ function Payment() {
 
         const validation = await axios.post(`${BackendUrl}/api/admin/order/verify`, body, { headers: "Content-Type: application/json" });
         console.log(validation.data);
+
+        if (validation.data.success) {
+          navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, {state : {order:validation.data.order, fromBooking:true}});
+        }
       },
       "prefill": {
         "name": 'Alex',
@@ -258,7 +263,6 @@ function Payment() {
               </button>
 
             </div>
-
           </div>
 
         ) : (
