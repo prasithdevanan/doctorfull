@@ -194,7 +194,7 @@ function PatientDetails() {
                             <button
                                 type="submit"
                                 className="mt-6 px-5 py-2 rounded-md bg-(--color-primary) text-(--color-white) 
-          hover:scale-105 transition duration-300 shadow-sm hover:shadow-md mb-5"
+          hover:scale-105 transition duration-300 shadow-sm hover:shadow-md mb-5 cursor-pointer"
                             >
                                 Submit Details
                             </button>

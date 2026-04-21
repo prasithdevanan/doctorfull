@@ -1,4 +1,4 @@
-import React, { use, useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Button from './Button';
 import Theme from '../pages/Theme';
@@ -6,6 +6,7 @@ import { Images } from '../assets/img';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { navItems } from '../assets/data';
 import { AppContext } from './CreateContext';
+import axios from 'axios';
 
 
 function Navbar() {
@@ -17,6 +18,7 @@ function Navbar() {
     const [load, setLoad] = useState(<i className="bi bi-plus-circle-dotted"></i>);
     const [slice, setSlice] = useState('');
     const [menu, setMenu] = useState(false);
+    const { BackendUrl, backendImg, name } = useContext(AppContext);
 
     useEffect(() => {
         localStorage.setItem("token", token);
@@ -40,7 +42,16 @@ function Navbar() {
             {
                 !hideNavbar &&
                 <section className='flex justify-between lg:px-10 md:px-5 px-4 py-5 items-center border-b border-gray-300 mb-4 sticky top-0 bg-white/50 backdrop-blur-sm z-100'>
-                    <h4>Logo</h4>
+                    <div className='flex items-center gap-2'>
+                        {
+                            backendImg ? <img src={backendImg} alt="img" className='w-10' /> : <h4>Logo</h4>
+                        }
+                        {
+                            name && <p>{name}</p>
+                        }
+
+                    </div>
+
                     <ul className='hidden lg:flex gap-10'>
                         {
                             navItems.map((item, index) => (

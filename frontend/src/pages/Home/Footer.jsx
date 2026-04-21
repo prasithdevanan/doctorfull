@@ -20,11 +20,19 @@ function Footer() {
                     {/* Links */}
                     <div>
                         <h3 className="text-gray-900 font-semibold mb-3">Quick Links</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li className="hover:text-gray-900 cursor-pointer transition">Home</li>
-                            <li className="hover:text-gray-900 cursor-pointer transition">About</li>
-                            <li className="hover:text-gray-900 cursor-pointer transition">Doctors</li>
-                            <li className="hover:text-gray-900 cursor-pointer transition">Contact</li>
+                        <ul className="space-y-2 text-sm flex gap-2 flex-col">
+                            <a href="/home">
+                                <li className="hover:text-gray-900 cursor-pointer transition">Home</li>
+                            </a>
+                            <a href="/about">
+                                <li className="hover:text-gray-900 cursor-pointer transition">About</li>
+                            </a>
+                            <a href="/doctor">
+                                <li className="hover:text-gray-900 cursor-pointer transition">Doctors</li>
+                            </a>
+                            <a href="/contact">
+                                <li className="hover:text-gray-900 cursor-pointer transition">Contact</li>
+                            </a>
                         </ul>
                     </div>
 

@@ -14,6 +14,7 @@ function Profile() {
   const [load, setLoad] = useState(false);
 
   const [user, setUser] = useState({});
+  console.log(user);
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -30,11 +31,6 @@ function Profile() {
     };
     feach();
   }, []);
-
-
-
-
-
 
   ///user firtLetter capital
 
@@ -93,12 +89,10 @@ function Profile() {
     <>
       <section className="w-screen min-h-[calc(100vh-120px)] flex flex-col items-center justify-center gap-6 px-4">
 
-        {/* Heading */}
         <h1 className="text-xl md:text-2xl text-gray-700">
           Welcome <span className="font-semibold text-gray-900">{UserName}</span>
         </h1>
 
-        {/* Profile Image */}
         <div className="flex items-end gap-3">
           <img
             src={image instanceof File ? URL.createObjectURL(image) : image || user?.image || Icons.Profile}
@@ -123,6 +117,11 @@ function Profile() {
 
         {/* Form */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl border border-gray-200 p-4 rounded-xl bg-white/70 backdrop-blur-md shadow-sm">
+          <input type="text" value={"PAT ID :"+ user?.patientId ?? ""}
+            readOnly
+            disabled
+            className="py-2 px-3 rounded-md bg-(--color-input) text-gray-600 col-span-2" />
+
 
           <input
             type="text"
@@ -130,7 +129,7 @@ function Profile() {
             value={UserName}
             readOnly
             disabled
-            className="py-2 px-3 rounded-md bg-(--color-input) text-gray-600 cursor-not-allowed"
+            className="py-2 px-3 rounded-md bg-(--color-input) text-gray-600"
           />
 
           <input
@@ -138,8 +137,8 @@ function Profile() {
             placeholder="Email Address"
             value={user?.email ?? ""}
             readOnly
+            disabled
             className="py-2 px-3 rounded-md bg-(--color-input) text-gray-600"
-            autoComplete="email"
           />
 
           <input
