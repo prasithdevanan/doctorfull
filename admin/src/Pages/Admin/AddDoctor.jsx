@@ -19,6 +19,7 @@ function AddDoctor() {
   const [address1, setAddress1] = useState('');
   const [address2, setAddress2] = useState('');
   const [about, setAbout] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const { BackendUrl, aToken } = useContext(AdminContext);
 
@@ -79,7 +80,7 @@ function AddDoctor() {
 
         <section className="w-full sm:w-[85%] lg:w-[80%] flex-1 overflow-y-auto overflow-x-hidden mt-4">
 
-          {/* Upload */}
+
           <div className="p-4 w-fit">
             <label htmlFor="img_doc" className="flex items-center gap-3 cursor-pointer">
 
@@ -103,10 +104,9 @@ function AddDoctor() {
             </label>
           </div>
 
-          {/* Form */}
           <form onSubmit={onSubmitHandle} className="space-y-4">
 
-            <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
 
               <div className="flex flex-col gap-1">
                 <label>Doctor name</label>
@@ -126,19 +126,23 @@ function AddDoctor() {
                   placeholder="Enter Doctor Email"
                   className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200 outline-none focus:ring-2 focus:ring-blue-400"
                   onChange={(e) => setDoctorEmail(e.target.value)}
-                  value={doctorEmail}
+                  value={doctorEmail ? doctorEmail : ''}
                 />
               </div>
 
               <div className="flex flex-col gap-1">
                 <label>Doctor Password</label>
-                <input
-                  type="password"
-                  placeholder="Enter Doctor Password"
-                  className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200 outline-none focus:ring-2 focus:ring-blue-400"
-                  onChange={(e) => setDoctorPassword(e.target.value)}
-                  value={doctorPassword}
-                />
+                <div className='relative'>
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    placeholder="Enter Doctor Password"
+                    className="border bg-(--color-input) py-2 w-full px-3 rounded-md border-gray-200 outline-none focus:ring-2 focus:ring-blue-400"
+                    onChange={(e) => setDoctorPassword(e.target.value)}
+                    value={doctorPassword}
+                  />
+                  <span className='absolute text-gray-500 right-2 top-1/2 -translate-y-1/2 cursor-pointer hover:text-gray-600 text-sm' onClick={() => setPasswordVisible(!passwordVisible)}>{passwordVisible ? "Show" : "Hide"}</span>
+                </div>
+
               </div>
 
               <div className="flex flex-col gap-1">
@@ -211,7 +215,7 @@ function AddDoctor() {
             </section>
 
 
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 px-4">
               <label>About</label>
               <textarea
                 placeholder="Write about yourself"
