@@ -21,12 +21,15 @@ function Payment() {
   const element = location.state ? location.state.element : false;
   const date = location.state ? location?.state?.selectDate : false;
   const time = location.state ? location?.state?.selectTime : false;
+  const fees = location.state ? location?.state?.fees : false;
+  const [appCharge, setAppCharge] = useState(200);
 
   ///check the active button
   const [paymentMethod, setPaymentMethod] = useState(true);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [orderId, setOrderId] = useState('');
 
-  const amount = 500;
+  const amount = fees * 100 + appCharge * 100;
   const currency = "INR";
   const receiptId = "order_rcptid_11";
 
@@ -35,12 +38,17 @@ function Payment() {
   //handle payment method
   const handlePayment = async (e) => {
     e.preventDefault();
-    const res = await axios.post(`${BackendUrl}/api/admin/order`, { amount, currency, receipt: receiptId }, { headers: "Content-Type: application/json" });
-    if (!res.data.success) {
-      return console.log(res.data.message);
+    if (!paymentMethod) {
+      const res = await axios.post(`${BackendUrl}/api/admin/order`, { amount, currency, receipt: receiptId }, { headers: "Content-Type: application/json" });
+      if (!res.data.success) {
+        return console.log(res.data.message);
+      }
+      console.log(res.data);
+      setOrderId(res.data.order.id);
+    } else if (paymentMethod) {
+      return alert("Please select the razorpay. Apple pay under development");
     }
 
-    console.log(res.data.order.id);
 
     const options = {
       "key": 'rzp_test_SgAnRohB2gqLpU', // Replace with your Razorpay key_id
@@ -48,7 +56,7 @@ function Payment() {
       currency,
       "name": 'Metix',
       "description": 'Test Transaction',
-      "order_id": res.data.order.id, // This is the order_id created in the backend
+      "order_id": orderId, // This is the order_id created in the backend
       "handler": async function (response) {
         const body = {
           ...response,
@@ -58,7 +66,7 @@ function Payment() {
         console.log(validation.data);
 
         if (validation.data.success) {
-          navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, {state : {order:validation.data.order, fromBooking:true}});
+          navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, { state: { order: validation.data.order, fromBooking: true } });
         }
       },
       "prefill": {
@@ -67,7 +75,7 @@ function Payment() {
         "contact": '9999999999'
       },
       "theme": {
-        "color": '#F37254'
+        "color": "(--color-primary)"
       },
     };
 
@@ -93,6 +101,8 @@ function Payment() {
 
 
   }
+
+  console.log(amount);
 
 
 
@@ -190,7 +200,7 @@ function Payment() {
                 <div className="flex justify-between text-base font-semibold text-gray-900">
                   <span>Total Amount</span>
                   <span className="text-(--color-primary)">
-                    ₹ {element.fees + 200}
+                    ₹ {element.fees + appCharge}
                   </span>
                 </div>
 

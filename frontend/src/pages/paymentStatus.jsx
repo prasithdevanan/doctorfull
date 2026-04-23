@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 function PaymentSuccess() {
     const navigate = useNavigate();
     const location = useLocation();
+    console.log(location?.state)
 
 
     return (
