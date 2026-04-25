@@ -102,3 +102,23 @@ html {
         transform: rotate(1turn)
     }
 }
+
+
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #pdf-content,
+    #pdf-content * {
+        visibility: visible;
+    }
+
+    #pdf-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+}

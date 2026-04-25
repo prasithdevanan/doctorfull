@@ -52,7 +52,6 @@ function Footer() {
                 <div className="border-t border-gray-300 mt-10 pt-5 text-center text-sm text-gray-500">
                     © {new Date().getFullYear()} Metix. All rights reserved.
                 </div>
-
             </div>
         </footer>
     );

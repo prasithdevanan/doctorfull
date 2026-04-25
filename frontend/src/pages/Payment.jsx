@@ -13,6 +13,7 @@ function Payment() {
       navigate('/doctor');
     }
   }, []);
+
   const { token, BackendUrl } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function Payment() {
   ///check the active button
   const [paymentMethod, setPaymentMethod] = useState(true);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [orderId, setOrderId] = useState('');
+  // const [orderId, setOrderId] = useState('');
 
   const amount = fees * 100 + appCharge * 100;
   const currency = "INR";
@@ -38,17 +39,18 @@ function Payment() {
   //handle payment method
   const handlePayment = async (e) => {
     e.preventDefault();
-    if (!paymentMethod) {
-      const res = await axios.post(`${BackendUrl}/api/admin/order`, { amount, currency, receipt: receiptId }, { headers: "Content-Type: application/json" });
-      if (!res.data.success) {
-        return console.log(res.data.message);
-      }
-      console.log(res.data);
-      setOrderId(res.data.order.id);
-    } else if (paymentMethod) {
+    if (paymentMethod) {
       return alert("Please select the razorpay. Apple pay under development");
     }
 
+    const res = await axios.post(`${BackendUrl}/api/admin/order`, { amount, currency, receipt: receiptId }, { headers: "Content-Type: application/json" });
+
+    if (!res.data.success) {
+      return console.log(res.data.message);
+    }
+
+    const order_id = res.data.order.id;
+    console.log("Order_id", order_id);
 
     const options = {
       "key": 'rzp_test_SgAnRohB2gqLpU', // Replace with your Razorpay key_id
@@ -56,17 +58,17 @@ function Payment() {
       currency,
       "name": 'Metix',
       "description": 'Test Transaction',
-      "order_id": orderId, // This is the order_id created in the backend
+      "order_id": order_id, // This is the order_id created in the backend
       "handler": async function (response) {
-        const body = {
-          ...response,
-        };
-
-        const validation = await axios.post(`${BackendUrl}/api/admin/order/verify`, body, { headers: "Content-Type: application/json" });
-        console.log(validation.data);
-
-        if (validation.data.success) {
-          navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, { state: { order: validation.data.order, fromBooking: true } });
+        try {
+          const body = { ...response }
+          const validation = await axios.post(`${BackendUrl}/api/admin/order/verify`, body, { headers: "Content-Type: application/json" });
+          console.log(validation.data);
+          if (validation.data.success) {
+            navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, { state: { body, amount: amount, orderId: order_id, currency: currency, name: name, fromBooking: true } });
+          }
+        } catch (error) {
+          console.log(error);
         }
       },
       "prefill": {
@@ -77,14 +79,21 @@ function Payment() {
       "theme": {
         "color": "(--color-primary)"
       },
+
+      model: {
+        ondismiss: () => {
+          console.log('Payment popup closed');
+        }
+      }
     };
+
+    // open razorpay
 
     const rzp1 = new window.Razorpay(options);
     rzp1.on('payment.failed', function (response) {
       const error = response.error;
 
       toast.error(error.description || 'Payment failed. Please try again');
-
 
       ///log full other error
       console.log('Razorpay Error', {

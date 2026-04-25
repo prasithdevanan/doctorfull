@@ -42,7 +42,7 @@ function Navbar() {
             {
                 !hideNavbar &&
                 <section className='flex justify-between lg:px-10 md:px-5 px-4 py-5 items-center border-b border-gray-300 mb-4 sticky top-0 bg-white/50 backdrop-blur-sm z-100'>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 cursor-pointer' onClick={() => navigate('/')} >
                         {
                             backendImg ? <img src={backendImg} alt="img" className='w-10' /> : <h4>Logo</h4>
                         }
