@@ -74,7 +74,7 @@ function PaymentSuccess() {
                         Back to Home
                     </button>
                     <div className="py-2 border border-amber-200 bg-amber-50 rounded-lg">
-                        <button onClick={() => DownloadPdf()}>Print</button>
+                        <button onClick={() => DownloadPdf()} className="w-full h-full cursor-pointer">Print</button>
                     </div>
                 </div>
 

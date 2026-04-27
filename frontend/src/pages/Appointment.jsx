@@ -12,6 +12,8 @@ function Appointment() {
     const [appointments, setAppointments] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [updateAppointments, setUpdatedAppointments] = useState([]);
+    const [popup, setPopup] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
 
 
 
@@ -72,7 +74,9 @@ function Appointment() {
 
 
         today.setHours(0, 0, 0, 0);
-        if (appointmentDate < today) {
+        if (appointmentDate === today) {
+            return 'Today';
+        } else if (appointmentDate < today) {
             return 'Completed';
         } else if (appointmentDate > today) {
             return 'Upcoming';
@@ -105,10 +109,55 @@ function Appointment() {
     const filteredAppointments = filter ? upcomingAppointments : pastAppointments;
 
 
+    const handleDeleteClick = (items) => {
+        console.log(items);
+        setSelectedUser(items);
+        setPopup(true);
+    }
+
+    const confirmDelete = () => {
+        const deleteUpdate = updateAppointments.filter((item) => selectedUser._id !== item._id);
+        setUpdatedAppointments(deleteUpdate);
+        setPopup(false);
+    }
+
+
     return (
         <>
 
             <section className='h-[calc(100vh-120px)]'>
+                {popup && (
+                    <div
+                        className="fixed inset-0 bg-black/40 flex items-center justify-center z-999"
+                        onClick={() => setPopup(false)}
+                    >
+                        <div
+                            className="bg-white rounded-xl shadow-lg w-[300px] p-5 text-center"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <span className='p-2 px-3 bg-red-100 rounded-md'><i className="bi bi-trash3 text-red-600"></i></span>
+                            <p className="text-sm text-gray-700 mb-5 mt-3">
+                                Are you sure you want to cancel this appointment?
+                            </p>
+
+                            <div className="flex justify-center gap-3">
+                                <button
+                                    className="px-4 py-2 text-sm bg-gray-200 rounded-md hover:bg-gray-300 transition cursor-pointer"
+                                    onClick={() => setPopup(false)}
+                                >
+                                    No
+                                </button>
+
+                                <button
+                                    className="cursor-pointer px-4 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                                    onClick={confirmDelete}
+                                >
+                                    Yes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-4 xl:px-10 py-4">
 
                     {/* Left Section */}
@@ -154,6 +203,7 @@ function Appointment() {
                                 placeholder="Search Doctor"
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="bg-transparent outline-none text-sm w-full md:w-48 placeholder-gray-400"
+                                title='Search Bar'
                             />
                         </div>
                     </div>
@@ -245,12 +295,22 @@ function Appointment() {
 
                                                 {/* Action */}
                                                 {items.appointmentStatus === "Upcoming" && (
-                                                    <button
-                                                        onClick={() => appointmentReschedule(items.doctorId, items)}
-                                                        className="mt-3 w-fit px-4 py-1.5 text-sm rounded-md bg-(--color-primary) text-white hover:opacity-90 transition cursor-pointer"
-                                                    >
-                                                        Reschedule
-                                                    </button>
+                                                    <>
+                                                        <div className='flex justify-between items-center mt-3'>
+                                                            <button
+                                                                onClick={() => appointmentReschedule(items.doctorId, items)}
+                                                                className=" w-fit px-4 py-1.5 text-sm rounded-md bg-(--color-primary) text-white hover:opacity-90 transition cursor-pointer" title='Reschedule Appointment'
+                                                            >
+                                                                Reschedule
+                                                            </button>
+                                                            <button className='text-sm text-red-500 p-2 px-3 bg-red-200 rounded-md cursor-pointer' onClick={() => handleDeleteClick(items)}
+                                                                title='Delete Appointment'
+                                                            >
+                                                                <i className="bi bi-trash3"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </>
                                                 )}
 
                                             </div>
@@ -259,6 +319,7 @@ function Appointment() {
                                 })}
                             </ul>
                         </div>
+
 
                     ) : (
 

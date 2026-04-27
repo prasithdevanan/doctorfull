@@ -32,7 +32,7 @@ function Reschedule() {
         console.log(format);
     }, [appointment]);
     //-------------------------Date calcualte------------------------
-    for (let i = 0; i <= 10; i++) {
+    for (let i = 1; i <= 11; i++) {
         const date = new Date(baseDate);
         date.setDate(date.getDate() + i);
 

@@ -67,7 +67,7 @@ function Home() {
       <div className={`fixed inset-0 bg-black/50 flex flex-col items-center justify-center z-999 transition-opacity ${loading ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className='loader'>
         </div>
-        <p className='font-medium text-2xl text-white'>{messages[messageStage]}</p>
+        <p className='font-medium text-2xl text-white text-center px-3'>{messages[messageStage]}</p>
       </div>
 
       <Header />
