@@ -9,7 +9,7 @@ const appointmentSchema = new mongoose.Schema({
     doctorName: { type: String },
     doctorEmail: { type: String },
     doctorSpeciality: { type: String },
-    image: { type: String, default:'https://res.cloudinary.com/dxw2bf8ns/image/upload/v1776318986/default_img_fzahth.png' },
+    image: { type: String, default: 'https://res.cloudinary.com/dxw2bf8ns/image/upload/v1776318986/default_img_fzahth.png' },
     appointmentDate: { type: String },
     appointmentTime: { type: String },
     reason: { type: String },
@@ -23,6 +23,7 @@ appointmentSchema.index(
     { doctorId: 1, appointmentDate: 1, appointmentTime: 1 },
     { unique: true }
 );
+appointmentSchema.index({ doctorEmail: 1, createdAt: -1 });
 
 
 
