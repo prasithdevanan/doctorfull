@@ -22,6 +22,7 @@ function Navbar() {
         console.log("logout");
         localStorage.removeItem('aToken');
         localStorage.removeItem('dToken');
+        localStorage.removeItem('dEmail');
         setAToken('')
         setDToken('')
         navigate('/login');
@@ -30,7 +31,7 @@ function Navbar() {
 
     return (
         <>
-            <nav className='relative bg-gray-200 sticky'>
+            <nav className='bg-gray-200 sticky top-0 z-50'>
                 <section className='flex justify-between px-8 py-4 items-center pr-10'>
                     <div>
                         {backendImg ? <div className='flex items-center gap-2'> <img src={backendImg} alt="img" className='w-10' /> <p>{name}</p></div> : <p>logo</p>}
@@ -40,7 +41,7 @@ function Navbar() {
                             <img src={Images.Profile} alt="img" className='w-10' />
                             <p>{atoken}</p>
 
-                            <div className='absolute hidden group-hover:block top-0 right-0 z-20'>
+                            <div className='absolute hidden group-hover:block top-0 right-0 z-[999]'>
                                 <div className='mt-8 mr-4 bg-(--color-bg) shadow-md px-3'>
                                     <p className='cursor-pointer p-2'>Profile</p>
                                     <p className='cursor-pointer hover:text-red-600 p-2' onClick={() => logOutHandle()}>Logout</p>
@@ -54,7 +55,7 @@ function Navbar() {
                 </section>
                 {
                     logout &&
-                    <section className={`absolute w-screen h-screen bg-[#00000036] top-0 left-0 justify-center items-center flex`} onClick={() => setLogout(false)} >
+                    <section className={`fixed w-screen h-screen bg-[#00000036] top-0 left-0 justify-center items-center flex z-[999]`} onClick={() => setLogout(false)} >
                         <div className='bg-(--color-bg) px-4 py-2 rounded-md w-[40%] flex flex-col items-center gap-4' onClick={(e) => e.stopPropagation()}>
                             <p className='text-(--color-primary) font-bold'>Logout</p>
                             <p>Are you sure want to Logout</p>

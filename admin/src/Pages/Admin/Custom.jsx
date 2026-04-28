@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, use } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 function Custom() {
@@ -52,11 +53,12 @@ function Custom() {
             console.log(res.data);
 
             if (res.data.success) {
-                console.log(res.data.message);
+                toast.success(res.data.message);
             }
-            console.log(res.data);
+            toast.error(res.data.message);
+           
         } catch (error) {
-            console.log(error);
+            toast.error(error?.response?.data?.message);
         }
 
     }
