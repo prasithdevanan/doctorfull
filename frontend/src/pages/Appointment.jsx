@@ -124,7 +124,6 @@ function Appointment() {
 
     return (
         <>
-
             <section className='h-[calc(100vh-120px)]'>
                 {popup && (
                     <div
