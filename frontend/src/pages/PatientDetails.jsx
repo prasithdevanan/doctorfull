@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, use } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { AppContext } from '../component/CreateContext';
 import { Images } from '../assets/img';
@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 
 function PatientDetails() {
     const { token, user, BackendUrl } = useContext(AppContext);
-    const userEmail = user?.email || '';
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -25,6 +24,7 @@ function PatientDetails() {
     const [patientPhone, setPatientPhone] = useState();
     const [reason, setReason] = useState('');
     const [patientEmail, setPatientEmail] = useState('');
+    const [patientId, setPatientId] = useState('');
     const [doctorId, setDoctorId] = useState('');
     const [doctorName, setDoctorName] = useState('');
     const [doctorEmail, setDoctorEmail] = useState('');
@@ -49,6 +49,7 @@ function PatientDetails() {
         setPatientEmail(user?.email);
         setAppointmentDate(selectDate);
         setAppointmentTime(selectTime);
+        setPatientId(user?.patientId);
         setDoctorId(element?._id);
         setDoctorName(element?.name);
         setDoctorEmail(element?.email);
@@ -66,6 +67,7 @@ function PatientDetails() {
             patientName,
             patientEmail,
             patientPhone,
+            patientId,
             doctorId,
             doctorName,
             doctorEmail,

@@ -248,7 +248,7 @@ function Reschedule() {
 
                 {popup &&
                     <div className='absolute top-0 left-0 w-full flex items-center justify-center bg-black/20 bg-opacity-50 z-999'>
-                        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+                        <div className="fixed inset-0 flex items-center justify-center bg-black/20 z-50 backdrop-blur-md">
                             <div className="bg-white p-6 rounded-xl shadow-lg w-[90%] max-w-md animate-fadeIn">
 
                                 <h2 className="text-xl font-semibold mb-3">
