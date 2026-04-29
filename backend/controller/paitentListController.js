@@ -50,4 +50,5 @@ export const patientUpdate = async (req, res) => {
     }
 }
 
+
 export default PatientList;
