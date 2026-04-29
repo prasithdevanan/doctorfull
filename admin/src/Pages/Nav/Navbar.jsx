@@ -54,18 +54,47 @@ function Navbar() {
                     </div>
                 </section>
                 {
-                    logout &&
-                    <section className={`fixed w-screen h-screen bg-[#00000036] top-0 left-0 justify-center items-center flex z-[999]`} onClick={() => setLogout(false)} >
-                        <div className='bg-(--color-bg) px-4 py-2 rounded-md w-[40%] flex flex-col items-center gap-4' onClick={(e) => e.stopPropagation()}>
-                            <p className='text-(--color-primary) font-bold'>Logout</p>
-                            <p>Are you sure want to Logout</p>
-                            <div className='flex gap-2'>
-                                <button onClick={() => setLogout(false)} className='p-2 bg-gray-100 rounded-md cursor-pointer'>Cancel</button>
-                                <button className={`p-2 bg-red-600 text-(--color-white) rounded-md cursor-pointer`} onClick={() => logoutFunction()}>Logout</button>
+
+                    logout && (
+                        <section
+                            className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50"
+                            onClick={() => setLogout(false)}
+                        >
+                            <div
+                                className="bg-white w-full max-w-md mx-4 p-6 rounded-2xl shadow-xl transform transition-all"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {/* Title */}
+                                <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                                    Logout
+                                </h2>
+
+                                {/* Message */}
+                                <p className="text-sm text-gray-500 mb-6">
+                                    Are you sure you want to logout?
+                                </p>
+
+                                {/* Actions */}
+                                <div className="flex justify-end gap-3">
+                                    <button
+                                        onClick={() => setLogout(false)}
+                                        className=" cursor-pointer px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition"
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        onClick={logoutFunction}
+                                        className=" cursor-pointer px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    )
                 }
+
 
             </nav>
         </>

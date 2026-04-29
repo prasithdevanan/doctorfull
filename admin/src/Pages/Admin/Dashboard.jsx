@@ -11,6 +11,7 @@ function Dashboard() {
   const [patientsList, setPatientsList] = useState([]);
   const [newDoctor, setNewDoctor] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
+  const [newAppointment, setNewAppointment] = useState([]);
 
   //feach the data from the DB doctorList
 
@@ -33,6 +34,7 @@ function Dashboard() {
 
         //set the data for the appointmentList
         setAppointmentList(resAppoint.data.appointments);
+        setNewAppointment(resAppoint.data.appointments.slice(-3));
       } catch (error) {
         console.log(error?.response?.data?.message);
       }
@@ -67,32 +69,45 @@ function Dashboard() {
           ))}
         </div>
         {newDoctor?.length > 0 &&
-          <div className='w-fit shrink-0 flex flex-col gap-1 bg-gray-100 px-2 py-2 rounded-md mx-auto mt-3'>
-            <div className='flex justify-between'>
+          <>
+            <div className='w-fit shrink-0 flex flex-col gap-1 bg-gray-100 px-2 py-2 rounded-md mx-auto mt-3'>
+              <div className='flex justify-between mb-1'>
+                <h4 className='font-medium text-sm text-gray-400'>New Doctors</h4>
+                <p className='bg-green-600/30 rounded-full px-2 text-green-600 w-fit text-sm'>new</p>
+              </div>
+              {
+                newDoctor?.map((item, index) => {
+                  return (
+                    <Draggable key={index} nodeRef={nodeRef}>
+                      <div ref={nodeRef} className='flex items-center gap-2 border border-gray-200 px-2 py-1 rounded-md bg-white/60 cursor-grab'>
+                        <div>
+                          <img src={item.image} alt="img" className='w-20 bg-(--color-primary)/10 p-2 rounded-full' />
+                        </div>
+                        <div>
+                          <p className='text-gray-700 font-semibold text-base'>{item.name}</p>
+                          <p className='text-gray-600 text-sm'>{item.email}</p>
+                          <p className='text-gray-400 text-xs'>{item.speciality}</p>
+                        </div>
 
-              <h4 className='font-medium text-md text-gray-600'>New Doctors</h4>
-              <p className='bg-green-600/30 rounded-full px-2 text-green-600 w-fit'>new</p>
+                      </div>
+                    </Draggable>
+                  )
+                })
+              }
             </div>
-            {
-              newDoctor?.map((item, index) => {
-                return (
-                  <Draggable key={index} nodeRef={nodeRef}>
-                    <div ref={nodeRef} className='flex items-center gap-2 border border-gray-200 px-2 py-1 rounded-md bg-white/60 cursor-grab'>
-                      <div>
-                        <img src={item.image} alt="img" className='w-20 bg-(--color-primary)/10 p-2 rounded-full' />
-                      </div>
-                      <div>
-                        <p className='text-gray-700 font-semibold text-base'>{item.name}</p>
-                        <p className='text-gray-600 text-sm'>{item.email}</p>
-                        <p className='text-gray-400 text-xs'>{item.speciality}</p>
-                      </div>
-
+            <div className='bg-gray-100 px-2 py-4 w-fit mx-auto'>
+              <h4>New Appointments</h4>
+              {
+                newAppointment.map((item) => {
+                  return (
+                    <div>
+                      <h4>{item.patientName}</h4>
                     </div>
-                  </Draggable>
-                )
-              })
-            }
-          </div>
+                  )
+                })
+              }
+            </div>
+          </>
         }
 
       </section>

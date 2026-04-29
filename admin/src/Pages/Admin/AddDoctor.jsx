@@ -27,6 +27,11 @@ function AddDoctor() {
   const onSubmitHandle = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (!doctorName || !doctorEmail || !profile || !doctorPassword || !doctorExperience || !fees || !doctorSpeciality || !education || !address1 || !address2 || !about) {
+      toast.error("Missing data");
+      setLoading(false);
+      return;
+    }
     try {
       //form Data
       const formData = new FormData();
@@ -61,6 +66,7 @@ function AddDoctor() {
       } else {
         toast.error(data.message);
       }
+      toast.error("Dublicate email");
 
     } catch (error) {
       toast.error(error);
@@ -227,7 +233,7 @@ function AddDoctor() {
             <div className="flex justify-center mt-6">
               <button
                 type="submit"
-                className="bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md hover:opacity-90 transition"
+                className="bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md cursor-pointer hover:opacity-90 transition"
               >
                 {loading ? "Uploading..." : "Add Doctor"}
               </button>

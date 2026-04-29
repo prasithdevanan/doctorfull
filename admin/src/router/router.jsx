@@ -4,11 +4,12 @@ import App from '../App';
 import Dashboard from '../Pages/Admin/Dashboard';
 import Login from '../Pages/login/Login';
 import ProductorRouter from './ProductorRouter';
-import Appoiment from '../Pages/Admin/Appoiment';
+import Appoiment from '../Pages/Admin/Appoinment/Appoiment';
 import AddDoctor from '../Pages/Admin/AddDoctor';
 import DoctorList from '../Pages/Admin/DoctorList';
 import axios from 'axios';
 import Custom from '../Pages/Admin/Custom';
+import AppoitmentDetails from '../Pages/Admin/Appoinment/AppoitmentDetails';
 
 
 //get Token from the Localstorage
@@ -35,16 +36,20 @@ export const router = createBrowserRouter([
                 element: <ProductorRouter><Appoiment /></ProductorRouter>
             },
             {
+                path: '/appoinment/details',
+                element: <ProductorRouter><AppoitmentDetails /></ProductorRouter>
+            },
+            {
                 path: '/add-doctor',
-                element: <ProductorRouter adminOnly = {true}><AddDoctor /></ProductorRouter>
+                element: <ProductorRouter adminOnly={true}><AddDoctor /></ProductorRouter>
             },
             {
                 path: '/doctorList',
                 element: <ProductorRouter><DoctorList /></ProductorRouter>
             },
             {
-                path:"custom",
-                element:<ProductorRouter><Custom /></ProductorRouter>
+                path: "custom",
+                element: <ProductorRouter><Custom /></ProductorRouter>
             }
         ]
     },
