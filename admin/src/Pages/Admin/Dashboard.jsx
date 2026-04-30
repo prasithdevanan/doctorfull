@@ -5,6 +5,15 @@ import { Images } from '../../Components/Images';
 import Draggable from "react-draggable";
 
 function Dashboard() {
+
+  useEffect(() => {
+    const dToken = localStorage.getItem('dToken');
+    const aToken = localStorage.getItem('aToken');
+    if (!dToken || !aToken) {
+      window.location.href = "/login";
+    }
+  })
+
   const { BackendUrl } = useContext(AdminContext);
 
   const [doctorsList, setDoctorsList] = useState([]);

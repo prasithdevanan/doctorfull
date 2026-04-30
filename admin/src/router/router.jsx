@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 path: '/login',
-                element: token ? <Navigate to='/' /> : <Login />
+                element: token ? <Navigate to='/'  /> : <Login />
 
             },
             {
