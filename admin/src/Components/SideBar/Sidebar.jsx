@@ -16,11 +16,11 @@ function Sidebar() {
             path: "/appoinment",
             iconClass: "bi bi-calendar"
         },
-        ...aToken && [{
+        ...(aToken ? [{
             name: "Add Doctor",
             path: "/add-doctor",
             iconClass: "bi bi-person-plus"
-        }],
+        }] : []),
         {
             name: "Doctor List",
             path: "/doctorlist",

@@ -9,15 +9,17 @@ const AdminContextProvider = ({ children }) => {
     const BackendUrl = import.meta.env.VITE_BACKEND_URL;
     // const navigate = useNavigate();
 
-    const [aToken, setAToken] = useState(localStorage.getItem("aToken") || "");
-    const [dToken, setDToken] = useState(localStorage.getItem("dToken") || "");
+    const [aToken, setAToken] = useState(localStorage.getItem('aToken') || "");
+    const [dToken, setDToken] = useState(localStorage.getItem('dToken') || "");
 
     // Sync localStorage
     useEffect(() => {
+        console.log("Syncing localStorage...");
         const handleStorageChange = () => {
             setAToken(localStorage.getItem('aToken') || "");
             setDToken(localStorage.getItem('dToken') || "");
         };
+        handleStorageChange();
 
         window.addEventListener('storage', handleStorageChange);
         return () => window.removeEventListener('storage', handleStorageChange);

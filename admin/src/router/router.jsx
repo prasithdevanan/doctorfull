@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
                 element: <ProductorRouter><Dashboard /></ProductorRouter>
             },
             {
-                path: '/login',
+                path: 'login',
                 element: token ? <Navigate to='/' replace /> : <Login />
             },
             {
