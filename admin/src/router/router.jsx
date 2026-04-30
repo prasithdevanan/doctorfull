@@ -23,32 +23,30 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                path: '/login',
-                element: token ? <Navigate to='/'  /> : <Login />
-
-            },
-            {
-                path: '/',
                 element: <ProductorRouter><Dashboard /></ProductorRouter>
             },
             {
-                path: '/appoinment',
+                path: '/login',
+                element: token ? <Navigate to='/' replace /> : <Login />
+            },
+            {
+                path: 'appoinment',
                 element: <ProductorRouter><Appoiment /></ProductorRouter>
             },
             {
-                path: '/appoinment/details',
+                path: 'appoinment/details',
                 element: <ProductorRouter><AppoitmentDetails /></ProductorRouter>
             },
             {
-                path: '/add-doctor',
+                path: 'add-doctor',
                 element: <ProductorRouter adminOnly={true}><AddDoctor /></ProductorRouter>
             },
             {
-                path: '/doctorList',
+                path: 'doctorList',
                 element: <ProductorRouter><DoctorList /></ProductorRouter>
             },
             {
-                path: "custom",
+                path: 'custom',
                 element: <ProductorRouter><Custom /></ProductorRouter>
             }
         ]

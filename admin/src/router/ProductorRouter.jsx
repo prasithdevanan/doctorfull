@@ -1,23 +1,19 @@
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
-import {  useNavigate } from "react-router-dom";
-
+import { Navigate } from "react-router-dom";
 
 function ProductorRouter({ children, adminOnly = false }) {
     const { aToken, dToken } = useContext(AdminContext);
-    const navigate = useNavigate();
 
-    //both token unavialble to navigate to login screen
+    // 🚫 no token → go to login
     if (!aToken && !dToken) {
-        return navigate("/login");
+        return <Navigate to="/login" replace />;
     }
 
-
-    //check the admin only for add doctor
+    // 🚫 not admin → block admin routes
     if (adminOnly && !aToken) {
-        return navigate('/dashboard');
+        return <Navigate to="/" replace />;
     }
-
 
     return children;
 }

@@ -3,16 +3,10 @@ import axios from 'axios';
 import { AdminContext } from '../../context/AdminContext';
 import { Images } from '../../Components/Images';
 import Draggable from "react-draggable";
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
-
-  useEffect(() => {
-    const dToken = localStorage.getItem('dToken');
-    const aToken = localStorage.getItem('aToken');
-    if (!dToken || !aToken) {
-      window.location.href = "/login";
-    }
-  })
+  const navigate = useNavigate();
 
   const { BackendUrl } = useContext(AdminContext);
 
