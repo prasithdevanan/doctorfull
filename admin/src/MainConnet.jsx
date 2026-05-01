@@ -9,7 +9,6 @@ import { useEffect } from 'react';
 function MainConnet() {
 
     const { aToken, dToken } = useContext(AdminContext);
-    console.log(aToken, dToken);
     const token = aToken || dToken;
 
     return (

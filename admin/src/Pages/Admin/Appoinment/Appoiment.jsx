@@ -46,12 +46,12 @@ function Appoiment() {
   }, [BackendUrl, dToken, search, page, limit]);
 
   return (
-    <section className="h-[calc(100vh-56px)] w-full px-4 py-6 bg-gray-50 overflow-y-auto pb-10">
+    <section className="h-[calc(100vh-56px)] w-full px-4 sm:px-6 py-6 bg-gradient-to-b from-gray-50 to-white overflow-y-auto">
 
-      {/* -------------- Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      {/* ---------------- Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 tracking-tight">
           Appointments
         </h1>
 
@@ -59,37 +59,37 @@ function Appoiment() {
           <input
             type="text"
             placeholder="Search doctor..."
-            className="w-full px-4 py-2 pl-10 border border-gray-200 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+            className="w-full px-4 py-2.5 pl-10 border border-gray-200 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
               setPage(1);
             }}
           />
-          <span className="absolute left-3 top-2.5 text-gray-400"><i className="bi bi-search"></i></span>
+          <i className="bi bi-search absolute left-3 top-3 text-gray-400"></i>
         </div>
 
       </div>
 
-      {/* -------------- Loading */}
+      {/* ---------------- Loading */}
       {loading ? (
-        <div className="text-center py-10 text-gray-500">
+        <div className="text-center py-10 text-gray-500 animate-pulse">
           Loading appointments...
         </div>
       ) : appointments.length > 0 ? (
         <>
-          {/* -------------- Grid */}
-          <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {/* ---------------- Grid */}
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 
             {appointments.map((item, index) => (
               <div
                 key={index}
-                className="relative group bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl transition duration-300 cursor-pointer"
+                className="relative group bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
 
-                {/* Status Badge */}
+                {/* Status */}
                 <span
-                  className={`absolute top-4 right-4 px-3 py-1 text-xs font-medium rounded-full cursor-pointer
+                  className={`absolute top-4 right-4 px-3 py-1 text-xs font-medium rounded-full
               ${item?.status === "Completed"
                       ? "bg-green-100 text-green-700"
                       : item?.status === "Pending"
@@ -100,7 +100,7 @@ function Appoiment() {
                   {item?.status}
                 </span>
 
-                {/* Doctor Info */}
+                {/* Doctor */}
                 <div className="flex items-center gap-3 mb-4">
 
                   <img
@@ -120,23 +120,21 @@ function Appoiment() {
 
                 </div>
 
-                {/* Email */}
                 <p className="text-xs text-gray-400 break-all mb-3">
                   {item?.doctorEmail}
                 </p>
 
-                {/* Patient Info */}
+                {/* Patient */}
                 <div className="bg-gray-50 rounded-xl p-3 text-sm text-gray-700 space-y-1">
-                  <p>
-                    <span className="font-medium">Patient:</span> {item?.patientName}
-                  </p>
-                  <p>
-                    <span className="font-medium">Phone:</span> {item?.patientPhone}
-                  </p>
+                  <p><span className="font-medium">Patient:</span> {item?.patientName}</p>
+                  <p><span className="font-medium">Phone:</span> {item?.patientPhone}</p>
                 </div>
 
-                {/* Action Button */}
-                <button className="mt-4 w-full py-2 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition cursor-pointer" onClick={() => navigate('/appoinment/details', { state: { body: item }})}>
+                {/* Button */}
+                <button
+                  onClick={() => navigate('/appoinment/details', { state: { body: item } })}
+                  className="mt-4 w-full py-2.5 rounded-xl bg-blue-600 cursor-pointer text-white font-medium hover:bg-blue-700 active:scale-[0.98] transition"
+                >
                   View Details
                 </button>
 
@@ -145,28 +143,34 @@ function Appoiment() {
 
           </div>
 
-          {/* -------------- Pagination */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-10">
+          {/* ---------------- Pagination */}
+          <div className="sticky bottom-0 mt-10">
 
-            <button
-              onClick={() => setPage((prev) => prev - 1)}
-              disabled={page === 1}
-              className="flex justify-center items-center gap-2 w-full sm:w-auto px-6 py-2 rounded-xl bg-gray-200 text-gray-700 hover:bg-gray-300 transition disabled:opacity-50 cursor-pointer"
-            >
-              <i className="bi bi-arrow-left-short"></i> Prev
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl px-4 py-3">
 
-            <div className="text-sm font-medium text-gray-600">
-              Page <span className="text-gray-900 font-semibold">{page}</span> of {totalPages}
+              <button
+                onClick={() => setPage((prev) => prev - 1)}
+                disabled={page === 1}
+                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 transition cursor-pointer"
+              >
+                <i className="bi bi-arrow-left-short text-lg"></i>
+                Prev
+              </button>
+
+              <div className="text-sm text-gray-600">
+                Page <span className="font-semibold text-gray-900">{page}</span> of {totalPages}
+              </div>
+
+              <button
+                onClick={() => setPage((prev) => prev + 1)}
+                disabled={page === totalPages}
+                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition cursor-pointer"
+              >
+                Next
+                <i className="bi bi-arrow-right-short text-lg"></i>
+              </button>
+
             </div>
-
-            <button
-              onClick={() => setPage((prev) => prev + 1)}
-              disabled={page === totalPages}
-              className=" flex justify-center items-center gap-2 w-full sm:w-auto px-6 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
-            >
-              Next<i className="bi bi-arrow-right-short"></i>
-            </button>
 
           </div>
         </>

@@ -6,6 +6,7 @@ import TrustCard from './Home/TrustCard';
 import { AppContext } from '../component/CreateContext';
 import { toast } from 'react-toastify';
 import Footer from './Home/Footer';
+import axios from 'axios';
 
 
 
@@ -30,6 +31,18 @@ function Home() {
   ]
 
 
+  const fetchWithRetry = async (url, retries = 3) => {
+    try {
+      return await fetch(url);
+    } catch (err) {
+      if (retries > 0) {
+        console.log("Retrying...");
+        await new Promise(r => setTimeout(r, 3000)); // wait 3 sec
+        return fetchWithRetry(url, retries - 1);
+      }
+      throw err;
+    }
+  };
 
 
 
@@ -40,11 +53,10 @@ function Home() {
       setLoading(false);
       return;
     }
-
     const checkBackend = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${BackendUrl}/home`);
+        const response = await fetchWithRetry(`${BackendUrl}/home`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -69,7 +81,6 @@ function Home() {
         </div>
         <p className='font-medium text-2xl text-white text-center px-3'>{messages[messageStage]}</p>
       </div>
-
       <Header />
       <Speciality />
       <TopDoctor />

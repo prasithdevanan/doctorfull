@@ -2,80 +2,96 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
 /**
- * Replace unsupported CSS color functions like oklch()
+ * 🔥 Remove all oklch() from styles temporarily
  */
-const sanitizeUnsupportedColors = () => {
-    const elements = document.querySelectorAll("*");
-    console.log(elements);
+const disableOklchStyles = () => {
+    const styleTags = document.querySelectorAll("style");
+    const backups = [];
 
-    // elements.forEach((el) => {
-    //     const style = getComputedStyle(el);
+    styleTags.forEach((tag) => {
+        const original = tag.innerHTML;
 
-    //     try {
-    //         if (style.color && style.color.includes("oklch")) {
-    //             el.style.color = "#000000";
-    //         }
+        // replace oklch() with safe color
+        const safeCSS = original.replace(/oklch\([^)]+\)/g, "#000");
 
-    //         if (style.backgroundColor && style.backgroundColor.includes("oklch")) {
-    //             el.style.backgroundColor = "#ffffff";
-    //         }
+        backups.push({ tag, original });
+        tag.innerHTML = safeCSS;
+    });
 
-    //         if (style.borderColor && style.borderColor.includes("oklch")) {
-    //             el.style.borderColor = "#000000";
-    //         }
-
-    //     } catch (e) {
-    //         // ignore edge cases
-    //     }
-    // });
+    return () => {
+        // 🔁 restore original styles
+        backups.forEach(({ tag, original }) => {
+            tag.innerHTML = original;
+        });
+    };
 };
 
 /**
- * Download HTML content as multi-page PDF
+ * 📄 Download PDF function
  */
 export const DownloadPdf = async () => {
     const element = document.getElementById("pdf-content");
 
     if (!element) {
-        console.error("Element #pdf-content not found");
+        console.error("❌ Element #pdf-content not found");
         return;
     }
 
-    // 🔥 Fix for oklch() crash
-    sanitizeUnsupportedColors();
+    try {
+        // ✅ Step 1: Disable oklch BEFORE rendering
+        const restoreStyles = disableOklchStyles();
 
-    // Capture DOM as canvas
-    const canvas = await html2canvas(element, {
-        scale: 2, // better quality
-        useCORS: true,
-    });
+        // ⏳ small delay ensures CSS applied
+        await new Promise((r) => setTimeout(r, 100));
 
-    const imgData = canvas.toDataURL("image/png");
+        // ✅ Step 2: Capture UI
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+        });
 
-    const pdf = new jsPDF("p", "mm", "a4");
+        // ✅ Step 3: Restore original styles
+        restoreStyles();
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgData = canvas.toDataURL("image/png");
 
-    const imgWidth = pdfWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        // 📄 Create PDF
+        const pdf = new jsPDF("p", "mm", "a4");
 
-    let heightLeft = imgHeight;
-    let position = 0;
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    // First page
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
+        const margin = 10;
+        const imgWidth = pdfWidth - margin * 2;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    // Additional pages
-    while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
+        let heightLeft = imgHeight;
+        let position = 0;
 
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        // 🧾 Multi-page support
+        while (heightLeft > 0) {
+            pdf.addImage(
+                imgData,
+                "PNG",
+                margin,
+                position + margin,
+                imgWidth,
+                imgHeight
+            );
 
-        heightLeft -= pdfHeight;
+            heightLeft -= pdfHeight;
+
+            if (heightLeft > 0) {
+                pdf.addPage();
+                position -= pdfHeight;
+            }
+        }
+
+        // 💾 Download
+        pdf.save("download.pdf");
+
+    } catch (err) {
+        console.error("❌ PDF failed:", err);
     }
-
-    pdf.save("download.pdf");
 };

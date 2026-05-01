@@ -44,7 +44,7 @@ const AdminContextProvider = ({ children }) => {
 
             } catch (error) {
                 console.log("Error:", error.response?.data);
-
+                navigate('/login');
                 localStorage.removeItem('aToken');
                 localStorage.removeItem('dToken');
                 setAToken('');

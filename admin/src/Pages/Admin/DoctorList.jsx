@@ -52,8 +52,13 @@ function DoctorList() {
     <>
       {load ? (
         <div className="flex flex-col items-center justify-center py-16 w-full h-full my-auto">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-          <p className="text-sm text-gray-500">Fetching doctors...</p>
+          <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+          <p className="text-sm text-gray-500 flex items-center gap-1">
+            Fetching doctors
+            <span className="animate-bounce">.</span>
+            <span className="animate-bounce delay-200">.</span>
+            <span className="animate-bounce delay-400">.</span>
+          </p>
         </div>
       ) : (
         <section className="w-full px-4 sm:px-6 py-4 bg-gray-50 min-h-screen">
