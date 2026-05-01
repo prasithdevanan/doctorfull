@@ -38,28 +38,41 @@ function Sidebar() {
 
     return (
         <>
-            <section className="h-screen w-20 sm:w-40 bg-gray-200 flex flex-col py-4 shrink-0">
+            <section className="h-screen w-20 sm:w-56 bg-white/80 backdrop-blur-lg border-r border-gray-200 flex flex-col py-6 px-2 shadow-sm shrink-0">
 
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
 
                     {featues.map((item, index) => (
                         <NavLink
                             key={index}
                             to={item.path}
-                            className="relative flex items-center w-full gap-3 px-3 py-2 text-sm transition hover:bg-gray-300"
+                            className="group relative flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300"
                         >
                             {({ isActive }) => (
                                 <>
-                                    <span
-                                        className={`absolute left-0 top-0 h-full w-1 bg-blue-600 rounded-r-md transition ${isActive ? "opacity-100" : "opacity-0"
-                                            }`}
+                                    {/* Active background */}
+                                    <div
+                                        className={`absolute inset-0 rounded-xl transition-all duration-300 
+              ${isActive ? "bg-blue-50 shadow-sm" : "group-hover:bg-gray-100"}`}
                                     />
 
-                                    <i className={`${item.iconClass} text-xl ${isActive ? "text-blue-600" : "text-gray-700"
-                                        }`} />
+                                    {/* Active indicator */}
+                                    <span
+                                        className={`absolute left-0 top-2 bottom-2 w-1 rounded-r-md bg-blue-600 transition-all 
+              ${isActive ? "opacity-100" : "opacity-0"}`}
+                                    />
 
-                                    <span className={`hidden sm:inline ${isActive ? "font-semibold text-blue-600" : ""
-                                        }`}>
+                                    {/* Icon */}
+                                    <i
+                                        className={`${item.iconClass} text-xl z-10 transition-all duration-300 
+              ${isActive ? "text-blue-600 scale-110" : "text-gray-600 group-hover:text-gray-900"}`}
+                                    />
+
+                                    {/* Text */}
+                                    <span
+                                        className={`hidden sm:inline z-10 text-sm transition-all duration-300 
+              ${isActive ? "font-semibold text-blue-600" : "text-gray-700 group-hover:text-black"}`}
+                                    >
                                         {item.name}
                                     </span>
                                 </>
@@ -68,7 +81,6 @@ function Sidebar() {
                     ))}
 
                 </div>
-
             </section>
         </>
     )

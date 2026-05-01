@@ -3,9 +3,10 @@ import { Images } from '../../Components/Images';
 import { AdminContext } from '../../context/AdminContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function DoctorList() {
-
+  const navigate = useNavigate();
   const { BackendUrl } = useContext(AdminContext);
   const [doctorsList, setDoctorsList] = useState([]);
   const [load, setLoad] = useState(false);
@@ -48,60 +49,88 @@ function DoctorList() {
   }
 
   return (
-    <> {
-      load ? (
-        <p className="text-center py-10 text-gray-500">
-          Data fetching, please wait...
-        </p>
+    <>
+      {load ? (
+        <div className="flex flex-col items-center justify-center py-16 w-full h-full my-auto">
+          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+          <p className="text-sm text-gray-500">Fetching doctors...</p>
+        </div>
       ) : (
-        <section className="w-full px-3 sm:px-6">
+        <section className="w-full px-4 sm:px-6 py-4 bg-gray-50 min-h-screen">
 
+          {/* ===== HEADER ===== */}
+          <div className="flex items-center justify-between mb-6">
 
-          <div className="relative mb-4">
-            <p className=" text-sm text-gray-500">
-              Total Doctor:
-              <span className="text-black font-semibold">
-                {doctorsList.length}
-              </span>
-            </p>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-800">
+                Doctors
+              </h1>
+              <p className="text-sm text-gray-500">
+                Total: <span className="font-semibold text-gray-800">{doctorsList.length}</span>
+              </p>
+            </div>
 
-            <h1 className="text-center text-lg sm:text-xl font-semibold text-blue-600">
-              DOCTOR LIST
-            </h1>
+            {/* optional button */}
+            <button className="cursor-pointer hidden sm:block px-4 py-2 text-sm bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition" onClick={() => navigate('/add-doctor')}>
+              + Add Doctor
+            </button>
+
           </div>
 
 
-          <div className="h-[80vh] overflow-y-auto flex flex-col gap-3">
+          {/* ===== LIST ===== */}
+
+          <div className="h-[75vh] overflow-y-auto space-y-3 pr-1">
 
             {doctorsList.map((item, index) => (
-              <div key={index} className="flex flex-col sm:flex-row gap-3 sm:items-center border border-gray-200 rounded-lg p-3 bg-white shadow-sm"
+              <div
+                key={index}
+                className="group flex flex-col sm:flex-row gap-4 sm:items-center p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
               >
 
+                {/* Image */}
+                <img
+                  src={item.image}
+                  alt="doctor"
+                  className="w-full sm:w-24 h-24 rounded-lg object-cover border"
+                />
 
-                <img src={item.image} alt="doctor" className="w-full sm:w-28 h-28 object-cover rounded-md" />
-
+                {/* Info */}
                 <div className="flex-1 text-sm space-y-1">
-                  <p className="font-semibold text-base">{item.name}</p>
-                  <p className="text-gray-600">{item.email}</p>
-                  <p className="text-gray-600">{item.degree}</p>
-                  <p className="text-gray-600">{item.speciality}</p>
+                  <p className="text-base font-semibold text-gray-800">
+                    {item.name}
+                  </p>
+                  <p className="text-gray-500">{item.email}</p>
+
+                  <div className="flex flex-wrap gap-2 text-xs mt-1">
+                    <span className="px-2 py-1 bg-gray-100 rounded-md text-gray-600">
+                      {item.degree}
+                    </span>
+                    <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded-md">
+                      {item.speciality}
+                    </span>
+                  </div>
                 </div>
 
+                {/* Actions */}
+                <div className="flex sm:flex-col gap-2 sm:items-end">
 
-                <button onClick={() => onDeleteHandle(item._id)} className="w-full sm:w-auto px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm transition cursor-pointer">
-                  Delete
-                </button>
+                  <button
+                    onClick={() => onDeleteHandle(item._id)}
+                    className="cursor-pointer px-4 py-2 text-xs rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"
+                  >
+                    Delete
+                  </button>
+
+                </div>
 
               </div>
             ))}
-          </div>
-          <div>
 
           </div>
+
         </section>
-      )
-    }
-
+      )}
     </>
   )
 }

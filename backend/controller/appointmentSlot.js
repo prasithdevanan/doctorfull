@@ -58,7 +58,6 @@ export const getAppointments = async (req, res) => {
         const limitNumber = Number(limit) || 9;
 
         const skip = (pageNumber - 1) * limitNumber;
-        console.log(skip);
         const appointments = await appointmentModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(Number(limit));
         const totalAppointments = await appointmentModel.countDocuments(query);
 

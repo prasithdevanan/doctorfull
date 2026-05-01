@@ -78,170 +78,180 @@ function AddDoctor() {
 
   return (
     <>
-      <section className="bg-(--color-white) w-full h-[85vh] flex flex-col items-center px-4 sm:px-6">
+      <section className="w-full h-[calc(100vh-60px)] bg-gradient-to-br from-gray-50 to-gray-100 flex justify-center px-4 py-6 overflow-y-auto">
 
-        <h2 className="mt-4 text-lg font-semibold">
-          Add Doctor
-        </h2>
+        <div className="w-full max-w-4xl">
 
-        <section className="w-full sm:w-[85%] lg:w-[80%] flex-1 overflow-y-auto overflow-x-hidden mt-4">
+          {/* Title */}
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+            Add Doctor
+          </h2>
 
+          {/* Main Container */}
+          <div className="bg-white rounded-3xl shadow-md border border-gray-100 p-6 space-y-6">
 
-          <div className="p-4 w-fit">
-            <label htmlFor="img_doc" className="flex items-center gap-3 cursor-pointer">
+            {/* ===== PROFILE ===== */}
+            <div className="flex items-center gap-5 pb-4 border-b border-gray-100">
+              <label htmlFor="img_doc" className="relative cursor-pointer group">
 
-              <img
-                src={profile ? URL.createObjectURL(profile) : Images.Profile}
-                alt="img"
-                className="w-12 h-12 rounded-full object-cover"
-              />
-
-              <input
-                type="file"
-                id="img_doc"
-                hidden
-                onChange={(e) => setProfile(e.target.files[0])}
-              />
-
-              <span className="text-(--color-primary) underline underline-offset-2">
-                Upload Profile
-              </span>
-
-            </label>
-          </div>
-
-          <form onSubmit={onSubmitHandle} className="space-y-4">
-
-            <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
-
-              <div className="flex flex-col gap-1">
-                <label>Doctor name</label>
-                <input
-                  type="text"
-                  placeholder="Enter Doctor Name"
-                  className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200 outline-none focus:ring-2 focus:ring-blue-400"
-                  onChange={(e) => setDoctorName(e.target.value)}
-                  value={doctorName}
+                <img
+                  src={profile ? URL.createObjectURL(profile) : Images.Profile}
+                  className="w-20 h-20 rounded-full object-cover border shadow-sm"
                 />
-              </div>
 
-              <div className="flex flex-col gap-1">
-                <label>Doctor Email</label>
-                <input
-                  type="text"
-                  placeholder="Enter Doctor Email"
-                  className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200 outline-none focus:ring-2 focus:ring-blue-400"
-                  onChange={(e) => setDoctorEmail(e.target.value)}
-                  value={doctorEmail ? doctorEmail : ''}
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label>Doctor Password</label>
-                <div className='relative'>
-                  <input
-                    type={passwordVisible ? "text" : "password"}
-                    placeholder="Enter Doctor Password"
-                    className="border bg-(--color-input) py-2 w-full px-3 rounded-md border-gray-200 outline-none focus:ring-2 focus:ring-blue-400"
-                    onChange={(e) => setDoctorPassword(e.target.value)}
-                    value={doctorPassword}
-                  />
-                  <span className='absolute text-gray-500 right-2 top-1/2 -translate-y-1/2 cursor-pointer hover:text-gray-600 text-sm' onClick={() => setPasswordVisible(!passwordVisible)}>{passwordVisible ? "Show" : "Hide"}</span>
+                <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs transition">
+                  Upload
                 </div>
 
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label>Doctor Experience</label>
-                <select
-                  className="border bg-gray-100 py-2 px-3 rounded-md border-gray-200"
-                  onChange={(e) => setDoctorExperience(e.target.value)}
-                  value={doctorExperience}
-                >
-                  <option value="" disabled>Select Experience</option>
-                  {[...Array(11)].map((_, i) => (
-                    <option key={i} value={`${i + 1} Years`}>
-                      {i + 1} Years
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label>Fees</label>
                 <input
-                  type="text"
-                  placeholder="Your fees"
-                  className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200"
-                  onChange={(e) => setFees(e.target.value)}
+                  type="file"
+                  id="img_doc"
+                  hidden
+                  onChange={(e) => setProfile(e.target.files[0])}
                 />
+              </label>
+
+              <div>
+                <p className="text-sm text-gray-500">Profile Photo</p>
+                <p className="text-xs text-gray-400">Click to upload image</p>
               </div>
-
-              <div className="flex flex-col gap-1">
-                <label>Speciality</label>
-                <select
-                  className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200"
-                  onChange={(e) => setDoctorSpeciality(e.target.value)}
-                >
-                  <option value="" disabled>Select Speciality</option>
-                  {speciality.map((items, index) => (
-                    <option key={index} value={items.name}>
-                      {items.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label>Education</label>
-                <input
-                  type="text"
-                  placeholder="Education"
-                  className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200"
-                  onChange={(e) => setEducation(e.target.value)}
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label>Address</label>
-                <input
-                  type="text"
-                  placeholder="Address 1"
-                  className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200 mb-2"
-                  onChange={(e) => setAddress1(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Address 2"
-                  className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200"
-                  onChange={(e) => setAddress2(e.target.value)}
-                />
-              </div>
-
-            </section>
-
-
-            <div className="flex flex-col gap-1 px-4">
-              <label>About</label>
-              <textarea
-                placeholder="Write about yourself"
-                className="border bg-(--color-input) py-2 px-3 rounded-md border-gray-200 w-full h-28 resize-none"
-                onChange={(e) => setAbout(e.target.value)}
-              />
             </div>
 
-            <div className="flex justify-center mt-6">
-              <button
-                type="submit"
-                className="bg-(--color-primary) py-2 px-6 text-(--color-white) rounded-md cursor-pointer hover:opacity-90 transition"
-              >
-                {loading ? "Uploading..." : "Add Doctor"}
-              </button>
-            </div>
+            {/* ===== FORM ===== */}
+            <form onSubmit={onSubmitHandle} className="space-y-6">
 
-          </form>
+              {/* Section 1 */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                  Basic Information
+                </h3>
 
-        </section>
+                <div className="grid sm:grid-cols-2 gap-4">
+
+                  <input
+                    type="text"
+                    placeholder="Doctor Name"
+                    className="input-soft"
+                    value={doctorName}
+                    onChange={(e) => setDoctorName(e.target.value)}
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Email Address"
+                    className="input-soft"
+                    value={doctorEmail || ""}
+                    onChange={(e) => setDoctorEmail(e.target.value)}
+                  />
+
+                  {/* Password */}
+                  <div className="relative">
+                    <input
+                      type={passwordVisible ? "text" : "password"}
+                      placeholder="Password"
+                      className="input-soft pr-14"
+                      value={doctorPassword}
+                      onChange={(e) => setDoctorPassword(e.target.value)}
+                    />
+                    <span
+                      onClick={() => setPasswordVisible(!passwordVisible)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 cursor-pointer"
+                    >
+                      {passwordVisible ? "Hide" : "Show"}
+                    </span>
+                  </div>
+
+                  <select
+                    className="input-soft"
+                    value={doctorExperience}
+                    onChange={(e) => setDoctorExperience(e.target.value)}
+                  >
+                    <option value="">Experience</option>
+                    {[...Array(11)].map((_, i) => (
+                      <option key={i}>{i + 1} Years</option>
+                    ))}
+                  </select>
+
+                </div>
+              </div>
+
+              {/* Section 2 */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                  Professional Details
+                </h3>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+
+                  <input
+                    type="text"
+                    placeholder="Fees"
+                    className="input-soft"
+                    onChange={(e) => setFees(e.target.value)}
+                  />
+
+                  <select
+                    className="input-soft"
+                    onChange={(e) => setDoctorSpeciality(e.target.value)}
+                  >
+                    <option value="">Speciality</option>
+                    {speciality.map((items, index) => (
+                      <option key={index}>{items.name}</option>
+                    ))}
+                  </select>
+
+                  <input
+                    type="text"
+                    placeholder="Education"
+                    className="input-soft"
+                    onChange={(e) => setEducation(e.target.value)}
+                  />
+
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Address Line 1"
+                      className="input-soft mb-2"
+                      onChange={(e) => setAddress1(e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Address Line 2"
+                      className="input-soft"
+                      onChange={(e) => setAddress2(e.target.value)}
+                    />
+                  </div>
+
+                </div>
+              </div>
+
+              {/* About */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-700 mb-2">
+                  About
+                </h3>
+
+                <textarea
+                  placeholder="Write something about doctor..."
+                  className="input-soft h-28 resize-none"
+                  onChange={(e) => setAbout(e.target.value)}
+                />
+              </div>
+
+              {/* Button */}
+              <div className="flex justify-end pt-4 border-t border-gray-100">
+                <button
+                  type="submit"
+                  className="px-6 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium shadow hover:scale-[1.02] transition"
+                >
+                  {loading ? "Uploading..." : "Add Doctor"}
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
       </section>
     </>
   )

@@ -9,8 +9,8 @@ const AdminContextProvider = ({ children }) => {
     const BackendUrl = import.meta.env.VITE_BACKEND_URL;
     // const navigate = useNavigate();
 
-    const [aToken, setAToken] = useState(localStorage.getItem('aToken') || "");
-    const [dToken, setDToken] = useState(localStorage.getItem('dToken') || "");
+    const [aToken, setAToken] = useState(() => localStorage.getItem('aToken'));
+    const [dToken, setDToken] = useState(() => localStorage.getItem('dToken'));
 
     // Sync localStorage
     useEffect(() => {
