@@ -35,7 +35,7 @@ function Dashboard() {
 
         //set the data for the appointmentList
         setAppointmentList(resAppoint.data.appointments);
-        setNewAppointment(resAppoint.data.appointments.slice(-3));
+        setNewAppointment(resAppoint.data.appointments.slice(-4));
       } catch (error) {
         console.log(error?.response?.data?.message);
       } finally {

@@ -6,7 +6,7 @@ function ProductorRouter({ children, adminOnly = false }) {
     const { aToken, dToken } = useContext(AdminContext);
 
     if (aToken === null && dToken === null) {
-        return null;
+        return <Navigate to="/login" replace />;
     }
 
     // 🚫 no token → go to login

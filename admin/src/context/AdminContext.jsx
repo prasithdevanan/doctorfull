@@ -7,17 +7,16 @@ export const AdminContext = createContext();
 const AdminContextProvider = ({ children }) => {
 
     const BackendUrl = import.meta.env.VITE_BACKEND_URL;
-    // const navigate = useNavigate();
 
-    const [aToken, setAToken] = useState(() => localStorage.getItem('aToken'));
-    const [dToken, setDToken] = useState(() => localStorage.getItem('dToken'));
+    const [aToken, setAToken] = useState(null);
+    const [dToken, setDToken] = useState(null);
 
     // Sync localStorage
     useEffect(() => {
         console.log("Syncing localStorage...");
         const handleStorageChange = () => {
-            setAToken(localStorage.getItem('aToken') || "");
-            setDToken(localStorage.getItem('dToken') || "");
+            setAToken(localStorage.getItem('aToken') || null);
+            setDToken(localStorage.getItem('dToken') || null);
         };
         handleStorageChange();
 
@@ -44,7 +43,6 @@ const AdminContextProvider = ({ children }) => {
 
             } catch (error) {
                 console.log("Error:", error.response?.data);
-                navigate('/login');
                 localStorage.removeItem('aToken');
                 localStorage.removeItem('dToken');
                 setAToken('');

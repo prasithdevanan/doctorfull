@@ -46,6 +46,7 @@ function Navbar() {
                         ) : (
                             <p className="font-semibold text-gray-800">Logo</p>
                         )}
+                        <p className='text-xs px-2 bg-(--color-primary)/20 text-(--color-primary) rounded-full border border-(--color-primary)'>{atoken}</p>
                     </div>
 
                     {/* Right - Profile */}

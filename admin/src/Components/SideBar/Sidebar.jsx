@@ -26,11 +26,12 @@ function Sidebar() {
             path: "/doctorlist",
             iconClass: "bi bi-list"
         },
-        {
-            name: "Custom",
-            path: "/custom",
-            iconClass: "bi bi-list"
-        }
+        ...(aToken ? [
+            {
+                name: "Custom",
+                path: "/custom",
+                iconClass: "bi bi-list"
+            }] : []),
     ];
 
 
