@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 function DoctorList() {
   const navigate = useNavigate();
-  const { BackendUrl } = useContext(AdminContext);
+  const { BackendUrl, aToken } = useContext(AdminContext);
   const [doctorsList, setDoctorsList] = useState([]);
   const [load, setLoad] = useState(false);
 
@@ -76,9 +76,12 @@ function DoctorList() {
             </div>
 
             {/* optional button */}
-            <button className="cursor-pointer hidden sm:block px-4 py-2 text-sm bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition" onClick={() => navigate('/add-doctor')}>
-              + Add Doctor
-            </button>
+            {
+              aToken && <button className="cursor-pointer hidden sm:block px-4 py-2 text-sm bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition" onClick={() => navigate('/add-doctor')}>
+                + Add Doctor
+              </button>
+            }
+
 
           </div>
 

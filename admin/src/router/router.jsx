@@ -10,6 +10,7 @@ import DoctorList from '../Pages/Admin/DoctorList';
 import axios from 'axios';
 import Custom from '../Pages/Admin/Custom';
 import AppoitmentDetails from '../Pages/Admin/Appoinment/AppoitmentDetails';
+import PublicRoute from './PublicRoute';
 
 
 //get Token from the Localstorage
@@ -21,38 +22,74 @@ export const router = createBrowserRouter([
         path: '/',
         element: <App />,
         children: [
+
             {
                 index: true,
-                element: <ProductorRouter><Dashboard /></ProductorRouter>
+                element: (
+                    <ProductorRouter>
+                        <Dashboard />
+                    </ProductorRouter>
+                )
             },
+
             {
                 path: 'login',
-                element: token ? <Navigate to='/' replace /> : <Login />
+                element: (
+                    <PublicRoute>
+                        <Login />
+                    </PublicRoute>
+                )
             },
+
             {
                 path: 'appoinment',
-                element: <ProductorRouter><Appoiment /></ProductorRouter>
+                element: (
+                    <ProductorRouter>
+                        <Appoiment />
+                    </ProductorRouter>
+                )
             },
+
             {
                 path: 'appoinment/details',
-                element: <ProductorRouter><AppoitmentDetails /></ProductorRouter>
+                element: (
+                    <ProductorRouter>
+                        <AppoitmentDetails />
+                    </ProductorRouter>
+                )
             },
+
             {
                 path: 'add-doctor',
-                element: <ProductorRouter adminOnly={true}><AddDoctor /></ProductorRouter>
+                element: (
+                    <ProductorRouter adminOnly={true}>
+                        <AddDoctor />
+                    </ProductorRouter>
+                )
             },
+
             {
                 path: 'doctorList',
-                element: <ProductorRouter><DoctorList /></ProductorRouter>
+                element: (
+                    <ProductorRouter>
+                        <DoctorList />
+                    </ProductorRouter>
+                )
             },
+
             {
                 path: 'custom',
-                element: <ProductorRouter><Custom /></ProductorRouter>
+                element: (
+                    <ProductorRouter>
+                        <Custom />
+                    </ProductorRouter>
+                )
             }
         ]
     },
+
     {
         path: '*',
-        element: <Navigate to="/login" />
+        element: <Navigate to="/login" replace />
     }
-])
+]);

@@ -23,10 +23,10 @@ function Navbar() {
         localStorage.removeItem('aToken');
         localStorage.removeItem('dToken');
         localStorage.removeItem('dEmail');
-        setAToken('')
-        setDToken('')
-        navigate('/login');
+        setAToken(null);
+        setDToken(null);
         setLogout(false);
+        navigate('/login', { replace: true });
     }
 
     return (

@@ -8,21 +8,21 @@ const AdminContextProvider = ({ children }) => {
 
     const BackendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    const [aToken, setAToken] = useState(null);
-    const [dToken, setDToken] = useState(null);
+    const [aToken, setAToken] = useState(() => localStorage.getItem('aToken'));
+    const [dToken, setDToken] = useState(() => localStorage.getItem('dToken'));
 
     // Sync localStorage
-    useEffect(() => {
-        console.log("Syncing localStorage...");
-        const handleStorageChange = () => {
-            setAToken(localStorage.getItem('aToken') || null);
-            setDToken(localStorage.getItem('dToken') || null);
-        };
-        handleStorageChange();
+    // useEffect(() => {
+    //     console.log("Syncing localStorage...");
+    //     const handleStorageChange = () => {
+    //         setAToken(localStorage.getItem('aToken') || null);
+    //         setDToken(localStorage.getItem('dToken') || null);
+    //     };
+    //     handleStorageChange();
 
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
+    //     window.addEventListener('storage', handleStorageChange);
+    //     return () => window.removeEventListener('storage', handleStorageChange);
+    // }, []);
 
     // Validate token
     useEffect(() => {
