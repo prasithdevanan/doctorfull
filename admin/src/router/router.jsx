@@ -11,6 +11,7 @@ import axios from 'axios';
 import Custom from '../Pages/Admin/Custom';
 import AppoitmentDetails from '../Pages/Admin/Appoinment/AppoitmentDetails';
 import PublicRoute from './PublicRoute';
+import Profile from '../Pages/profile/Profile';
 
 
 //get Token from the Localstorage
@@ -46,6 +47,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProductorRouter>
                         <Appoiment />
+                    </ProductorRouter>
+                )
+            },
+            {
+                path: '/profile',
+                element: (
+                    <ProductorRouter>
+                        <Profile />
                     </ProductorRouter>
                 )
             },
