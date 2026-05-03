@@ -73,7 +73,9 @@ function Appoiment() {
 
       {/* ---------------- Loading */}
       {loading ? (
-        <div className="text-center py-10 text-gray-500 animate-pulse">
+        <div className="text-center py-10 text-gray-500 animate-pulse flex flex-col items-center justify-center gap-2">
+          <div className="w-10 h-10 border-t-2 border-b-2 border-(--color-primary) rounded-full animate-spin">
+          </div>
           Loading appointments...
         </div>
       ) : appointments.length > 0 ? (

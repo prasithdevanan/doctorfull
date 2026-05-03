@@ -2,12 +2,13 @@ import { useState, useContext } from "react";
 import { AdminContext } from "../../context/AdminContext";
 
 function Profile() {
-    const { token, BackendUrl } = useContext(AdminContext);
+    const { aToken, dToken, BackendUrl } = useContext(AdminContext);
     const [edit, setEdit] = useState(false);
+    console.log(aToken, dToken);
 
     const [profile, setProfile] = useState({
         name: "Admin User",
-        email: "admin@gmail.com",
+        email: aToken ? "admin@metix.com" : localStorage.getItem("dEmail"),
         phone: "+91 9876543210",
         role: "Administrator",
         image: null,
