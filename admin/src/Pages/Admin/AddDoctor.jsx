@@ -78,7 +78,7 @@ function AddDoctor() {
 
   return (
     <>
-      <section className="w-full h-[calc(100vh-60px)] bg-gradient-to-br from-gray-50 to-gray-100 flex justify-center px-4 py-6 overflow-y-auto">
+      <section className="w-full h-[calc(100vh-60px)] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex justify-center px-4 py-6 overflow-y-auto">
 
         <div className="w-full max-w-4xl">
 

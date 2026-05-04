@@ -16,6 +16,11 @@ function Sidebar() {
             path: "/appoinment",
             iconClass: "bi bi-calendar"
         },
+        {
+            name: "Patient List",
+            path: "/patientlist",
+            iconClass: "bi bi-list"
+        },
         ...(aToken ? [{
             name: "Add Doctor",
             path: "/add-doctor",

@@ -46,7 +46,7 @@ function Appoiment() {
   }, [BackendUrl, dToken, search, page, limit]);
 
   return (
-    <section className="h-[calc(100vh-56px)] w-full px-4 sm:px-6 py-6 bg-gradient-to-b from-gray-50 to-white overflow-y-auto">
+    <section className="h-[calc(100vh-56px)] w-full px-4 sm:px-6 py-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 overflow-y-auto">
 
       {/* ---------------- Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">

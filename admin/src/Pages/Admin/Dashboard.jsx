@@ -59,7 +59,7 @@ function Dashboard() {
           </div>
         ) : (
 
-          < section className="w-full h-[calc(100vh-64px)] overflow-y-auto px-4 sm:px-6 py-6 bg-gray-50">
+          < section className="w-full h-[calc(100vh-64px)] overflow-y-auto px-4 sm:px-6 py-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
 
             {/* ===== STATS CARDS ===== */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -117,7 +117,7 @@ function Dashboard() {
                         <img
                           src={item.image}
                           alt="doctor"
-                          className="w-14 h-14 rounded-full object-cover border"
+                          className="w-14 h-14 rounded-full object-cover border border-black/20"
                         />
 
                         <div className="flex-1">

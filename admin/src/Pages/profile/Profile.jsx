@@ -4,13 +4,14 @@ import { AdminContext } from "../../context/AdminContext";
 function Profile() {
     const { aToken, dToken, BackendUrl } = useContext(AdminContext);
     const [edit, setEdit] = useState(false);
+    const [name, setName] = useState(aToken ? "Admin" : localStorage.getItem("dEmail").split("@")[0]);
     console.log(aToken, dToken);
 
     const [profile, setProfile] = useState({
-        name: "Admin User",
+        name: name,
         email: aToken ? "admin@metix.com" : localStorage.getItem("dEmail"),
         phone: "+91 9876543210",
-        role: "Administrator",
+        role: aToken ? "Admin" : "Doctor",
         image: null,
     });
 
