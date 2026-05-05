@@ -1,7 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom';
+import { AdminContext } from '../../../context/AdminContext';
+import axios from 'axios';
 
 function PatientDetails() {
+  const { BackendUrl } = useContext(AdminContext);
+  const { id } = useParams();
+  const location = useLocation();
+  const [appointments, setAppointments] = useState([]);
+
+  ///store the data
+  const element = location.state;
+  console.log(element);
+
 
   //check the previose page
   useEffect(() => {
@@ -10,23 +21,38 @@ function PatientDetails() {
     }
   }, [])
 
-  const { id } = useParams();
-  const location = useLocation();
 
-  ///store the data
-  const element = location.state;
-  console.log(element);
+
+  // fetch the patient appointment details
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get(`${BackendUrl}/api/patient/appointment/patient`, { params: { patientEmail: element.email } });
+      if (!res.data.success) {
+        console.log(res.data.message);
+        return;
+      }
+      console.log(res.data.appointments);
+      setAppointments(res.data.appointments);
+    }
+    if (element) {
+      fetch();
+    }
+
+  }, [element]);
 
   return (
     <>
-      <section className="w-screen h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 p-6">
-        <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
+      <section className="h-[calc(100vh-64px)] w-full bg-gray-50 p-6 flex flex-col items-center gap-6 overflow-y-auto">
+
+        {/* ================= Patient Card ================= */}
+        <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 w-full max-w-md">
 
           {element.image && (
             <img
               src={element.image}
               alt="Patient"
-              className="w-24 h-24 rounded-full mx-auto object-cover border-4 border-gray-100 mb-4"
+              className="w-24 h-24 rounded-full mx-auto object-cover border mb-4"
             />
           )}
 
@@ -34,23 +60,105 @@ function PatientDetails() {
             <h1 className="text-xl font-semibold text-gray-800">
               {element.name}
             </h1>
-            <p className="text-sm text-gray-500">ID: {element.patientId}</p>
+            <p className="text-sm text-gray-500">
+              Patient ID: {element.patientId}
+            </p>
           </div>
 
-          <div className="mt-6 space-y-2 text-sm text-gray-700">
-            <p><span className="font-medium">Email:</span> {element.email}</p>
-            <p><span className="font-medium">Phone:</span> {element.phone ? element.phone : "-"}</p>
+          <div className="mt-5 space-y-2 text-sm text-gray-700 border-t pt-4">
+
+            <p><span className="text-gray-500">Email:</span> {element.email}</p>
+            <p><span className="text-gray-500">Phone:</span> {element.phone || "-"}</p>
 
             {element.gender && (
-              <p><span className="font-medium">Gender:</span> {element.gender}</p>
+              <p><span className="text-gray-500">Gender:</span> {element.gender}</p>
             )}
 
             {element.DOB && (
-              <p><span className="font-medium">DOB:</span> {element.DOB}</p>
+              <p><span className="text-gray-500">DOB:</span> {element.DOB}</p>
             )}
+
+          </div>
+        </div>
+
+        {/* ================= Appointments Section ================= */}
+        <div className="w-full max-w-5xl">
+
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-800">
+              Appointments
+            </h2>
+
+            <span className="text-xs text-gray-500">
+              {appointments.length} total
+            </span>
           </div>
 
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+            {appointments.length > 0 ? (
+              appointments.map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition"
+                >
+
+                  {/* Doctor */}
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      Dr. {item.doctorName}
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      {item.doctorSpeciality || "General"}
+                    </p>
+                  </div>
+
+                  {/* Info */}
+                  <div className="space-y-2 text-sm text-gray-700">
+
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">Date</span>
+                      <span className="font-medium">{item.date}</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">Time</span>
+                      <span className="font-medium">{item.time}</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">Status</span>
+                      <span className="px-2 py-0.5 text-xs rounded-full bg-yellow-100 text-yellow-700">
+                        Scheduled
+                      </span>
+                    </div>
+
+                  </div>
+
+                  {/* Actions */}
+                  <div className="mt-4 pt-3 border-t flex justify-between items-center">
+
+                    <span className="text-xs text-gray-400">
+                      Appointment #{index + 1}
+                    </span>
+
+                    <button className="text-xs px-3 py-1 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition">
+                      Cancel
+                    </button>
+
+                  </div>
+
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-sm">
+                No appointments found
+              </p>
+            )}
+
+          </div>
         </div>
+
       </section>
     </>
   )
