@@ -7,9 +7,13 @@ import adminRouter from './routes/adminRoutes.js';
 import doctorRouter from './routes/doctorRoutes.js';
 import { validate } from './validate/JsonToken.js';
 import patientRouter from './routes/patientRouter.js';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 //app config
 const app = express();
+const server = createServer(app);
+const io = new Server(server);
 const port = process.env.PORT || 4000;
 connetDB();
 connectCloudinary();
@@ -23,6 +27,13 @@ app.use('/api/admin', adminRouter);
 app.use('/api/doctor', doctorRouter);
 app.use('/api/patient', patientRouter);
 
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
+
 
 //Endpoints
 
@@ -31,10 +42,10 @@ app.use('/api/patient', patientRouter);
 //**Get*** /api/doctor/list ------------Get the doctors List*/
 
 // routes
-app.post('/api/validation', validate); 
+app.post('/api/validation', validate);
 
 app.get('/', (req, res) => {
-    res.status(200).send('Hello Worldnnnnnnnn!'); 
+    res.status(200).send('Hello Worldnnnnnnnn!');
 });
 
 app.get("/home", (req, res) => {
