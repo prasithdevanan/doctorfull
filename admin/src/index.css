@@ -50,3 +50,4 @@ body {
 .input-soft:focus {
     @apply bg-white border-blue-500 ring-2 ring-blue-100;
 }
+
