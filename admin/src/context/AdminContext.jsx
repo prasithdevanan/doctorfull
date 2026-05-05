@@ -11,6 +11,12 @@ const AdminContextProvider = ({ children }) => {
     const [aToken, setAToken] = useState(() => localStorage.getItem('aToken'));
     const [dToken, setDToken] = useState(() => localStorage.getItem('dToken'));
 
+
+    if (aToken) {
+        localStorage.removeItem('dToken');
+        localStorage.removeItem('dEmail');
+    }
+
     // Validate token
     useEffect(() => {
         const validateToken = async () => {
