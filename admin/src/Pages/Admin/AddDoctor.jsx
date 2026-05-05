@@ -96,7 +96,7 @@ function AddDoctor() {
 
                 <img
                   src={profile ? URL.createObjectURL(profile) : Images.Profile}
-                  className="w-20 h-20 rounded-full object-cover border shadow-sm"
+                  className="w-20 h-20 rounded-full object-cover border shadow-sm border-gray-400"
                 />
 
                 <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs transition">
@@ -107,17 +107,35 @@ function AddDoctor() {
                   type="file"
                   id="img_doc"
                   hidden
-                  onChange={(e) => setProfile(e.target.files[0])}
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    // check file reslolution
+                    if (!file) {
+                      return;
+                    }
+                    const img = new Image();
+                    const url = URL.createObjectURL(file);
+
+                    img.onload = () => {
+                      if (img.width === img.height) {
+                        setProfile(file);
+                      } else {
+                        alert("Please select a square image");
+                        setProfile(null);
+                      }
+                      URL.revokeObjectURL(url);
+                    }
+                    img.src = url;
+                  }}
                 />
               </label>
-
               <div>
                 <p className="text-sm text-gray-500">Profile Photo</p>
                 <p className="text-xs text-gray-400">Click to upload image</p>
               </div>
             </div>
 
-            {/* ===== FORM ===== */}
+            {/* ====================================== FORM =================================================== */}
             <form onSubmit={onSubmitHandle} className="space-y-6">
 
               {/* Section 1 */}

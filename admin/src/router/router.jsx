@@ -13,6 +13,7 @@ import AppoitmentDetails from '../Pages/Admin/Appoinment/AppoitmentDetails';
 import PublicRoute from './PublicRoute';
 import Profile from '../Pages/profile/Profile';
 import PatientList from '../Pages/Admin/Patient/PatientList';
+import PatientDetails from '../Pages/Admin/Patient/PatientDetails';
 
 //get Token from the Localstorage
 const token = localStorage.getItem('aToken') || localStorage.getItem('dToken');
@@ -84,6 +85,13 @@ export const router = createBrowserRouter([
                     </ProductorRouter>
                 )
 
+            },
+            {
+                path: 'patientlist/:id',
+                element: (
+                    <ProductorRouter>
+                        <PatientDetails />
+                    </ProductorRouter>)
             },
 
             {

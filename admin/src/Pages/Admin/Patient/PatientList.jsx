@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AdminContext } from '../../../context/AdminContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function PatientList() {
+    const navigate = useNavigate();
     const { BackendUrl } = useContext(AdminContext);
     const [patientList, setPatientList] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -76,8 +78,8 @@ function PatientList() {
 
                                 {/* Optional footer */}
                                 <div className="mt-4 flex justify-end">
-                                    <button className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer">
-                                        View
+                                    <button className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer" onClick={() => navigate(`/patientlist/${patient._id}`, { state: patient })}>
+                                        view
                                     </button>
                                 </div>
                             </div>
