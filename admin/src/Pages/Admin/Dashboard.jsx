@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import axios from 'axios';
 import { AdminContext } from '../../context/AdminContext';
 import { Images } from '../../Components/Images';
@@ -8,7 +8,7 @@ import { socket } from '../../socket/socket';
 function Dashboard() {
   const navigate = useNavigate();
 
-  const { BackendUrl } = useContext(AdminContext);
+  const { BackendUrl, user } = useContext(AdminContext);
   const [load, setLoad] = useState(false);
   const [doctorsList, setDoctorsList] = useState([]);
   const [patientsList, setPatientsList] = useState([]);
@@ -46,21 +46,25 @@ function Dashboard() {
     feachDoctors();
   }, [BackendUrl]);
 
-  const nodeRef = useRef(null);
 
   const [data, setData] = useState([]);
+  console.log(data);
+
+
   //socket conection
   useEffect(() => {
-    socket.emit("register", { userId: "69d60a88d1479058b31a611e", role: "Doctor" }); 
+    if (!user) {
+      return;
+    }
+    socket.emit("register", { userId: user._id, role: "Doctor" });
 
     socket.on("new_appointment", (data) => {
       console.log(data);
-      setData(data);
-      alert(data.message);
+      setData((prevData) => [...prevData, data]);
       console.log("Patient ID:", data.patientId);
       console.log("Details:", data.details);
     });
-  },[])
+  }, [user])
 
 
   return (
@@ -108,6 +112,48 @@ function Dashboard() {
             </div>
 
 
+            {/* ===================New Appointement=================== */}
+            <div className="flex flex-col gap-2 py-4">
+              <p className="text-lg font-semibold">Your New Appointments</p>
+
+              {data.length > 0 ? (
+                (
+                  <div className="max-h-[240px] overflow-y-auto px-2 space-y-2 w-full py-3">
+                    {data.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between bg-white border border-gray-100 shadow-sm rounded-xl px-5 py-3 hover:shadow-md transition"
+                      >
+
+                        <div className="flex flex-col">
+                          <p className="text-sm text-gray-500">{item.details.time}</p>
+                          <p className="text-sm font-medium text-gray-800">
+                            {item.patientId}
+                          </p>
+                        </div>
+
+
+                        <div className="flex gap-2">
+                          <button className="cursor-pointer flex justify-center items-center px-3 py-1.5 text-sm rounded-lg bg-green-500 text-white hover:bg-green-600 transition">
+                            <i className="bi bi-check-lg mr-1"></i>
+                            Accept
+                          </button>
+
+                          <button className="cursor-pointer  flex justify-center items-center  px-3 py-1.5 text-sm rounded-lg bg-red-500/20 text-red-600 hover:bg-red-600/40 transition">
+                            <i className="bi bi-x mr-1"></i>
+                            Decline
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
+              ) : (
+                <div>
+                  <p>No New Appointments</p>
+                </div>
+              )}
+            </div>
             {/* ===== NEW DOCTORS ===== */}
             {newDoctor?.length > 0 && (
               <div className="mt-8 grid md:grid-cols-2 gap-6">

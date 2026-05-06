@@ -29,6 +29,7 @@ export const initiSocket = (io) => {
             //save the notification
             const notification = await NotificationModel.create({
                 userId: doctorId,
+                userType: users[patientId].role,
                 message: "New Appointment Booked",
                 data: details,
             })

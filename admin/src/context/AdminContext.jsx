@@ -15,6 +15,7 @@ const AdminContextProvider = ({ children }) => {
     if (aToken) {
         localStorage.removeItem('dToken');
         localStorage.removeItem('dEmail');
+        localStorage.removeItem('id');
     }
 
     // Validate token
@@ -48,7 +49,7 @@ const AdminContextProvider = ({ children }) => {
     }, []);
 
 
-
+    /// get logo
     useEffect(() => {
         const feach = async () => {
             try {
@@ -66,10 +67,37 @@ const AdminContextProvider = ({ children }) => {
     const [backendImg, setBackendImg] = useState(null);
     const [name, setName] = useState(null);
 
+
+    const [id, setId] = useState(() => localStorage.getItem('id'));
+    const [user, setUser] = useState(null);
+    ///get the user
+    useEffect(() => {
+        if (!id) {
+            return;
+        }
+        const fetch = async () => {
+            try {
+                const res = await axios.get(`${BackendUrl}/api/doctor/doctor/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${dToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                console.log(res.data.doctor);
+                setUser(res.data.doctor);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetch();
+    },[])
+
     const value = {
         aToken,
         setAToken,
         dToken,
+        user,
+        setUser,
         setDToken,
         BackendUrl,
         backendImg,

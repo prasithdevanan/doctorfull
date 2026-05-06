@@ -9,6 +9,12 @@ const notificationSchema = new mongoose.Schema({
         type: String,
         default: "Appointment"
     },
+    userType: {
+        type: String,
+        enum: ["Patient", "Doctor"],
+        required: true,
+    },
+
     message: {
         type: String,
         required: true
