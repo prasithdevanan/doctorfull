@@ -3,6 +3,7 @@ import axios from 'axios';
 import { AdminContext } from '../../context/AdminContext';
 import { Images } from '../../Components/Images';
 import { useNavigate } from 'react-router-dom';
+import { socket } from '../../socket/socket';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -46,6 +47,20 @@ function Dashboard() {
   }, [BackendUrl]);
 
   const nodeRef = useRef(null);
+
+  const [data, setData] = useState([]);
+  //socket conection
+  useEffect(() => {
+    socket.emit("register", { userId: "69d60a88d1479058b31a611e", role: "Doctor" }); 
+
+    socket.on("new_appointment", (data) => {
+      console.log(data);
+      setData(data);
+      alert(data.message);
+      console.log("Patient ID:", data.patientId);
+      console.log("Details:", data.details);
+    });
+  },[])
 
 
   return (

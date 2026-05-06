@@ -13,7 +13,7 @@ const getDoctors = async (req, res) => {
                 ],
             }
         }
-        console.log(search)
+   
         const doctorsList = await doctorModel.find(filter);
         res.status(200).json({ success: true, doctorsList });
 

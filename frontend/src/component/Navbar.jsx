@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { navItems } from '../assets/data';
 import { AppContext } from './CreateContext';
 import axios from 'axios';
+import { socket } from '../socket/socket';
 
 
 function Navbar() {
@@ -19,6 +20,25 @@ function Navbar() {
     const [slice, setSlice] = useState('');
     const [menu, setMenu] = useState(false);
     const { BackendUrl, backendImg, name } = useContext(AppContext);
+
+    //socket conection
+    useEffect(() => {
+        if (user?.id) {
+            socket.emit("register", {
+                userId: user.id,
+                role: "Patient"
+            });
+            socket.emit("book_appointment", {
+                patientId: user.id,
+                doctorId: '69d60a88d1479058b31a611e',
+                details: {
+                    time: "12:00",
+                    date: "2023-06-01"
+                }
+            })
+        }
+    }, [user]);
+
 
     useEffect(() => {
         localStorage.setItem("token", token);

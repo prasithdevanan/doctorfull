@@ -9,14 +9,24 @@ import { validate } from './validate/JsonToken.js';
 import patientRouter from './routes/patientRouter.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { initiSocket } from './socket/socket.js';
 
 //app config
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
 const port = process.env.PORT || 4000;
 connetDB();
 connectCloudinary();
+
+//socket.io
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+    }
+});
+
+//connect socket
+initiSocket(io);
 
 //middleware
 app.use(express.json());
@@ -27,12 +37,6 @@ app.use('/api/admin', adminRouter);
 app.use('/api/doctor', doctorRouter);
 app.use('/api/patient', patientRouter);
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-});
 
 
 //Endpoints
@@ -52,5 +56,6 @@ app.get("/home", (req, res) => {
     res.status(200).send("This is the home page");
 })
 
+server.listen(port, () => console.log(`listening on port ${port}`));
 
 app.listen(port, () => console.log(`listening on port ${port}`));

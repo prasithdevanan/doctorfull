@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { AppContext } from '../../../component/CreateContext';
 import { Images } from '../../../assets/img';
+import { socket } from '../../../socket/socket';
 
 function Login() {
     const { BackendUrl, setToken, user, setUser } = useContext(AppContext);
@@ -13,6 +14,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [role, setRole] = useState("Patient");
 
     const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -25,6 +27,7 @@ function Login() {
 
         setLoading(true);
         await axios.post(BackendUrl + '/api/patient/login', { email, password }).then((res) => {
+            socket.emit('register', { userId: res.data.user.id, role: "Patient" });
             toast.warning(res.data);
             if (res.data.success) {
                 toast.success(res.data.message);
