@@ -64,8 +64,12 @@ function Dashboard() {
       console.log("Patient ID:", data.patientId);
       console.log("Details:", data.details);
     });
-  }, [user])
+  }, [user]);
 
+  //accept Handle
+  const acceptHandle = (item) => {
+    console.log("Accepted", item);
+  }
 
   return (
     <>
@@ -134,7 +138,7 @@ function Dashboard() {
 
 
                         <div className="flex gap-2">
-                          <button className="cursor-pointer flex justify-center items-center px-3 py-1.5 text-sm rounded-lg bg-green-500 text-white hover:bg-green-600 transition">
+                          <button className="cursor-pointer flex justify-center items-center px-3 py-1.5 text-sm rounded-lg bg-green-500 text-white hover:bg-green-600 transition" onClick={() => acceptHandle(item)}>
                             <i className="bi bi-check-lg mr-1"></i>
                             Accept
                           </button>

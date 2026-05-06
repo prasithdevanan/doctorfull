@@ -28,14 +28,6 @@ function Navbar() {
                 userId: user.id,
                 role: "Patient"
             });
-            socket.emit("book_appointment", {
-                patientId: user.id,
-                doctorId: '69d60a88d1479058b31a611e',
-                details: {
-                    time: "12:00",
-                    date: "2023-06-01"
-                }
-            })
         }
     }, [user]);
 

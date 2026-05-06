@@ -7,7 +7,7 @@ import { Images } from '../../../assets/img';
 import { socket } from '../../../socket/socket';
 
 function Login() {
-    const { BackendUrl, setToken, user, setUser } = useContext(AppContext);
+    const { BackendUrl, setToken, user, setUser, setUserId } = useContext(AppContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [status, setStatus] = useState("Login");
@@ -27,11 +27,11 @@ function Login() {
 
         setLoading(true);
         await axios.post(BackendUrl + '/api/patient/login', { email, password }).then((res) => {
-            socket.emit('register', { userId: res.data.user.id, role: "Patient" });
             toast.warning(res.data);
             if (res.data.success) {
                 toast.success(res.data.message);
                 localStorage.setItem('userId', res.data.user.id);
+                setUserId(res.data.user.id);
                 setToken(true);
                 navigate('/doctor');
                 setUser(res.data.user);
