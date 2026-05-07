@@ -21,7 +21,7 @@ export const AppProvider = ({ children }) => {
     const feach = async () => {
       try {
         const res = await axios.get(`${BackendUrl}/api/patient/signin/${userId}`);
-        console.log(res.data);
+    
         if (res.data.success) {
           setToken(true);
           setUser(res.data.user);

@@ -10,6 +10,11 @@ function PatientDetails() {
     const { token, user, BackendUrl } = useContext(AppContext);
     const location = useLocation();
     const navigate = useNavigate();
+    const [userElement, setUserElement] = useState({});
+    
+    useEffect(() => {
+        setUserElement(user);
+    },[user])
 
     ///change the screen from the previous
     useEffect(() => {
@@ -45,7 +50,8 @@ function PatientDetails() {
     // console.log(element);
     // console.log(selectTime);
     // console.log(user?.id);
-    console.log(user);
+    // console.log(user);
+    console.log(userElement)
 
     useEffect(() => {
         const selectDate = location?.state?.selectDate.day + ',' + location?.state?.selectDate.fulldate;
@@ -96,8 +102,9 @@ function PatientDetails() {
                 toast.error(res.data.message);
                 return
             }
-            socket.emit("book_appointment", { patientId: user?.id, doctorId, details: data });
-            
+
+            socket.emit("book_appointment", { patientId: userElement?.id, doctorId, details: data });
+
 
             toast.success(res.data.message);
 

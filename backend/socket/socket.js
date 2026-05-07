@@ -8,21 +8,20 @@ export const initiSocket = (io) => {
 
         // register
         socket.on('register', async ({ userId, role }) => {
-            users[userId] = {
-                socketId: socket.id,
-                role
-            }
-
+            users[userId] = { socketId: socket.id, role };
+            console.log(users);
+            // send to all users
             socket.emit('check', { users });
             console.log(`${role} registered with id: ${userId}`);
 
+            // check for notifications IS doctor
             if (role === "Doctor") {
-                console.log("doctor connected");
-                const pendingAppointments = await NotificationModel.find({ userId: userId, isRead: false });
-
+                const pendingAppointments = await NotificationModel.find({ doctorId: userId, isRead: false });
+                console.log("Check =================================================");
+                console.log(pendingAppointments);
                 if (pendingAppointments.length > 0) {
                     socket.emit('pending_notifications', pendingAppointments);
-                }
+                };
 
                 await NotificationModel.updateMany(
                     { userId, delivered: false },
@@ -40,7 +39,8 @@ export const initiSocket = (io) => {
 
             //save the notification
             const notification = await NotificationModel.create({
-                userId: doctorId,
+                userId: patientId,
+                doctorId: doctorId,
                 userType: users[patientId].role,
                 message: "New Appointment Booked",
                 data: details,
@@ -59,10 +59,13 @@ export const initiSocket = (io) => {
 
 
         // accect appointment
-        socket.on('accect_appointement', ({ doctorId, patientId, appointementId }) => {
+        socket.on('accect_appointement', async ({ doctorId, patientId, appointementId }) => {
             const patient = users[patientId];
 
             if (patient) {
+
+
+
                 io.to(patient.socketId).emit("appointment_status", {
                     appointementId,
                     status: "accepted",

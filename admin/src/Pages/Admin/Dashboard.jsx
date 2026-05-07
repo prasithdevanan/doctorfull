@@ -8,7 +8,7 @@ import { socket } from '../../socket/socket';
 function Dashboard() {
   const navigate = useNavigate();
 
-  const { BackendUrl, user, userLoading} = useContext(AdminContext);
+  const { BackendUrl, user, userLoading } = useContext(AdminContext);
   const [load, setLoad] = useState(false);
   const [doctorsList, setDoctorsList] = useState([]);
   const [patientsList, setPatientsList] = useState([]);
@@ -48,14 +48,13 @@ function Dashboard() {
 
 
   const [data, setData] = useState([]);
-  console.log(data);
 
+  //clear the data
   useEffect(() => {
-    console.log("Running useEffect");
     setData([])
   }, [user]);
 
-  //socket conection
+  //socket conection for the doctor and register
   useEffect(() => {
     if (userLoading) return;
 
@@ -78,7 +77,7 @@ function Dashboard() {
     // pending notifications
     socket.on("pending_notifications", (data) => {
       setData((prevData) => [...prevData, ...data]);
-    })
+    });
 
     return () => {
       socket.off("new_appointment");
@@ -87,10 +86,14 @@ function Dashboard() {
     }
   }, [user, userLoading]);
 
+
+  // accept notification
   //accept Handle
   const acceptHandle = (item) => {
-    console.log("Accepted", item);
+    console.log(item);
+    // socket.emit("accept_notification", ({doctorId: item._id, patientId:  }));
   }
+
 
   return (
     <>

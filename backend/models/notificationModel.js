@@ -5,6 +5,10 @@ const notificationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    doctorId: {
+        type: String,
+        required: true
+    },
     type: {
         type: String,
         default: "Appointment"
