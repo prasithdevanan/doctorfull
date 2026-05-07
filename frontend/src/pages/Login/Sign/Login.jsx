@@ -7,7 +7,13 @@ import { Images } from '../../../assets/img';
 import { socket } from '../../../socket/socket';
 
 function Login() {
-    const { BackendUrl, setToken, user, setUser } = useContext(AppContext);
+    const {
+        BackendUrl,
+        setToken,
+        setUser,
+        userId,
+        setUserId
+    } = useContext(AppContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [status, setStatus] = useState("Login");
@@ -20,30 +26,58 @@ function Login() {
 
 
     const useFuntion = async (e) => {
+
         e.preventDefault();
+
         if (!email || !password) {
-            return toast.error("Missing data")
+            return toast.error("Missing data");
         }
 
-        setLoading(true);
-        await axios.post(BackendUrl + '/api/patient/login', { email, password }).then((res) => {
-            toast.warning(res.data);
+        try {
+
+            setLoading(true);
+
+            const res = await axios.post(
+                BackendUrl + '/api/patient/login',
+                { email, password }
+            );
+
             if (res.data.success) {
+
                 toast.success(res.data.message);
-                localStorage.setItem('userId', res.data.user.id);
+
+                localStorage.setItem(
+                    'userId',
+                    res.data.user.id
+                );
+
+                setUserId(res.data.user.id);
+
                 setToken(true);
-                navigate('/doctor');
+
+                console.log(res.data.user);
+
                 setUser(res.data.user);
-                return;
+                console.log("APP CONTEXT userId:", userId);
+                navigate('/');
+
             } else {
+
                 toast.error(res.data.message);
             }
-        }).catch((err) => {
+
+        } catch (err) {
+
             console.log(err);
-            toast.error(err.response?.data?.message || "Login failed");
-        }).finally(() =>
-            setLoading(false)
-        )
+
+            toast.error(
+                err.response?.data?.message || "Login failed"
+            );
+
+        } finally {
+
+            setLoading(false);
+        }
     }
     return (
         <>
