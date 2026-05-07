@@ -10,14 +10,18 @@ export const AppProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("userId") ? true : false);
 
   const [userId, setUserId] = useState(() => localStorage.getItem("userId"));
-
-
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (!userId) return;
+    setUserId(localStorage.getItem("userId"));
+  },[])
+
+  useEffect(() => {
+    if (!userId || userId === "undefined" || userId === "null") return;
     const feach = async () => {
       try {
         const res = await axios.get(`${BackendUrl}/api/patient/signin/${userId}`);
+        console.log(res.data);
         if (res.data.success) {
           setToken(true);
           setUser(res.data.user);
@@ -30,13 +34,15 @@ export const AppProvider = ({ children }) => {
         console.log(error.message);
         setToken(false);
         localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
       }
     }
     feach();
   }, [userId]);
 
 
-  const [user, setUser] = useState(null);
+
 
 
   useEffect(() => {
@@ -62,7 +68,7 @@ export const AppProvider = ({ children }) => {
 
 
   return (
-    <AppContext.Provider value={{ token, setToken, user, setUser, BackendUrl, userId, setUserId, user, backendImg, name }}>
+    <AppContext.Provider value={{ token, setToken, user, setUser, BackendUrl, userId, user, backendImg, name }}>
       {children}
     </AppContext.Provider>
   );

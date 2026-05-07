@@ -97,7 +97,7 @@ function PatientDetails() {
                 return
             }
             socket.emit("book_appointment", { patientId: user?.id, doctorId, details: data });
-            console.log(res.data);
+            
 
             toast.success(res.data.message);
 

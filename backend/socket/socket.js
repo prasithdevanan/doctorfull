@@ -12,11 +12,23 @@ export const initiSocket = (io) => {
                 socketId: socket.id,
                 role
             }
-            console.log(users);
-            console.log(`${role} registered with id: ${userId}`);
-            const notification = await NotificationModel.find({ userId, isRead: false }).sort({ createdAt: -1 });
 
-            socket.emit('pending_notifications', notification);
+            socket.emit('check', { users });
+            console.log(`${role} registered with id: ${userId}`);
+
+            if (role === "Doctor") {
+                console.log("doctor connected");
+                const pendingAppointments = await NotificationModel.find({ userId: userId, isRead: false });
+
+                if (pendingAppointments.length > 0) {
+                    socket.emit('pending_notifications', pendingAppointments);
+                }
+
+                await NotificationModel.updateMany(
+                    { userId, delivered: false },
+                    { $set: { delivered: true } }
+                );
+            }
 
         });
 
@@ -32,10 +44,10 @@ export const initiSocket = (io) => {
                 userType: users[patientId].role,
                 message: "New Appointment Booked",
                 data: details,
-            })
+            });
 
             if (doctor) {
-                io.to(doctor.socketId).emit('new_appointment', { patientId, details, message: "New Appointment Booked" });
+                io.to(doctor.socketId).emit('new_appointment', notification);
 
                 await NotificationModel.updateOne(
                     { _id: notification._id },
@@ -43,6 +55,7 @@ export const initiSocket = (io) => {
                 )
             }
         });
+
 
 
         // accect appointment

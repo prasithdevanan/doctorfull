@@ -23,12 +23,20 @@ function Navbar() {
 
     //socket conection
     useEffect(() => {
+        console.log(user);
         if (user?.id) {
             socket.emit("register", {
                 userId: user.id,
                 role: "Patient"
             });
         }
+
+        socket.on("check", (data) => {
+            console.log(data);
+        })
+
+
+        return () => socket.off("check");
     }, [user]);
 
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, use } from 'react'
 import axios from 'axios';
 import { AdminContext } from '../../context/AdminContext';
 import { Images } from '../../Components/Images';
@@ -8,7 +8,7 @@ import { socket } from '../../socket/socket';
 function Dashboard() {
   const navigate = useNavigate();
 
-  const { BackendUrl, user } = useContext(AdminContext);
+  const { BackendUrl, user, userLoading} = useContext(AdminContext);
   const [load, setLoad] = useState(false);
   const [doctorsList, setDoctorsList] = useState([]);
   const [patientsList, setPatientsList] = useState([]);
@@ -50,21 +50,42 @@ function Dashboard() {
   const [data, setData] = useState([]);
   console.log(data);
 
+  useEffect(() => {
+    console.log("Running useEffect");
+    setData([])
+  }, [user]);
 
   //socket conection
   useEffect(() => {
+    if (userLoading) return;
+
     if (!user) {
+      console.log("No user found");
       return;
     }
+    socket.connect();
     socket.emit("register", { userId: user._id, role: "Doctor" });
+    console.log(user._id);
 
+    // Listen for new_appointment events
     socket.on("new_appointment", (data) => {
       console.log(data);
       setData((prevData) => [...prevData, data]);
       console.log("Patient ID:", data.patientId);
       console.log("Details:", data.details);
     });
-  }, [user]);
+
+    // pending notifications
+    socket.on("pending_notifications", (data) => {
+      setData((prevData) => [...prevData, ...data]);
+    })
+
+    return () => {
+      socket.off("new_appointment");
+      socket.off("pending_notifications");
+      socket.disconnect();
+    }
+  }, [user, userLoading]);
 
   //accept Handle
   const acceptHandle = (item) => {
@@ -130,9 +151,9 @@ function Dashboard() {
                       >
 
                         <div className="flex flex-col">
-                          <p className="text-sm text-gray-500">{item.details.time}</p>
+                          <p className="text-sm text-gray-500">{item.data.appointmentTime}</p>
                           <p className="text-sm font-medium text-gray-800">
-                            {item.patientId}
+                            {item.userId}
                           </p>
                         </div>
 

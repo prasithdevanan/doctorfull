@@ -10,13 +10,19 @@ const AdminContextProvider = ({ children }) => {
 
     const [aToken, setAToken] = useState(() => localStorage.getItem('aToken'));
     const [dToken, setDToken] = useState(() => localStorage.getItem('dToken'));
+    const id = localStorage.getItem("id");
+    const [user, setUser] = useState(null);
+    const [userLoading, setUserLoading] = useState(false);
+    const [logoLoading, setLogoLoading] = useState(false);
 
 
-    if (aToken) {
-        localStorage.removeItem('dToken');
-        localStorage.removeItem('dEmail');
-        localStorage.removeItem('id');
-    }
+    useEffect(() => {
+        if (aToken) {
+            localStorage.removeItem("dToken");
+            localStorage.removeItem("dEmail");
+            localStorage.removeItem("id");
+        }
+    }, [aToken]);
 
     // Validate token
     useEffect(() => {
@@ -52,6 +58,7 @@ const AdminContextProvider = ({ children }) => {
     /// get logo
     useEffect(() => {
         const feach = async () => {
+            setLogoLoading(true);
             try {
                 const res = await axios.get(`${BackendUrl}/api/admin/logo`,);
 
@@ -60,37 +67,45 @@ const AdminContextProvider = ({ children }) => {
                 setName(res.data.logo.name);
             } catch (error) {
                 console.log(error);
+            } finally {
+                setLogoLoading(false);
             }
         }
         feach();
     }, [BackendUrl, aToken])
+
     const [backendImg, setBackendImg] = useState(null);
     const [name, setName] = useState(null);
 
 
-    const [id, setId] = useState(() => localStorage.getItem('id'));
-    const [user, setUser] = useState(null);
-    ///get the user
+
     useEffect(() => {
-        if (!id) {
-            return;
-        }
-        const fetch = async () => {
+        const fetchUser = async () => {
+            if (!id || !dToken) return;
+
+            setUserLoading(true);
+
             try {
-                const res = await axios.get(`${BackendUrl}/api/doctor/doctor/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${dToken}`,
-                        'Content-Type': 'application/json'
+                const res = await axios.get(
+                    `${BackendUrl}/api/doctor/doctor/${id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${dToken}`,
+                        },
                     }
-                })
-                console.log(res.data.doctor);
+                );
+
                 setUser(res.data.doctor);
-            } catch (error) {
-                console.log(error);
+            } catch (err) {
+                console.log(err);
+                setUser(null);
+            } finally {
+                setUserLoading(false);
             }
-        }
-        fetch();
-    },[])
+        };
+
+        fetchUser();
+    }, [id, dToken, BackendUrl]);
 
     const value = {
         aToken,
@@ -99,6 +114,7 @@ const AdminContextProvider = ({ children }) => {
         user,
         setUser,
         setDToken,
+        userLoading,
         BackendUrl,
         backendImg,
         name

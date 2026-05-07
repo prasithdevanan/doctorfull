@@ -7,7 +7,7 @@ import { Images } from '../../../assets/img';
 import { socket } from '../../../socket/socket';
 
 function Login() {
-    const { BackendUrl, setToken, user, setUser, setUserId } = useContext(AppContext);
+    const { BackendUrl, setToken, user, setUser } = useContext(AppContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [status, setStatus] = useState("Login");
@@ -31,7 +31,6 @@ function Login() {
             if (res.data.success) {
                 toast.success(res.data.message);
                 localStorage.setItem('userId', res.data.user.id);
-                setUserId(res.data.user.id);
                 setToken(true);
                 navigate('/doctor');
                 setUser(res.data.user);
