@@ -1,4 +1,5 @@
 import NotificationModel from "../models/notificationModel.js";
+import appointmentModel from "../models/appoimentModel.js";
 
 const users = {};
 
@@ -56,35 +57,46 @@ export const initiSocket = (io) => {
             }
         });
 
-
-
         // accect appointment
-        socket.on('accect_appointement', async ({ doctorId, patientId, appointementId }) => {
+        socket.on('accept_appointment', async ({ doctorId, patientId, notificationId }) => {
+            const doctor = users[doctorId];
             const patient = users[patientId];
 
-            if (patient) {
-
-
-
+            if (patient && doctor) {
                 io.to(patient.socketId).emit("appointment_status", {
-                    appointementId,
+                    notificationId,
                     status: "accepted",
                     message: "Appointment accepted by doctor"
                 });
             }
+
+            await NotificationModel.updateOne(
+                { _id: notificationId },
+                { $set: { isRead: true, delivered: true, status: "Accepted" } })
         });
 
         // reject appointment
-        socket.on("reject_appointment", ({ doctorId, patientId, appointementId }) => {
+        socket.on("reject_appointment", async ({ doctorId, patientId, notificationId, details }) => {
+            const doctor = users[doctorId];
             const patient = users[patientId];
 
-            if (patient) {
+            if (patient && doctor) {
                 io.to(patient.socketId).emit("appointment_status", {
-                    appointementId,
+                    notificationId,
                     status: "rejected",
                     message: "Appointment rejected by doctor"
                 });
             }
+            await NotificationModel.updateOne(
+                { _id: notificationId },
+                { $set: { isRead: true, delivered: true, status: "Rejected" } }
+            );
+
+            await appointmentModel.updateOne(
+                {doctorId, appointmentDate: details.data.appointmentDate, appointmentTime: details.data.appointmentTime },
+                {$set: {status: "Rejected", appointmentTime: "null", appointmentDate: "null"}}
+            )
+
         });
 
         socket.on("disconnect", () => {

@@ -7,29 +7,11 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const BackendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [token, setToken] = useState(localStorage.getItem("userId") ? true : false);
+  const [token, setToken] = useState(!!localStorage.getItem("userId"));
   const [userLoading, setUserLoading] = useState(false);
 
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const [userId, setUserId] = useState(() => localStorage.getItem("userId"));
   const [user, setUser] = useState(null);
-
-  useEffect(() => {
-
-    const handleStorage = () => {
-
-      const id = localStorage.getItem("userId");
-
-      setUserId(id);
-    };
-
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      window.removeEventListener("storage", handleStorage);
-    };
-
-  }, []);
-
 
 
   useEffect(() => {
@@ -43,7 +25,6 @@ export const AppProvider = ({ children }) => {
         console.log(res.data);
 
         if (res.data.success) {
-          console.log(res.data.user);
           setToken(true);
           setUser(res.data.user);
         } else {
@@ -65,6 +46,9 @@ export const AppProvider = ({ children }) => {
   }, [userId, BackendUrl]);
 
 
+  useEffect(() => {
+    console.log("Context rerendered:", userId);
+  }, [userId]);
 
 
 

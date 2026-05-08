@@ -15,7 +15,7 @@ function Navbar() {
     const pathFind = ['/login', '/signin'];
     const hideNavbar = pathFind.includes(location.pathname);
     const navigate = useNavigate();
-    const { token, setToken, user } = useContext(AppContext);
+    const { token, setToken, user, setUserId, setUser } = useContext(AppContext);
     const [load, setLoad] = useState(<i className="bi bi-plus-circle-dotted"></i>);
     const [slice, setSlice] = useState('');
     const [menu, setMenu] = useState(false);
@@ -23,7 +23,7 @@ function Navbar() {
 
     //socket conection
     useEffect(() => {
-      
+
         if (user?.id) {
             socket.emit("register", {
                 userId: user.id,
@@ -31,6 +31,18 @@ function Navbar() {
             });
         }
     }, [user]);
+
+
+    useEffect(() => {
+        socket.on("appointment_status", (data) => {
+            console.log(data);
+        })
+
+        return () => {
+            socket.off("appointment_status");
+        }
+
+    }, []);
 
 
     useEffect(() => {
@@ -42,6 +54,8 @@ function Navbar() {
     const logout = () => {
         localStorage.removeItem('userId');
         setToken(false);
+        setUserId(null);
+        setUser(null);
         navigate('/login');
     }
 

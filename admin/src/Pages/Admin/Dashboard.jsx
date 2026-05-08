@@ -4,6 +4,7 @@ import { AdminContext } from '../../context/AdminContext';
 import { Images } from '../../Components/Images';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../socket/socket';
+import { toast } from 'react-toastify';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -90,8 +91,23 @@ function Dashboard() {
   // accept notification
   //accept Handle
   const acceptHandle = (item) => {
+    if (!item) {
+      return;
+    }
     console.log(item);
-    // socket.emit("accept_notification", ({doctorId: item._id, patientId:  }));
+    setData(data.filter((data) => data.id !== item.id));
+    socket.emit("accept_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id }));
+    toast.success("Appointment accepted");
+  };
+
+
+  const rejectHandle = (item) => {
+    if (!item) return;
+    console.log(item);
+
+    socket.emit("reject_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, details: item }));
+    setData(data.filter((data) => data.id !== item.id));
+    toast.error("Appointment rejected");
   }
 
 
@@ -167,7 +183,7 @@ function Dashboard() {
                             Accept
                           </button>
 
-                          <button className="cursor-pointer  flex justify-center items-center  px-3 py-1.5 text-sm rounded-lg bg-red-500/20 text-red-600 hover:bg-red-600/40 transition">
+                          <button className="cursor-pointer  flex justify-center items-center  px-3 py-1.5 text-sm rounded-lg bg-red-500/20 text-red-600 hover:bg-red-600/40 transition" onClick={() => rejectHandle(item)}>
                             <i className="bi bi-x mr-1"></i>
                             Decline
                           </button>

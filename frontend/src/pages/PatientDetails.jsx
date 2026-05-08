@@ -7,10 +7,14 @@ import { toast } from 'react-toastify';
 import { socket } from '../socket/socket';
 
 function PatientDetails() {
-    const { token, user, BackendUrl, userLoading } = useContext(AppContext);
+    const { token, user, BackendUrl } = useContext(AppContext);
     const location = useLocation();
     const navigate = useNavigate();
-
+    const [userElement, setUserElement] = useState({});
+    
+    useEffect(() => {
+        setUserElement(user);
+    },[user])
 
     ///change the screen from the previous
     useEffect(() => {
@@ -43,30 +47,25 @@ function PatientDetails() {
     //get the data from the previous screen
     const element = location?.state?.element || false;
     const selectTime = location?.state?.selectTime;
-
-    console.log(user);
+    // console.log(element);
+    // console.log(selectTime);
+    // console.log(user?.id);
+    // console.log(user);
+    console.log(userElement)
 
     useEffect(() => {
-        if (!user || !element) return;
-
-        const selectDate =
-            location?.state?.selectDate.day +
-            ',' +
-            location?.state?.selectDate.fulldate;
-
-        setPatientEmail(user.email);
+        const selectDate = location?.state?.selectDate.day + ',' + location?.state?.selectDate.fulldate;
+        setPatientEmail(user?.email);
         setAppointmentDate(selectDate);
         setAppointmentTime(selectTime);
-        setPatientId(user.patientId);
-
-        setDoctorId(element._id);
-        setDoctorName(element.name);
-        setDoctorEmail(element.email);
-        setImage(element.image);
-        setDoctorSpeciality(element.speciality);
-        setFees(element.fees);
-
-    }, [user, element, selectTime, location]);
+        setPatientId(user?.patientId);
+        setDoctorId(element?._id);
+        setDoctorName(element?.name);
+        setDoctorEmail(element?.email);
+        setImage(element?.image);
+        setDoctorSpeciality(element?.speciality);
+        setFees(element?.fees);
+    }, [user, location])
 
 
     const submitHandle = async (e) => {
@@ -104,7 +103,7 @@ function PatientDetails() {
                 return
             }
 
-            socket.emit("book_appointment", { patientId: user?.id, doctorId, details: data });
+            socket.emit("book_appointment", { patientId: userElement?.id, doctorId, details: data });
 
 
             toast.success(res.data.message);
