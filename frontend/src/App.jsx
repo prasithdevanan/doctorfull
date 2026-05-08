@@ -8,11 +8,9 @@ function App() {
 
   return (
     <>
-      <AppProvider>
         <Navbar />
         <Outlet />
         <ToastContainer />
-      </AppProvider>
     </>
   )
 }
