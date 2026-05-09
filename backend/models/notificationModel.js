@@ -35,6 +35,10 @@ const notificationSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    userRead: {
+        type: Boolean,
+        default: false
+    },
     delivered: {
         type: Boolean,
         default: false

@@ -94,22 +94,32 @@ function Navbar() {
                     <div className='flex'>
                         {
                             token ?
-                                <div className='relative cursor-pointer group'>
-                                    <div className='border border-gray-300 w-5 h-5 p-4 rounded-full flex justify-center items-center bg-gray-100'>
-                                        <p>{slice}</p>
-                                        {/* <img src={Images.Doc1} alt="img" className='w-8 h-8 object-cover rounded-full' /> */}
+                                <>
+                                    <div className='mr-6'>
+                                        {/* //----Notification-------------- */}
+                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative'>
+                                            <i className="bi bi-bell text-xl text-gray-500 hover:text-(--color-primary)"></i>
+                                            <div >
+                                                <span className='absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full'></span>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    {/* popup screen */}
-                                    <div className='absolute top-0 right-0 hidden group-hover:block z-50 p-2 rounded-md w-fit pt-14'>
-                                        <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
-                                            <h4 onClick={() => navigate('/profile')} className='text-gray-400 hover:text-(--color-primary) cursor-pointer'>My Profile</h4>
-                                            <h4 className='text-gray-400 hover:text-(--color-primary) cursor-pointer' onClick={() => navigate('/appointment')}>Appoinment</h4>
-                                            <h4 onClick={() => logout()} className='text-gray-400 hover:text-red-500 cursor-pointer'>Logout</h4>
+                                    <div className='relative cursor-pointer group'>
+                                        <div className='border border-gray-300 w-5 h-5 p-4 rounded-full flex justify-center items-center bg-gray-100'>
+                                            <p>{slice}</p>
+                                            {/* <img src={Images.Doc1} alt="img" className='w-8 h-8 object-cover rounded-full' /> */}
                                         </div>
 
-                                    </div>
-                                </div> : <Button children='Login' primary='bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md flex gap-1 justify-center items-center cursor-pointer' onclick={() => navigate('/login')} />
+                                        {/* popup screen */}
+                                        <div className='absolute top-0 right-0 hidden group-hover:block z-50 p-2 rounded-md w-fit pt-14'>
+                                            <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
+                                                <h4 onClick={() => navigate('/profile')} className='text-gray-400 hover:text-(--color-primary) cursor-pointer'>My Profile</h4>
+                                                <h4 className='text-gray-400 hover:text-(--color-primary) cursor-pointer' onClick={() => navigate('/appointment')}>Appoinment</h4>
+                                                <h4 onClick={() => logout()} className='text-gray-400 hover:text-red-500 cursor-pointer'>Logout</h4>
+                                            </div>
+
+                                        </div>
+                                    </div> </> : <Button children='Login' primary='bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md flex gap-1 justify-center items-center cursor-pointer' onclick={() => navigate('/login')} />
                         }
                         <div className='lg:hidden flex justify-center items-center ml-5 cursor-pointer' onClick={() => setMenu(true)}>
                             <p><i className="bi bi-list text-gray-500 text-3xl hover:text-(--color-primary)"></i></p>
