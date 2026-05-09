@@ -20,6 +20,9 @@ function Navbar() {
     const [slice, setSlice] = useState('');
     const [menu, setMenu] = useState(false);
     const { BackendUrl, backendImg, name } = useContext(AppContext);
+    const [openMenu, setOpenMenu] = useState(false);
+    const [data, setData] = useState([]);
+    const [open, setOpen] = useState(true);
 
     //socket conection
     useEffect(() => {
@@ -34,12 +37,22 @@ function Navbar() {
 
 
     useEffect(() => {
+        socket.on("pending_notifications", (data) => {
+            setData((prev) => [...prev, data]);
+            console.log(data);
+        });
+
         socket.on("appointment_status", (data) => {
+            setOpen(true);
+            setData((prev) => [...prev, data]);
             console.log(data);
         })
 
         return () => {
+            setData([]);
             socket.off("appointment_status");
+            socket.off("pending_notifications");
+            socket.disconnect();
         }
 
     }, []);
@@ -97,25 +110,54 @@ function Navbar() {
                                 <>
                                     <div className='mr-6'>
                                         {/* //----Notification-------------- */}
-                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative'>
+                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative' onClick={() =>{navigate('/notification'); setOpen(false)}}>
                                             <i className="bi bi-bell text-xl text-gray-500 hover:text-(--color-primary)"></i>
                                             <div >
-                                                <span className='absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full'></span>
+                                                {
+                                                    data.length > 0 && open &&
+                                                    <span className='absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full'></span>
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
                                     <div className='relative cursor-pointer group'>
-                                        <div className='border border-gray-300 w-5 h-5 p-4 rounded-full flex justify-center items-center bg-gray-100'>
+                                        <div className=' border border-gray-300 w-5 h-5 p-4 rounded-full flex justify-center items-center bg-gray-100' onClick={() => setOpenMenu(!openMenu)}>
                                             <p>{slice}</p>
                                             {/* <img src={Images.Doc1} alt="img" className='w-8 h-8 object-cover rounded-full' /> */}
                                         </div>
 
                                         {/* popup screen */}
-                                        <div className='absolute top-0 right-0 hidden group-hover:block z-50 p-2 rounded-md w-fit pt-14'>
-                                            <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
-                                                <h4 onClick={() => navigate('/profile')} className='text-gray-400 hover:text-(--color-primary) cursor-pointer'>My Profile</h4>
-                                                <h4 className='text-gray-400 hover:text-(--color-primary) cursor-pointer' onClick={() => navigate('/appointment')}>Appoinment</h4>
-                                                <h4 onClick={() => logout()} className='text-gray-400 hover:text-red-500 cursor-pointer'>Logout</h4>
+                                        <div className={`${openMenu ? 'block' : 'hidden'} absolute top-6 right-0 lg:group-hover:block z-50 pt-4`}>
+
+                                            <div className='w-56 bg-white/90 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-2xl overflow-hidden animate-fadeIn'>
+
+                                                <div
+                                                    onClick={() => { navigate('/profile'); setOpenMenu(false); }}
+                                                    className='flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-gray-100 transition-all duration-300'
+                                                >
+                                                    <i className="bi bi-person text-lg text-(--color-primary)"></i>
+                                                    <p className='text-gray-700 font-medium'>My Profile</p>
+                                                </div>
+
+                                                <div
+                                                    onClick={() => { navigate('/appointment'); setOpenMenu(false); }}
+                                                    className='flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-gray-100 transition-all duration-300'
+                                                >
+                                                    <i className="bi bi-calendar-check text-lg text-(--color-primary)"></i>
+                                                    <p className='text-gray-700 font-medium'>Appointments</p>
+                                                </div>
+
+                                                <div className='border-t border-gray-200'></div>
+
+                                                <div
+                                                    onClick={() => { logout(); setOpenMenu(false); }}
+                                                    className='flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-red-50 transition-all duration-300'
+                                                >
+                                                    <i className="bi bi-box-arrow-right text-lg text-red-500"></i>
+                                                    <p className='text-red-500 font-semibold'>Logout</p>
+                                                </div>
+
                                             </div>
 
                                         </div>

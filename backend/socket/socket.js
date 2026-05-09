@@ -28,7 +28,14 @@ export const initiSocket = (io) => {
                     { userId, delivered: false },
                     { $set: { delivered: true } }
                 );
-            }
+            };
+
+            if (role === "Patient") {
+                const pendingNotification = await NotificationModel.find({ userId: userId, userRead: false });
+                if (pendingNotification.length > 0) {
+                    socket.emit('pending_notifications', pendingNotification);
+                };
+            };
 
         });
 
@@ -58,12 +65,13 @@ export const initiSocket = (io) => {
         });
 
         // accect appointment
-        socket.on('accept_appointment', async ({ doctorId, patientId, notificationId }) => {
+        socket.on('accept_appointment', async ({ doctorId, patientId, notificationId, details }) => {
             const doctor = users[doctorId];
             const patient = users[patientId];
 
             if (patient && doctor) {
                 io.to(patient.socketId).emit("appointment_status", {
+                    details,
                     notificationId,
                     status: "accepted",
                     message: "Appointment accepted by doctor"
@@ -82,6 +90,7 @@ export const initiSocket = (io) => {
 
             if (patient && doctor) {
                 io.to(patient.socketId).emit("appointment_status", {
+                    details,
                     notificationId,
                     status: "rejected",
                     message: "Appointment rejected by doctor"
@@ -97,6 +106,14 @@ export const initiSocket = (io) => {
                 {$set: {status: "Rejected", appointmentTime: "null", appointmentDate: "null"}}
             )
 
+        });
+
+        //user see the message
+        socket.on("user_seen", async ({ notificationId}) => {
+            await NotificationModel.updateOne(
+                { _id: notificationId },
+                { $set: { userRead: true } }
+            );
         });
 
         socket.on("disconnect", () => {

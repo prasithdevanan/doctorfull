@@ -97,8 +97,8 @@ function Dashboard() {
       return;
     }
     console.log(item);
-    setData(data.filter((data) => data.id !== item.id));
-    socket.emit("accept_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, data: item}));
+    setData(data.filter((data) => data._id !== item._id));
+    socket.emit("accept_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, details: item}));
     toast.success("Appointment accepted");
   };
 
@@ -107,8 +107,8 @@ function Dashboard() {
     if (!item) return;
     console.log(item);
 
-    socket.emit("reject_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, details: item, data: item }));
-    setData(data.filter((data) => data.id !== item.id));
+    socket.emit("reject_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, details: item }));
+    setData(data.filter((data) => data._id !== item._id));
     toast.error("Appointment rejected");
   }
 

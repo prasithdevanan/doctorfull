@@ -81,7 +81,7 @@ function Login() {
     }
     return (
         <>
-            <section className="relative w-full min-h-screen flex items-center justify-center px-4">
+            <section className="relative w-full min-h-screen flex items-center justify-center px-4 sm:overflow-hidden">
 
 
                 <img src={Images.LoginBg} alt="Login Background" className="absolute inset-0 w-full h-full object-cover -z-10"
