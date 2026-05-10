@@ -31,9 +31,15 @@ export const initiSocket = (io) => {
             };
 
             if (role === "Patient") {
-                const pendingNotification = await NotificationModel.find({ userId: userId, userRead: false });
+                const pendingNotification = await NotificationModel.find({ userId: userId, userRead: false, delivered: true, isRead: true });
                 if (pendingNotification.length > 0) {
-                    socket.emit('pending_notifications', pendingNotification);
+                    const formattedNotifications = pendingNotification.map((item) => ({
+                        details: item,
+                        notificationId: item._id,
+                        status: item.status,
+                        message: item.message
+                    }));
+                    socket.emit('pending_notifications', formattedNotifications);
                 };
             };
 
@@ -73,7 +79,7 @@ export const initiSocket = (io) => {
                 io.to(patient.socketId).emit("appointment_status", {
                     details,
                     notificationId,
-                    status: "accepted",
+                    status: "Accepted",
                     message: "Appointment accepted by doctor"
                 });
             }
@@ -92,7 +98,7 @@ export const initiSocket = (io) => {
                 io.to(patient.socketId).emit("appointment_status", {
                     details,
                     notificationId,
-                    status: "rejected",
+                    status: "Rejected",
                     message: "Appointment rejected by doctor"
                 });
             }
@@ -102,14 +108,14 @@ export const initiSocket = (io) => {
             );
 
             await appointmentModel.updateOne(
-                {doctorId, appointmentDate: details.data.appointmentDate, appointmentTime: details.data.appointmentTime },
-                {$set: {status: "Rejected", appointmentTime: "null", appointmentDate: "null"}}
+                { doctorId, appointmentDate: details.data.appointmentDate, appointmentTime: details.data.appointmentTime },
+                { $set: { status: "Rejected", appointmentTime: null, appointmentDate: null } }
             )
 
         });
 
         //user see the message
-        socket.on("user_seen", async ({ notificationId}) => {
+        socket.on("user_seen", async ({ notificationId }) => {
             await NotificationModel.updateOne(
                 { _id: notificationId },
                 { $set: { userRead: true } }

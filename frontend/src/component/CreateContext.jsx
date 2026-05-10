@@ -12,6 +12,7 @@ export const AppProvider = ({ children }) => {
 
   const [userId, setUserId] = useState(() => localStorage.getItem("userId"));
   const [user, setUser] = useState(null);
+  const [data , setData] = useState([]);
 
 
   useEffect(() => {
@@ -77,7 +78,7 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider value={{
       token, setToken, user, setUser, BackendUrl, userId,
-      setUserId, backendImg, name, userLoading
+      setUserId, backendImg, name, userLoading, data, setData
     }}>
       {children}
     </AppContext.Provider>

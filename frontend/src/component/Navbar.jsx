@@ -15,13 +15,13 @@ function Navbar() {
     const pathFind = ['/login', '/signin'];
     const hideNavbar = pathFind.includes(location.pathname);
     const navigate = useNavigate();
-    const { token, setToken, user, setUserId, setUser } = useContext(AppContext);
+    const { token, setToken, user, setUserId, setUser, data, setData } = useContext(AppContext);
     const [load, setLoad] = useState(<i className="bi bi-plus-circle-dotted"></i>);
     const [slice, setSlice] = useState('');
     const [menu, setMenu] = useState(false);
     const { BackendUrl, backendImg, name } = useContext(AppContext);
     const [openMenu, setOpenMenu] = useState(false);
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
     const [open, setOpen] = useState(true);
 
     //socket conection
@@ -38,7 +38,7 @@ function Navbar() {
 
     useEffect(() => {
         socket.on("pending_notifications", (data) => {
-            setData((prev) => [...prev, data]);
+            setData((prev) => [...prev, ...data]);
             console.log(data);
         });
 
@@ -110,7 +110,7 @@ function Navbar() {
                                 <>
                                     <div className='mr-6'>
                                         {/* //----Notification-------------- */}
-                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative' onClick={() =>{navigate('/notification'); setOpen(false)}}>
+                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative' onClick={() =>{navigate('/notification', {state: data}); setOpen(false)}}>
                                             <i className="bi bi-bell text-xl text-gray-500 hover:text-(--color-primary)"></i>
                                             <div >
                                                 {
