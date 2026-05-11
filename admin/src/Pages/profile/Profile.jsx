@@ -42,7 +42,7 @@ function Profile() {
     return (
         <section className="h-[calc(100vh-60px)] w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center px-4 py-10">
 
-            <div className="w-full max-w-4xl backdrop-blur-xl bg-white/70 border border-white/30 shadow-2xl rounded-3xl p-6 sm:p-10 transition-all duration-300">
+            <div className="w-full max-w-4xl backdrop-blur-xl bg-white/70 border border-white/30 shadow-lg rounded-3xl p-6 sm:p-10 transition-all duration-300">
 
                 {/* HEADER */}
                 <div className="flex justify-between items-center mb-8">
