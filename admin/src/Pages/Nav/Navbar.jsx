@@ -8,7 +8,7 @@ function Navbar() {
     const body = document.querySelector('body')
     body.style.overflow = 'hidden';
     const navigate = useNavigate();
-    const { setAToken, setDToken, backendImg, name } = useContext(AdminContext);
+    const { setAToken, setDToken, backendImg, name, setUser } = useContext(AdminContext);
 
     const atoken = localStorage.getItem("aToken") ? "Admin" : "Doctor";
     const [logout, setLogout] = useState(false);
@@ -23,9 +23,11 @@ function Navbar() {
         localStorage.removeItem('aToken');
         localStorage.removeItem('dToken');
         localStorage.removeItem('dEmail');
+        localStorage.removeItem('id');
         setAToken(null);
         setDToken(null);
         setLogout(false);
+        setUser(null);
         navigate('/login', { replace: true });
     }
 

@@ -21,8 +21,18 @@ const appointmentSchema = new mongoose.Schema({
 }, { minimize: false, timestamps: true });
 
 appointmentSchema.index(
-    { doctorId: 1, appointmentDate: 1, appointmentTime: 1 },
-    { unique: true }
+  {
+    doctorId: 1,
+    appointmentDate: 1,
+    appointmentTime: 1
+  },
+  {
+    unique: true,
+    partialFilterExpression: {
+      appointmentDate: { $exists: true, $ne: null },
+      appointmentTime: { $exists: true, $ne: null }
+    }
+  }
 );
 appointmentSchema.index({ doctorEmail: 1, createdAt: -1 });
 

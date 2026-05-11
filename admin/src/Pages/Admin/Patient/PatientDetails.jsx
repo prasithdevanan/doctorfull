@@ -56,7 +56,7 @@ function PatientDetails() {
       <section className="h-[calc(100vh-64px)] w-full bg-gray-50 p-6 flex flex-col items-center gap-6 overflow-y-auto">
 
         {/* ================= Patient Card ================= */}
-        <div className="bg-white shadow-sm border border-gray-300 rounded-2xl p-6 w-full max-w-md">
+        <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 w-full max-w-md">
 
           {element.image && (
             <img
@@ -97,7 +97,7 @@ function PatientDetails() {
           {
             loading ? (
               <p>Loading..</p>
-            ) :(
+            ) : (
               <>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-semibold text-gray-800">

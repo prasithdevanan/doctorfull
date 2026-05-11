@@ -7,19 +7,25 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const BackendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [token, setToken] = useState(localStorage.getItem("userId") ? true : false);
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const [token, setToken] = useState(!!localStorage.getItem("userId"));
+  const [userLoading, setUserLoading] = useState(false);
 
+  const [userId, setUserId] = useState(() => localStorage.getItem("userId"));
+  const [user, setUser] = useState(null);
+  const [data , setData] = useState([]);
 
 
   useEffect(() => {
-    if (!userId) return;
 
     const feach = async () => {
       try {
+        if (!userId || userId === "undefined" || userId === "null") return console.log("no userId");
+
+        setUserLoading(true);
         const res = await axios.get(`${BackendUrl}/api/patient/signin/${userId}`);
+        console.log(res.data);
+
         if (res.data.success) {
-          localStorage.setItem("userId", res.data.user.id);
           setToken(true);
           setUser(res.data.user);
         } else {
@@ -31,13 +37,20 @@ export const AppProvider = ({ children }) => {
         console.log(error.message);
         setToken(false);
         localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+      } finally {
+        setUserLoading(false);
       }
     }
     feach();
+  }, [userId, BackendUrl]);
+
+
+  useEffect(() => {
+    console.log("Context rerendered:", userId);
   }, [userId]);
 
-
-  const [user, setUser] = useState(null);
 
 
   useEffect(() => {
@@ -63,7 +76,10 @@ export const AppProvider = ({ children }) => {
 
 
   return (
-    <AppContext.Provider value={{ token, setToken, user, setUser, BackendUrl, userId, setUserId, user, backendImg, name }}>
+    <AppContext.Provider value={{
+      token, setToken, user, setUser, BackendUrl, userId,
+      setUserId, backendImg, name, userLoading, data, setData
+    }}>
       {children}
     </AppContext.Provider>
   );

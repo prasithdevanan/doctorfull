@@ -17,6 +17,7 @@ import PatientDetails from "./pages/PatientDetails";
 import Appointment from "./pages/Appointment";
 import Reschedule from "./pages/Reschedule";
 import PaymentSuccess from "./pages/paymentStatus";
+import Notification from "./Notification/Notification";
 
 
 export const router = createBrowserRouter([
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
             {
                 path: "/home",
                 element: <Navigate to="/" replace={true} />,
+            },
+            {
+                path: '/notification',
+                element: <Notification />
             },
             {
                 path: "/doctor",

@@ -19,8 +19,9 @@ function Home() {
 
   useEffect(() => {
     const timer = [
-      setTimeout(() => setMessageStage(1), 5000),
-      setTimeout(() => setMessageStage(2), 10000),
+      setTimeout(() => setMessageStage(1), 3000),
+      setTimeout(() => setMessageStage(2), 6000),
+      setTimeout(() => setMessageStage(3), 9000)
     ]
   })
 

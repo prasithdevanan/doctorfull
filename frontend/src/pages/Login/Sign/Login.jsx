@@ -4,48 +4,84 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { AppContext } from '../../../component/CreateContext';
 import { Images } from '../../../assets/img';
+import { socket } from '../../../socket/socket';
 
 function Login() {
-    const { BackendUrl, setToken, user, setUser } = useContext(AppContext);
+    const {
+        BackendUrl,
+        setToken,
+        setUser,
+        userId,
+        setUserId
+    } = useContext(AppContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [status, setStatus] = useState("Login");
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [role, setRole] = useState("Patient");
 
     const [passwordVisible, setPasswordVisible] = useState(false);
 
 
     const useFuntion = async (e) => {
+
         e.preventDefault();
+
         if (!email || !password) {
-            return toast.error("Missing data")
+            return toast.error("Missing data");
         }
 
-        setLoading(true);
-        await axios.post(BackendUrl + '/api/patient/login', { email, password }).then((res) => {
-            toast.warning(res.data);
+        try {
+
+            setLoading(true);
+
+            const res = await axios.post(
+                BackendUrl + '/api/patient/login',
+                { email, password }
+            );
+
             if (res.data.success) {
+
                 toast.success(res.data.message);
-                localStorage.setItem('userId', res.data.user.id);
+
+                localStorage.setItem(
+                    'userId',
+                    res.data.user.id
+                );
+
+                setUserId(res.data.user.id);
+
                 setToken(true);
-                navigate('/doctor');
+
+                console.log(res.data.user);
+
                 setUser(res.data.user);
-                return;
+                console.log("APP CONTEXT userId:", userId);
+                navigate('/');
+
             } else {
+
                 toast.error(res.data.message);
             }
-        }).catch((err) => {
+
+        } catch (err) {
+
             console.log(err);
-            toast.error(err.response?.data?.message || "Login failed");
-        }).finally(() =>
-            setLoading(false)
-        )
+
+            toast.error(
+                err.response?.data?.message || "Login failed"
+            );
+
+        } finally {
+
+            setLoading(false);
+        }
     }
     return (
         <>
-            <section className="relative w-full min-h-screen flex items-center justify-center px-4">
+            <section className="relative w-full min-h-screen flex items-center justify-center px-4 sm:overflow-hidden">
 
 
                 <img src={Images.LoginBg} alt="Login Background" className="absolute inset-0 w-full h-full object-cover -z-10"
