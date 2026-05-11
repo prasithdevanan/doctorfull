@@ -51,8 +51,7 @@ function Notification() {
                         : data.status === "Rejected"
                           ? "bg-red-100 text-red-600 border border-red-200"
                           : "bg-yellow-100 text-yellow-700 border border-yellow-200"
-                      }
-      `}
+                      }`}
                   >
                     {data.status}
                   </span>

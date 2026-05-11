@@ -22,7 +22,7 @@ function Navbar() {
     const { BackendUrl, backendImg, name } = useContext(AppContext);
     const [openMenu, setOpenMenu] = useState(false);
     // const [data, setData] = useState([]);
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     //socket conection
     useEffect(() => {
@@ -39,7 +39,11 @@ function Navbar() {
     useEffect(() => {
         socket.on("pending_notifications", (data) => {
             const { pending, last10} = data;
+            if (pending.length > 0 ) {
+                setOpen(true);
+            }
             console.log(pending, last10);
+
             setData((prev) => [...prev, ...last10]);
             console.log(data);
         });
@@ -116,7 +120,7 @@ function Navbar() {
                                             <i className="bi bi-bell text-xl text-gray-500 hover:text-(--color-primary)"></i>
                                             <div >
                                                 {
-                                                    data.length > 0 && open &&
+                                                    open &&
                                                     <span className='absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full'></span>
                                                 }
 
