@@ -6,7 +6,7 @@ import PatientList from '../controller/paitentListController.js';
 import getAppointments from '../controller/appointmentController.js';
 import { patientUpdate } from '../controller/paitentListController.js';
 import upload from '../middlewares/multer.js';
-import getDoctorAppointments, { getPatientAppointments } from '../controller/appointmentSlot.js';
+import getDoctorAppointments, { getPatientAppointments, deleteAppointments } from '../controller/appointmentSlot.js';
 import { updateSchedule } from '../controller/appointmentUpdate.js';
 
 
@@ -22,5 +22,6 @@ patientRouter.put('/update/:id', upload.single('image'), patientUpdate);
 patientRouter.get('/appointment/timeslot', getDoctorAppointments);
 patientRouter.get('/appointment/patient', getPatientAppointments);
 patientRouter.patch('/appointment/reschedule/:id', updateSchedule);
+patientRouter.delete('/appointment/delete/:id', deleteAppointments);
 
 export default patientRouter;

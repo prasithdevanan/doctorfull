@@ -74,4 +74,23 @@ export const getAppointments = async (req, res) => {
 }
 
 
+////delete the appointment slot
+export const deleteAppointments = async (req, res) => {
+    
+    try {
+        const { id} = req.params;
+        const appointment = await appointmentModel.findByIdAndDelete(id);
+
+        if (!appointment) {
+            res.status(404).json({ success: false, message: "Appointment not found" });
+        }
+        
+        res.json({ success: true, message: "Appointment deleted successfully", appointment });
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+
 export default getDoctorAppointments;

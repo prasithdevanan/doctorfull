@@ -17,7 +17,7 @@ function DoctorList({ selectSpeciality, isHome }) {
                         <h1 className='text-2xl font-semibold text-gray-600 mt-5'>No Doctors Found</h1>
                     </div>
                     :
-                    < div className={` ${isHome ? 'flex overflow-scroll gap-6 px-6 py-4 justify-baseline xl2:justify-center' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 px-6 gap-6'}`}>
+                    < div className={` ${isHome ? 'flex overflow-x-auto gap-6 px-6 py-4 justify-baseline xl2:justify-center' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 px-6 gap-6'}`}>
                         {
                             newFilter.map((item, index) => {
                                 return (

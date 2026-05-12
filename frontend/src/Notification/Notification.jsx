@@ -19,82 +19,92 @@ function Notification() {
 
   return (
     <>
-      <div className='px-4'>
-        <h1 className='text-2xl font-semibold mb-4'>Notifications</h1>
+      <div className="px-4 sm:px-6 py-4 bg-gray-100 min-h-screen">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
+          Notifications
+        </h1>
 
-        {
-          data.map((data, index) => {
-            return (
-              <div
-                key={index}
-                className="relative overflow-hidden bg-white/80 backdrop-blur-lg border border-gray-300 rounded-3xl p-5 shadow-lg shadow-gray-200/50 hover:shadow-2xl transition-all duration-300 mb-4 "
-              >
+        {data.map((item, index) => (
+          <div
+            key={index}
+            className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 mb-4 shadow-sm hover:shadow-md transition"
+          >
+            {/* Main Container */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
-                {/* Patient Info */}
-                <div className="flex items-start justify-between">
+              {/* Left Side */}
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-4 sm:gap-6">
+
+                {/* Patient */}
+                <div>
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+                    {item.details.data.patientName}
+                  </h2>
+
+                  <p className="text-sm text-gray-500">
+                    Appointment Notification
+                  </p>
+                </div>
+
+                {/* Date */}
+                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg w-full sm:w-auto">
+                  <i className="bi bi-calendar3 text-blue-600 text-lg"></i>
+
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 tracking-wide">
-                      {data.details.data.patientName}
-                    </h3>
+                    <p className="text-xs text-gray-400">Date</p>
 
-                    <p className="text-sm text-gray-400 mt-1">
-                      Appointment Details
+                    <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                      {item.details.data.appointmentDate}
                     </p>
                   </div>
-
-                  {/* Status Badge */}
-                  <span
-                    className={`
-        px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-sm
-        ${data.status === "Accepted"
-                        ? "bg-green-100 text-green-700 border border-green-200"
-                        : data.status === "Rejected"
-                          ? "bg-red-100 text-red-600 border border-red-200"
-                          : "bg-yellow-100 text-yellow-700 border border-yellow-200"
-                      }`}
-                  >
-                    {data.status}
-                  </span>
                 </div>
 
-                {/* Divider */}
-                <div className="border-t border-gray-100 my-4"></div>
+                {/* Time */}
+                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg w-full sm:w-auto">
+                  <i className="bi bi-clock text-purple-600 text-lg"></i>
 
-                {/* Date & Time */}
-                <div className="flex flex-wrap items-center gap-4 text-sm">
+                  <div>
+                    <p className="text-xs text-gray-400">Time</p>
 
-                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-xl">
-                    <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600">
-                      <i className="bi bi-calendar3 text-lg"></i>
-                    </div>
-
-                    <div>
-                      <p className="text-gray-400 text-xs">Date</p>
-                      <p className="font-medium text-gray-700">
-                        {data.details.data.appointmentDate}
-                      </p>
-                    </div>
+                    <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                      {item.details.data.appointmentTime}
+                    </p>
                   </div>
-
-                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-xl">
-                    <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-100 text-purple-600">
-                      <i className="bi bi-clock text-lg"></i>
-                    </div>
-
-                    <div>
-                      <p className="text-gray-400 text-xs">Time</p>
-                      <p className="font-medium text-gray-700">
-                        {data.details.data.appointmentTime}
-                      </p>
-                    </div>
-                  </div>
-
                 </div>
               </div>
-            )
-          })
-        }
-      </div >
+
+              {/* Right Side */}
+              <div className="flex flex-col justify-end sm:flex-row sm:items-center gap-3 sm:gap-4">
+
+                {/* Notification Time */}
+                <span className="text-sm text-gray-400 whitespace-nowrap">
+                  {new Date(item.details.createdAt).toLocaleString("en-IN", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </span>
+
+                {/* Status */}
+                <span
+                  className={`px-4 py-2 rounded-full text-sm font-semibold text-center whitespace-nowrap
+              ${item.status === "Accepted"
+                      ? "bg-green-100 text-green-700"
+                      : item.status === "Rejected"
+                        ? "bg-red-100 text-red-600"
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}
+                >
+                  {item.status}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </>
   )
 }

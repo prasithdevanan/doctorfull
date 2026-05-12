@@ -114,10 +114,27 @@ function Appointment() {
         setPopup(true);
     }
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
+        const data = new Date().toLocaleDateString();
+        const appoitmentData = (selectedUser.appointmentDate).split(",")[1];
+        console.log(data, appoitmentData);
+        if (data === appoitmentData) {
+            alert("You can't cancel the appointment on the day of the appointment");
+            return;
+        }
         const deleteUpdate = updateAppointments.filter((item) => selectedUser._id !== item._id);
         setUpdatedAppointments(deleteUpdate);
-        setPopup(false);
+        try {
+            const res = await axios.delete(`${BackendUrl}/api/patient/appointment/delete/${selectedUser._id}`);
+            if (!res.data.success) {
+                console.log(res.data.message);
+            }
+            console.log(res.data);
+        } catch (error) {
+            console.log(error?.response?.data?.message);
+        } finally {
+            setPopup(false);
+        }
     }
 
 
@@ -131,7 +148,7 @@ function Appointment() {
                             <span className="p-3 px-4 bg-red-100 rounded-lg inline-flex"><i className="bi bi-trash3 text-red-600"></i></span>
                             <p className="text-sm text-gray-700 mt-4 mb-6">Are you sure you want to cancel this appointment?</p>
                             <div className="flex justify-center gap-3">
-                                <button className="px-4 py-2 text-sm bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300 transition">No</button>
+                                <button className="px-4 py-2 text-sm bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300 transition" onClick={() => setPopup(false)}>No</button>
                                 <button className="px-4 py-2 text-sm bg-red-500 text-white rounded-lg cursor-pointer hover:bg-red-600 transition" onClick={confirmDelete}>Yes</button>
                             </div>
                         </div>
