@@ -155,7 +155,7 @@ function Reschedule() {
     return (
         <>
             <section className=''>
-                <Link to="/appointment" className='flex gap-1 px-2 w-fit items-center'><span>{<i className="bi bi-arrow-left-short text-2xl"></i>}</span>Back</Link>
+                <Link to="/appointment" className='flex gap-1 px-2 w-fit items-center mt-4 ml-4 rounded-md py-2 hover:bg-gray-100'><span>{<i className="bi bi-arrow-left-short text-2xl"></i>}</span>Back</Link>
                 <div>
                     <h2 className='text-center text-2xl font-medium mb-4'>Reschedule Appointment</h2>
 
@@ -188,7 +188,7 @@ function Reschedule() {
 
                     </div>
                 </div>
-                <div className="flex overflow-x-auto gap-3 px-4 scroll-smooth justify-start xl:justify-center mx-auto">
+                <div className="flex overflow-x-auto gap-3 px-4 scroll-smooth justify-start xl:justify-center mx-auto no-scrollbar">
                     {dates.map((item, index) => {
                         const formet = item.day + "," + item.fulldate;
 

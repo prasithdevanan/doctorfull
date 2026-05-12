@@ -1,37 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from "react";
 import Button from '../../component/Button';
 import { Images } from '../../assets/img';
 
-const useCountAnimation = (end, duration) => {
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-        let start = 0;
-       
-        const stepTiming = duration / end;
-        console.log(stepTiming);
-        const timer = setInterval(() => {
-            start += 1;
-            setCount(start);
-            if (start === end) {
-                clearInterval(timer);
-            }
-
-
-        }, stepTiming);
-
-        return () => clearInterval(timer);
-    },[end, duration]);
-
-    return count;
-}
 
 function Header() {
+    const useCountAnimation = (end, duration) => {
+        const [count, setCount] = useState(0);
+
+        useEffect(() => {
+            let start = 0;
+
+            const stepTiming = duration / end;
+            console.log(stepTiming);
+            const timer = setInterval(() => {
+                start += 1;
+                setCount(start);
+                if (start === end) {
+                    clearInterval(timer);
+                }
+            }, stepTiming);
+
+            return () => clearInterval(timer);
+        }, [end, duration]);
+
+        return count;
+    }
+
     return (
         <>
             {/* //------------------------------------------header----------------------- */}
-            <header className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 bg-[#f7fafc]">
-
+            <header className="relative px-4 sm:px-6 lg:px-8 py-6 sm:py-8 bg-[#f7fafc]">
                 <div className="max-w-8xl mx-auto bg-white rounded-[28px] sm:rounded-[40px] overflow-hidden border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
 
                     <div className="grid lg:grid-cols-2 items-center">
@@ -83,7 +81,7 @@ function Header() {
 
                                 <div>
                                     <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                                        {useCountAnimation(10, 100)+"K+"}
+                                        {useCountAnimation(100, 1000) + "K+"}
                                     </h3>
 
                                     <p className="text-gray-500 text-xs sm:text-sm mt-1">
@@ -93,7 +91,7 @@ function Header() {
 
                                 <div>
                                     <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                                        {useCountAnimation(300, 1000)+"+"}
+                                        {useCountAnimation(300, 1000) + "+"}
                                     </h3>
 
                                     <p className="text-gray-500 text-xs sm:text-sm mt-1">

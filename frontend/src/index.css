@@ -40,11 +40,43 @@ body {
 html {
     scroll-behavior: smooth;
 }
+
 /* 
 ::-webkit-scrollbar {
     @apply hidden;
 } */
 
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* width */
+.scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+/* track */
+.scroll-container::-webkit-scrollbar-track {
+    background: var(--color-gray);
+}
+
+/* thumb */
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* thumb hover */
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    cursor: pointer;
+}
 
 
 .available {
@@ -66,6 +98,13 @@ html {
         opacity: 0.6;
         transform: scale(0.8);
     }
+}
+
+/* pdf convert */
+@layer base {
+    img {
+        display: initial
+    };
 }
 
 

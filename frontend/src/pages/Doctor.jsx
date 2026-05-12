@@ -21,14 +21,11 @@ function Doctor() {
   const visibleDoctor = show ? filterDoctor : filterDoctor.slice(0, 5);
   return (
     <>
-      <section>
-        <div className="group relative w-fit ml-3`">
+      <section className='flex justify-center items-center px-3 py-5'>
+        <div className="group relative w-fit flex justify-center items-center">
 
-          <Button
-            children="Filter"
-            primary="bg-(--color-text1) px-4 py-2 rounded-full ml-3 flex gap-2 items-center text-(--color-text-color) hover:scale-105 transition duration-300 cursor-pointer"
-            icon={<i className="bi bi-filter"></i>}
-          />
+          <button className="bg-(--color-text1) px-4 py-2 rounded-full ml-3 flex gap-2 items-center text-(--color-text-color) hover:scale-105 transition duration-300 cursor-pointer"><i className="bi bi-filter"></i>Filter</button>
+
 
           {/* Dropdown */}
           <div className="hidden group-hover:block absolute top-0 left-0 z-50 pt-14 ml-3">
@@ -57,13 +54,12 @@ function Doctor() {
           </div>
 
         </div>
+        <p className="text-lg font-medium text-gray-700 tracking-wide w-full text-center">
+          {selectSpeciality ? selectSpeciality.name : "General Doctor"}
+        </p>
       </section>
 
       <section className="flex flex-col items-center mt-6">
-
-        <p className="text-lg font-medium text-gray-700 mb-4 tracking-wide">
-          {selectSpeciality ? selectSpeciality.name : "General Doctor"}
-        </p>
 
         <DoctorList selectSpeciality={visibleDoctor} />
 

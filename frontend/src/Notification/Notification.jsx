@@ -19,7 +19,7 @@ function Notification() {
 
   return (
     <>
-      <div className="px-4 sm:px-6 py-4 bg-gray-100 min-h-screen">
+      <div className="px-4 sm:px-6 py-4 bg-gray-100 h-[calc(100vh-82px)]">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
           Notifications
         </h1>

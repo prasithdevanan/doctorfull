@@ -35,7 +35,7 @@ export const initiSocket = (io) => {
                 const pendingNotification = await NotificationModel.find({ userId: userId, userRead: false, delivered: true, isRead: true });
 
                 // find the last 10 notification as well
-                const lastNotifications = await NotificationModel.find({ userId: userId }).sort({ createdAt: -1 }).limit(10);
+                const lastNotifications = await NotificationModel.find({ userId: userId, userRead: true }).sort({ createdAt: -1 }).limit(10);
 
                 const formattedNotifications = pendingNotification.map((item) => ({
                     details: item,
@@ -100,6 +100,11 @@ export const initiSocket = (io) => {
             await NotificationModel.updateOne(
                 { _id: notificationId },
                 { $set: { isRead: true, delivered: true, status: "Accepted" } })
+
+            await appointmentModel.updateOne(
+                { doctorId, appointmentDate: details.data.appointmentDate, appointmentTime: details.data.appointmentTime },
+                { $set: { status: "Accepted" } }
+            )
         });
 
         // reject appointment

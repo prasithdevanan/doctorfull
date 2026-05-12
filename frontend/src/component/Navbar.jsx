@@ -24,6 +24,7 @@ function Navbar() {
     // const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
 
+
     //socket conection
     useEffect(() => {
 
@@ -38,13 +39,13 @@ function Navbar() {
 
     useEffect(() => {
         socket.on("pending_notifications", (data) => {
-            const { pending, last10} = data;
-            if (pending.length > 0 ) {
+            const { pending, last10 } = data;
+            if (pending.length > 0) {
                 setOpen(true);
             }
             console.log(pending, last10);
 
-            setData((prev) => [...prev, ...last10]);
+            setData((prev) => [...prev, ...last10, ...pending]);
             console.log(data);
         });
 
@@ -116,7 +117,7 @@ function Navbar() {
                                 <>
                                     <div className='mr-6'>
                                         {/* //----Notification-------------- */}
-                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative' onClick={() =>{navigate('/notification', {state: data}); setOpen(false)}}>
+                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative' onClick={() => { navigate('/notification', { state: data }); setOpen(false) }}>
                                             <i className="bi bi-bell text-xl text-gray-500 hover:text-(--color-primary)"></i>
                                             <div >
                                                 {

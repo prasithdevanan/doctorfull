@@ -3,7 +3,7 @@ import { Images } from '../assets/img';
 
 function About() {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-14">
+    <section className="max-w-7xl mx-auto px-6 py-6">
 
       {/* Title */}
       <div className="text-center mb-12">
@@ -15,13 +15,13 @@ function About() {
       <div className="grid md:grid-cols-2 gap-10 items-center">
 
         {/* Image */}
-        <div className="relative">
-          <div className="absolute -inset-2 bg-(--color-primary) opacity-10 blur-2xl rounded-3xl"></div>
+        <div className="relative flex justify-center items-center">
+          <div className="absolute -inset-2 bg-(--color-primary)  opacity-10 blur-2xl rounded-3xl"></div>
 
           <img
             src={Images.AboutImg}
             alt="about"
-            className="relative w-full rounded-3xl shadow-lg object-cover"
+            className="relative w-[80%] rounded-3xl shadow-lg object-cover"
           />
         </div>
 

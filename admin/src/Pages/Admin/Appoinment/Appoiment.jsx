@@ -86,16 +86,16 @@ function Appoiment() {
             {appointments.map((item, index) => (
               <div
                 key={index}
-                className="relative group bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                className="relative group bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300"
               >
 
                 {/* Status */}
                 <span
                   className={`absolute top-4 right-4 px-3 py-1 text-xs font-medium rounded-full
-              ${item?.status === "Completed"
+              ${item?.status === "Accepted"
                       ? "bg-green-100 text-green-700"
                       : item?.status === "Pending"
-                        ? "bg-yellow-100 text-yellow-700"
+                        ? "bg-yellow-100 text-yellow-700" : item?.status === "Rejected" ? "bg-red-100 text-red-700" : item?.status === "Cancelled" ? "bg-red-100 text-red-700"
                         : "bg-red-100 text-red-700"
                     }`}
                 >
@@ -135,7 +135,7 @@ function Appoiment() {
                 {/* Button */}
                 <button
                   onClick={() => navigate('/appoinment/details', { state: { body: item } })}
-                  className="mt-4 w-full py-2.5 rounded-xl bg-blue-600 cursor-pointer text-white font-medium hover:bg-blue-700 active:scale-[0.98] transition"
+                  className="mt-4 w-full py-2.5 rounded-xl bg-(--color-primary)/20 cursor-pointer text-(--color-primary) font-medium hover:bg-(--color-primary)/40 active:scale-[0.98] transition"
                 >
                   View Details
                 </button>
