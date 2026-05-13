@@ -8,10 +8,21 @@ function ProductorRouter({ children, adminOnly = false }) {
     const isLoggedIn = !!aToken || !!dToken;
 
     if (!isLoggedIn) {
+        localStorage.removeItem("aToken");
+        localStorage.removeItem("dToken");
+        localStorage.removeItem("dEmail");
+        localStorage.removeItem("aEmail");
+        localStorage.removeItem("id");
         return <Navigate to="/login" replace />;
     }
 
     if (adminOnly && !aToken) {
+        localStorage.removeItem("aToken");
+        localStorage.removeItem("dToken");
+        localStorage.removeItem("dEmail");
+        localStorage.removeItem("aEmail");
+        localStorage.removeItem("id");
+        console.warn("Access denied: Admins only");
         return <Navigate to="/login" replace />;
     }
 

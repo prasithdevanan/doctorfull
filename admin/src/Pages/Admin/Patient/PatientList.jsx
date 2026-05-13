@@ -34,7 +34,7 @@ function PatientList() {
     }, [BackendUrl]);
     return (
         <>
-            <section className="px-4 sm:px-6 py-6 w-full">
+            <section className="px-4 sm:px-6 py-6 w-full overflow-y-auto h-[calc(100vh-4.5rem)]">
                 {/* Header */}
                 <div className="mb-6">
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">

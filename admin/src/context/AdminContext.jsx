@@ -38,6 +38,15 @@ const AdminContextProvider = ({ children }) => {
                         'Content-Type': 'application/json'
                     }
                 });
+                if (!res.data.success) {
+                    localStorage.removeItem('aToken');
+                    localStorage.removeItem('dToken');
+                    localStorage.removeItem('dEmail');
+                    localStorage.removeItem('id');
+                    setAToken('');
+                    setDToken('');
+
+                }
 
                 console.log("Token is valid:", res.data);
 
