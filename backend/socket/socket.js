@@ -52,7 +52,6 @@ export const initiSocket = (io) => {
                     message: item.message
                 }));
                 socket.emit('pending_notifications', { pending: formattedNotifications, last10: formattedLastNotifications });
-                console.log(formattedNotifications);
             };
 
 
@@ -134,7 +133,7 @@ export const initiSocket = (io) => {
 
         //user see the message
         socket.on("user_seen", async ({ notificationId }) => {
-            console.log(notificationId);
+
             if (Array.isArray(notificationId)) {
                 await NotificationModel.updateMany(
                     { _id: { $in: notificationId } },

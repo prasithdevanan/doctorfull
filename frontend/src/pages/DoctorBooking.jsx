@@ -70,7 +70,6 @@ function DoctorBooking() {
     //-------------------------fetch the booked slot for the doctor------------------------
 
     useEffect(() => {
-        console.log(selectDate);
         if (!selectDate) return;
         const dateFormate = selectDate.day + "," + selectDate.fulldate;
         const featchBookedSlots = async () => {
@@ -87,7 +86,6 @@ function DoctorBooking() {
                 }
 
             } catch (error) {
-                // console.error('Error fetching booked slots:', error);
                 toast.error('Failed to fetch booked slots. Please try again later.');
             }
         }

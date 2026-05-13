@@ -11,7 +11,6 @@ function Header() {
             let start = 0;
 
             const stepTiming = duration / end;
-            console.log(stepTiming);
             const timer = setInterval(() => {
                 start += 1;
                 setCount(start);

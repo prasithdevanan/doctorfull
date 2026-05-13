@@ -37,7 +37,6 @@ function Home() {
       return await fetch(url);
     } catch (err) {
       if (retries > 0) {
-        console.log("Retrying...");
         await new Promise(r => setTimeout(r, 3000)); // wait 3 sec
         return fetchWithRetry(url, retries - 1);
       }
@@ -63,9 +62,7 @@ function Home() {
         }
 
         setLoading(false);
-        console.log('Backend is running!');
       } catch (error) {
-        console.log(error?.response?.data?.message || error.message);
         toast.error("Backend Server not responding.Try again later.");
       } finally {
         setLoading(false);

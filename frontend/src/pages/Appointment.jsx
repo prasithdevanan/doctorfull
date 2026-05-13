@@ -4,6 +4,7 @@ import { AppContext } from '../component/CreateContext';
 import { Images } from '../assets/img';
 import { useNavigate } from 'react-router-dom';
 import Reschedule from './Reschedule';
+import {toast} from 'react-toastify';
 
 function Appointment() {
     const navigate = useNavigate();
@@ -53,13 +54,13 @@ function Appointment() {
                 });
 
                 if (!res.data.success) {
-                    return console.log(res.data.message);
+                    return toast.error(res.data.message);
                 }
                 setAppointments(res.data.appointments);
 
 
             } catch (error) {
-                console.log(error?.response?.data?.message || error.message);
+                toast.error(error?.response?.data?.message);
             }
         }
         feach();
@@ -109,7 +110,6 @@ function Appointment() {
 
 
     const handleDeleteClick = (items) => {
-        console.log(items);
         setSelectedUser(items);
         setPopup(true);
     }
@@ -117,7 +117,7 @@ function Appointment() {
     const confirmDelete = async () => {
         const data = new Date().toLocaleDateString();
         const appoitmentData = (selectedUser.appointmentDate).split(",")[1];
-        console.log(data, appoitmentData);
+       
         if (data === appoitmentData) {
             alert("You can't cancel the appointment on the day of the appointment");
             return;
@@ -127,11 +127,11 @@ function Appointment() {
         try {
             const res = await axios.delete(`${BackendUrl}/api/patient/appointment/delete/${selectedUser._id}`);
             if (!res.data.success) {
-                console.log(res.data.message);
+                return toast.error(res.data.message);
             }
-            console.log(res.data);
+            toast.success(res.data.message);
         } catch (error) {
-            console.log(error?.response?.data?.message);
+           toast.error(error?.response?.data?.message);
         } finally {
             setPopup(false);
         }
@@ -189,12 +189,13 @@ function Appointment() {
 
                             {filteredAppointments.map((items, index) => {
 
-                                const statusStyle = items.appointmentStatus === "Completed" ? "bg-red-100 text-red-700" : items.appointmentStatus === "Upcoming" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700";
+                                const statusStyle = items.appointmentStatus === "Completed" ? "bg-[#10B981]/10 text-[#10B981]" : items.status === "Accepted" ? "bg-green-100 text-green-700" : items.status === "Rescheduled" ? "bg-[#3B82F6]/10 text-[#3B82F6]" : items.status === "Reject" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700";
 
+                                // ------- map the appoitments ------------
                                 return (
                                     <li key={index} className="bg-white border border-gray-100 rounded-2xl p-4 flex gap-4 relative shadow-sm">
 
-                                        <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full ${statusStyle}`}>{items.appointmentStatus}</span>
+                                        <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full ${statusStyle}`}>{items.appointmentStatus === "Upcoming" ? items.status : items.appointmentStatus}</span>
 
                                         <img src={items.image} alt="doctor" className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl bg-gray-100" />
 

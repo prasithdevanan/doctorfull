@@ -19,7 +19,6 @@ function signin() {
 
     const onsubmit = async (e) => {
         e.preventDefault();
-        console.log(email, password, repassword);
 
         if (!email || !password || !repassword) {
             return (
@@ -43,7 +42,6 @@ function signin() {
                     toast.error(res.data.message);
                 }
             }).catch((err) => {
-                console.log(err);
                 toast.error(err.response?.data?.message || "Login failed");
             })
         }

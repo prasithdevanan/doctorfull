@@ -47,11 +47,6 @@ function PatientDetails() {
     //get the data from the previous screen
     const element = location?.state?.element || false;
     const selectTime = location?.state?.selectTime;
-    // console.log(element);
-    // console.log(selectTime);
-    // console.log(user?.id);
-    // console.log(user);
-    console.log(userElement)
 
     useEffect(() => {
         const selectDate = location?.state?.selectDate.day + ',' + location?.state?.selectDate.fulldate;
@@ -70,7 +65,6 @@ function PatientDetails() {
 
     const submitHandle = async (e) => {
         e.preventDefault();
-        console.log(e.target);
 
         const data = {
             patientName,
@@ -98,7 +92,6 @@ function PatientDetails() {
                 }
             });
             if (!res.data.success) {
-                console.log(res.data.message);
                 toast.error(res.data.message);
                 return
             }
@@ -113,9 +106,6 @@ function PatientDetails() {
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);
         }
-
-
-        console.log(data);
     }
 
     return (

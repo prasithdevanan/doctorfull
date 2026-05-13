@@ -14,7 +14,6 @@ function Profile() {
   const [load, setLoad] = useState(false);
 
   const [user, setUser] = useState({});
-  console.log(user);
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -26,7 +25,7 @@ function Profile() {
         }
         toast.error(res.data.message);
       } catch (error) {
-        console.log(error?.response?.data?.message || error.message);
+        toast.error(error?.response?.data?.message || error.message);
       }
     };
     feach();
