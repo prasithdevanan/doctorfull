@@ -18,7 +18,6 @@ function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
   const height = window.innerHeight - 120; // Subtracting the height of the navbar (assuming it's 120px)
-  console.log(location);
   const element = location.state ? location.state.element : false;
   const date = location.state ? location?.state?.selectDate : false;
   const time = location.state ? location?.state?.selectTime : false;
@@ -50,7 +49,7 @@ function Payment() {
     }
 
     const order_id = res.data.order.id;
-    console.log("Order_id", order_id);
+
 
     const options = {
       "key": 'rzp_test_SgAnRohB2gqLpU', // Replace with your Razorpay key_id
@@ -63,7 +62,6 @@ function Payment() {
         try {
           const body = { ...response }
           const validation = await axios.post(`${BackendUrl}/api/admin/order/verify`, body, { headers: "Content-Type: application/json" });
-          console.log(validation.data);
           if (validation.data.success) {
             navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, { state: { body, amount: amount, orderId: order_id, currency: currency, name: name, fromBooking: true } });
           }
@@ -111,205 +109,333 @@ function Payment() {
 
   }
 
-  console.log(amount);
 
 
 
   return (
     <>
-      {
-        token ? (
+      <div className="w-full min-h-screen bg-gradient-to-br from-violet-50 via-white to-blue-50 py-6 sm:py-10 px-3 sm:px-5">
 
-          <div className="w-full min-h-[calc(100vh-120px)] px-4 py-6 
-      flex flex-col lg:flex-row gap-6 items-start justify-center">
+        <div className="max-w-7xl mx-auto flex flex-col xl:flex-row gap-6 lg:gap-8 items-start">
 
-            {/* LEFT - Appointment Summary */}
-            <div className="w-full lg:w-1/3 bg-purple-50 rounded-xl p-5 flex flex-col gap-5">
+          {/* LEFT SIDE */}
+          <div className="w-full xl:w-[35%] xl:sticky xl:top-24">
 
-              <h2 className="font-semibold text-lg text-(--color-text)">
-                Appointment Summary
-              </h2>
+            <div className="bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-4 sm:p-6 flex flex-col gap-5 sm:gap-6">
 
-              {/* Doctor */}
-              <div className="flex items-center gap-3 bg-white p-3 rounded-lg relative shadow-sm">
+              {/* Heading */}
+              <div>
 
-                <img
-                  src={element.image}
-                  alt="doctor"
-                  className="w-16 h-16 rounded-full object-cover bg-gray-100"
-                />
+                <p className="text-sm text-gray-500">
+                  Appointment Summary
+                </p>
 
-                {/* Availability */}
-                <div className="absolute top-2 left-2 w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mt-1">
+                  Confirm & Pay
+                </h1>
+
+              </div>
+
+              {/* Doctor Card */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 bg-gradient-to-r from-violet-50 to-blue-50 p-4 rounded-2xl border border-gray-100">
+
+                <div className="relative">
+
+                  <img
+                    src={element.image}
+                    alt="doctor"
+                    className="w-20 h-20 rounded-2xl object-cover"
+                  />
+
+                  <span className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
+
                 </div>
 
-                <div>
-                  <h3 className="font-medium text-sm text-(--color-text)">
+                <div className="flex-1 text-center sm:text-left">
+
+                  <h2 className="font-semibold text-lg text-gray-800">
                     {element.name}
-                  </h3>
-                  <p className="text-xs text-(--color-text1)">
+                  </h2>
+
+                  <p className="text-sm text-gray-500">
                     {element.speciality}
                   </p>
+
+                  <div className="mt-2 inline-flex items-center gap-2 bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
+                    Available Today
+                  </div>
+
                 </div>
 
               </div>
 
               {/* Date & Time */}
-              <div className="flex items-center gap-3">
-                <div className="bg-blue-500/10 p-2 px-3 rounded-full">
-                  <i className="bi bi-calendar4 text-blue-500"></i>
+              <div className="flex items-start gap-4">
+
+                <div className="min-w-12 w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center">
+                  <i className="bi bi-calendar4 text-blue-600 text-lg"></i>
                 </div>
 
                 <div>
-                  <p className="text-xs text-(--color-text1)">
-                    DATE & TIME
+
+                  <p className="text-xs uppercase tracking-wide text-gray-400">
+                    Date & Time
                   </p>
-                  <p className="text-sm font-medium">
+
+                  <p className="text-sm sm:text-base text-gray-800 font-medium mt-1">
                     {date}, {time}
                   </p>
+
                 </div>
+
               </div>
 
               {/* Location */}
-              <div className="flex items-start gap-3">
-                <div className="bg-blue-500/10 p-2 px-3 rounded-full">
-                  <i className="bi bi-geo-alt text-blue-500"></i>
+              <div className="flex items-start gap-4">
+
+                <div className="min-w-12 w-12 h-12 rounded-2xl bg-violet-100 flex items-center justify-center">
+                  <i className="bi bi-geo-alt text-violet-600 text-lg"></i>
                 </div>
 
                 <div>
-                  <p className="text-xs text-(--color-text1)">
-                    LOCATION
+
+                  <p className="text-xs uppercase tracking-wide text-gray-400">
+                    Location
                   </p>
-                  <p className="text-sm">
-                    {element?.address?.address1},
+
+                  <p className="text-sm sm:text-base text-gray-700 mt-1 leading-relaxed break-words">
+                    {element?.address?.address1}
                     <br />
                     {element?.address?.address2}
                   </p>
+
                 </div>
+
               </div>
 
-              {/* Total fees */}
-              <div className="w-full bg-white rounded-xl p-5 shadow-sm flex flex-col gap-3 max-w-md">
+              {/* Fees */}
+              <div className="bg-gray-50 rounded-2xl p-4 sm:p-5 flex flex-col gap-4">
 
                 <div className="flex justify-between text-sm text-gray-600">
-                  <span>Consultation Fees</span>
+                  <span>Consultation Fee</span>
+
                   <span className="font-medium text-gray-800">
                     ₹ {element.fees}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-sm text-gray-600">
-                  <span>Service Charge</span>
+
+                  <span>Platform Charge</span>
+
                   <span className="font-medium text-gray-800">
-                    ₹ 200
+                    ₹ {appCharge}
                   </span>
+
                 </div>
-                <hr className="my-1 border-gray-200" />
-                <div className="flex justify-between text-base font-semibold text-gray-900">
-                  <span>Total Amount</span>
-                  <span className="text-(--color-primary)">
+
+                <hr className="border-gray-200" />
+
+                <div className="flex justify-between items-center">
+
+                  <span className="font-semibold text-gray-900 text-sm sm:text-base">
+                    Total Amount
+                  </span>
+
+                  <span className="text-2xl font-bold text-(--color-primary)">
                     ₹ {element.fees + appCharge}
                   </span>
+
                 </div>
 
               </div>
 
             </div>
 
-            {/* RIGHT - Payment */}
-            <div className="w-full lg:w-2/3 bg-white rounded-xl p-6 shadow-sm flex flex-col gap-6 h-full">
+          </div>
 
-              <h1 className="text-xl font-semibold text-(--color-text) text-center">
-                Payment
-              </h1>
+          {/* RIGHT SIDE */}
+          <div className="w-full xl:w-[65%]">
 
-              {/* Payment Method */}
-              <div className="flex flex-wrap gap-3 justify-center">
+            <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-4 sm:p-6 lg:p-8 flex flex-col gap-6 sm:gap-8">
 
+              {/* Header */}
+              <div className="text-center">
+
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+                  Payment
+                </h1>
+
+                <p className="text-sm sm:text-base text-gray-500 mt-2">
+                  Choose your preferred payment method
+                </p>
+
+              </div>
+
+              {/* Payment Methods */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+
+                {/* Apple Pay */}
                 <button
                   onClick={() => setPaymentMethod(true)}
-                  className={`px-5 py-2 rounded-md text-sm flex items-center gap-2 transition duration-200 cursor-pointer
-              ${paymentMethod
-                      ? "bg-(--color-primary) text-(--color-white)"
-                      : "bg-(--color-primary)/20 text-(--color-primary)"
-                    } hover:scale-105`}
+                  className={`p-5 sm:p-6 rounded-3xl border transition-all duration-300 cursor-pointer
+
+            ${paymentMethod
+                      ? "border-(--color-primary) bg-(--color-primary)/10 shadow-xl shadow-blue-100/50"
+                      : "border-gray-200 hover:border-(--color-primary) hover:bg-(--color-primary)/4"
+                    }`}
                 >
-                  <i className="bi bi-apple"></i>
-                  Apple Pay
+
+                  <div className="flex flex-col items-center gap-4">
+
+                    <div className={`w-14 sm:w-16 h-14 sm:h-16 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl
+
+              ${paymentMethod
+                        ? "bg-(--color-primary) text-white"
+                        : "bg-gray-100 text-gray-600"
+                      }`}>
+
+                      <i className="bi bi-apple"></i>
+
+                    </div>
+
+                    <div>
+
+                      <h2 className="font-semibold text-base sm:text-lg">
+                        Apple Pay
+                      </h2>
+
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                        Fast & Secure Payment
+                      </p>
+
+                    </div>
+
+                  </div>
+
                 </button>
 
+                {/* Razorpay */}
                 <button
                   onClick={() => setPaymentMethod(false)}
-                  className={`px-5 py-2 rounded-md text-sm flex items-center gap-2 transition duration-200 cursor-pointer
-              ${!paymentMethod
-                      ? "bg-(--color-primary) text-(--color-white)"
-                      : "bg-(--color-primary)/20 text-(--color-primary)"
-                    } hover:scale-105`}
+                  className={`p-5 sm:p-6 rounded-3xl border transition-all duration-300 cursor-pointer
+
+            ${!paymentMethod
+                      ? "border-(--color-primary) bg-(--color-primary)/10 shadow-xl shadow-blue-100/50"
+                      : "border-gray-200 hover:border-violet-300 hover:bg-(--color-primary)/4"
+                    }`}
                 >
-                  Razor Pay
+
+                  <div className="flex flex-col items-center gap-4">
+
+                    <div className={`w-14 sm:w-16 h-14 sm:h-16 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl
+
+              ${!paymentMethod
+                        ? "bg-(--color-primary) text-white"
+                        : "bg-gray-100 text-gray-600"
+                      }`}>
+
+                      <i className="bi bi-credit-card"></i>
+
+                    </div>
+
+                    <div>
+
+                      <h2 className="font-semibold text-base sm:text-lg">
+                        Razorpay
+                      </h2>
+
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                        UPI, Card & Net Banking
+                      </p>
+
+                    </div>
+
+                  </div>
+
                 </button>
 
               </div>
 
               {/* Payment Content */}
-              <div className="bg-gray-50 p-4 rounded-lg min-h-[150px] flex items-center justify-center text-center">
+              <div className="bg-linear-(--color-primary-gradient)/20 rounded-3xl p-5 sm:p-8 flex flex-col items-center justify-center text-center min-h-[220px] border border-violet-100">
 
                 {paymentMethod ? (
-                  <div>
-                    <h2 className="font-semibold mb-2">Apple Pay</h2>
-                    <p className="text-sm text-gray-500">
-                      Pay securely using Apple Pay.
+
+                  <>
+                    <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-black text-white flex items-center justify-center text-3xl sm:text-4xl mb-5">
+                      <i className="bi bi-apple"></i>
+                    </div>
+
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                      Apple Pay
+                    </h2>
+
+                    <p className="text-sm sm:text-base text-gray-500 mt-2 max-w-md">
+                      Complete your payment instantly using Apple Pay with enhanced security.
                     </p>
-                  </div>
+                  </>
+
                 ) : (
-                  <div>
-                    <h2 className="font-semibold mb-2">Razorpay</h2>
-                    <p className="text-sm text-gray-500">
-                      Pay using UPI, Card, or Net Banking.
+
+                  <>
+                    <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-(--color-primary) text-white flex items-center justify-center text-3xl sm:text-4xl mb-5">
+                      <i className="bi bi-credit-card"></i>
+                    </div>
+
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                      Razorpay
+                    </h2>
+
+                    <p className="text-sm sm:text-base text-gray-500 mt-2 max-w-md">
+                      Pay securely via UPI, Debit/Credit Card or Net Banking.
                     </p>
-                  </div>
+                  </>
+
                 )}
+
+              </div>
+
+              {/* Total Card */}
+              <div className="bg-[var(--color-primary)]/10 rounded-3xl p-5 sm:p-6 text-white">
+
+                <div className="flex items-center justify-between gap-4">
+
+                  <div>
+
+                    <p className="text-(--color-primary) text-sm">
+                      Total Payable
+                    </p>
+
+                    <h1 className="text-3xl sm:text-4xl font-bold mt-1 text-(--color-primary)">
+                      ₹ {element.fees + appCharge}
+                    </h1>
+
+                  </div>
+
+                  <div className="min-w-14 w-14 sm:w-16 h-14 sm:h-16 rounded-2xl bg-(--color-primary)/20 flex items-center justify-center">
+                    <i className="bi bi-shield-check text-2xl sm:text-3xl text-(--color-primary)"></i>
+                  </div>
+
+                </div>
 
               </div>
 
               {/* Pay Button */}
               <button
-                className="w-full py-3 rounded-md bg-(--color-primary) text-(--color-white)  cursor-pointer
-          hover:scale-[1.02] transition duration-300 shadow-sm"  onClick={(e) => handlePayment(e)}
+                onClick={(e) => handlePayment(e)}
+                className="w-full py-3 sm:py-4 rounded-2xl bg-linear-(--color-primary-gradient) text-white font-semibold text-base sm:text-lg hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-(--color-primary) cursor-pointer"
               >
                 Proceed to Pay
               </button>
 
             </div>
-          </div>
-
-        ) : (
-
-          <div className="flex flex-col items-center justify-center min-h-[calc(100vh-120px)] px-4 text-center">
-
-            <img
-              src={Images.Login}
-              alt="login"
-              className="w-60 md:w-80 mb-4"
-            />
-
-            <p className="text-gray-600">
-              Please{" "}
-              <Link
-                to="/login"
-                state={{ from: location.pathname }}
-                className="text-(--color-primary) font-semibold underline"
-              >
-                login
-              </Link>{" "}
-              to access the payment page.
-            </p>
 
           </div>
 
-        )
-      }
+        </div>
+
+      </div>
 
     </>
   )

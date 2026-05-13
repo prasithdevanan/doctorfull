@@ -11,7 +11,6 @@ function Custom() {
     const { aToken } = useContext(AdminContext);
     const [preview, setPreview] = useState(null);
 
-    console.log(backendImg);
     const handleChange = (e) => {
         const file = e.target.files[0];
         if (file) {

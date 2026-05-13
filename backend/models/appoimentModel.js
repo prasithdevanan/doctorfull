@@ -14,8 +14,8 @@ const appointmentSchema = new mongoose.Schema({
     appointmentDate: { type: String },
     appointmentTime: { type: String },
     reason: { type: String },
-    status: { type: String, default: "pending" },
-    paymentStatus: { type: String, default: "unpaid" },
+    status: { type: String, default: "Pending" },
+    paymentStatus: { type: String, default: "Unpaid" },
     paymentId: { type: String },
     fees: { type: Number },
 }, { minimize: false, timestamps: true });

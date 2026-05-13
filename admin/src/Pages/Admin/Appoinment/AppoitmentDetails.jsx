@@ -5,14 +5,14 @@ function AppoitmentDetails() {
     const location = useLocation();
     const navigate = useNavigate();
     const element = location.state?.body;
-    console.log(element);
 
-    // check the previous screen
-    useEffect(() => {
-        if (!element) {
-            navigate('/appoinment');
-        }
-    }, []);
+        // check the previous screen
+        useEffect(() => {
+            if (!element) {
+                navigate('/appoinment');
+            }
+        }, []);
+
     return (
         <>
             <section className='w-full px-6 h-[calc(100vh-80px)] overflow-y-scroll bg-gray-50'>
@@ -75,9 +75,9 @@ function AppoitmentDetails() {
                                 </div>
 
                                 <div>
-                                    <p className="text-xs text-gray-400 mb-1">Created At</p>
+                                    <p className="text-xs text-gray-400 mb-1">Booked At</p>
                                     <p className="text-gray-800 font-medium">
-                                        {element?.updatedAt}
+                                        {new Date(element?.createdAt).toLocaleString()}
                                     </p>
                                 </div>
 

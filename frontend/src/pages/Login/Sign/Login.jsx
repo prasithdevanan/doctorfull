@@ -52,24 +52,15 @@ function Login() {
                 );
 
                 setUserId(res.data.user.id);
-
                 setToken(true);
-
-                console.log(res.data.user);
-
                 setUser(res.data.user);
-                console.log("APP CONTEXT userId:", userId);
                 navigate('/');
 
             } else {
-
                 toast.error(res.data.message);
             }
 
         } catch (err) {
-
-            console.log(err);
-
             toast.error(
                 err.response?.data?.message || "Login failed"
             );

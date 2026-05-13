@@ -18,7 +18,6 @@ const notificationSchema = new mongoose.Schema({
         enum: ["Patient", "Doctor"],
         required: true,
     },
-
     message: {
         type: String,
         required: true

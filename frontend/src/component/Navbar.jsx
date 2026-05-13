@@ -21,8 +21,8 @@ function Navbar() {
     const [menu, setMenu] = useState(false);
     const { BackendUrl, backendImg, name } = useContext(AppContext);
     const [openMenu, setOpenMenu] = useState(false);
-    // const [data, setData] = useState([]);
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
+
 
     //socket conection
     useEffect(() => {
@@ -38,14 +38,17 @@ function Navbar() {
 
     useEffect(() => {
         socket.on("pending_notifications", (data) => {
-            setData((prev) => [...prev, ...data]);
-            console.log(data);
+            const { pending, last10 } = data;
+            if (pending.length > 0) {
+                setOpen(true);
+            }
+
+            setData((prev) => [...prev, ...last10, ...pending]);
         });
 
         socket.on("appointment_status", (data) => {
             setOpen(true);
             setData((prev) => [...prev, data]);
-            console.log(data);
         })
 
         return () => {
@@ -69,19 +72,19 @@ function Navbar() {
         setToken(false);
         setUserId(null);
         setUser(null);
+        setData([]);
         navigate('/login');
     }
 
     const handleChange = () => {
         setMenu(true);
-        console.log('clicked');
     }
 
     return (
         <>
             {
                 !hideNavbar &&
-                <section className='flex justify-between lg:px-10 md:px-5 px-4 py-5 items-center border-b border-gray-300 mb-4 sticky top-0 bg-white/50 backdrop-blur-sm z-100'>
+                <section className='flex justify-between lg:px-10 md:px-5 px-4 py-5 items-center border-b border-gray-300 sticky top-0 bg-white/50 backdrop-blur-sm z-100'>
                     <div className='flex items-center gap-2 cursor-pointer' onClick={() => navigate('/')} >
                         {
                             backendImg ? <img src={backendImg} alt="img" className='w-10' /> : <h4>Logo</h4>
@@ -110,11 +113,11 @@ function Navbar() {
                                 <>
                                     <div className='mr-6'>
                                         {/* //----Notification-------------- */}
-                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative' onClick={() =>{navigate('/notification', {state: data}); setOpen(false)}}>
+                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative' onClick={() => { navigate('/notification', { state: data }); setOpen(false) }} title='Notification'>
                                             <i className="bi bi-bell text-xl text-gray-500 hover:text-(--color-primary)"></i>
                                             <div >
                                                 {
-                                                    data.length > 0 && open &&
+                                                    open &&
                                                     <span className='absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full'></span>
                                                 }
 
@@ -124,11 +127,10 @@ function Navbar() {
                                     <div className='relative cursor-pointer group'>
                                         <div className=' border border-gray-300 w-5 h-5 p-4 rounded-full flex justify-center items-center bg-gray-100' onClick={() => setOpenMenu(!openMenu)}>
                                             <p>{slice}</p>
-                                            {/* <img src={Images.Doc1} alt="img" className='w-8 h-8 object-cover rounded-full' /> */}
                                         </div>
 
                                         {/* popup screen */}
-                                        <div className={`${openMenu ? 'block' : 'hidden'} absolute top-6 right-0 lg:group-hover:block z-50 pt-4`}>
+                                        <div className={`${openMenu ? 'block' : 'hidden'} absolute top-6 right-0 lg:group-hover:block z-50 pt-4`} >
 
                                             <div className='w-56 bg-white/90 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-2xl overflow-hidden animate-fadeIn'>
 
@@ -163,7 +165,7 @@ function Navbar() {
                                         </div>
                                     </div> </> : <Button children='Login' primary='bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md flex gap-1 justify-center items-center cursor-pointer' onclick={() => navigate('/login')} />
                         }
-                        <div className='lg:hidden flex justify-center items-center ml-5 cursor-pointer' onClick={() => setMenu(true)}>
+                        <div className='lg:hidden flex justify-center items-center ml-5 cursor-pointer' onClick={() => setMenu(true)} title='Menu'>
                             <p><i className="bi bi-list text-gray-500 text-3xl hover:text-(--color-primary)"></i></p>
                         </div>
                         {

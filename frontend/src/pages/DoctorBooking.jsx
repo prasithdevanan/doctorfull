@@ -70,7 +70,6 @@ function DoctorBooking() {
     //-------------------------fetch the booked slot for the doctor------------------------
 
     useEffect(() => {
-        console.log(selectDate);
         if (!selectDate) return;
         const dateFormate = selectDate.day + "," + selectDate.fulldate;
         const featchBookedSlots = async () => {
@@ -87,7 +86,6 @@ function DoctorBooking() {
                 }
 
             } catch (error) {
-                // console.error('Error fetching booked slots:', error);
                 toast.error('Failed to fetch booked slots. Please try again later.');
             }
         }
@@ -168,7 +166,7 @@ function DoctorBooking() {
                     </h1>
 
                     {/* Date Slots */}
-                    <div className="w-full flex gap-3 overflow-x-auto xl:justify-center pb-2">
+                    <div className="w-full flex gap-3 overflow-x-auto xl:justify-center pb-2 no-scrollbar">
 
                         {dates.map((item, index) => (
                             <div
@@ -192,7 +190,7 @@ function DoctorBooking() {
 
                     {/* Time Slots */}
                     {selectedIndex !== null && (
-                        <div className="flex gap-2 mt-4 mb-2 overflow-x-auto pb-2 w-full xl:justify-center">
+                        <div className="flex gap-2 mt-4 mb-2 overflow-x-auto pb-2 w-full xl:justify-center no-scrollbar">
 
                             {timeSlots.map((item, index) => {
                                 const isBooked = bookedSlots.includes(item);

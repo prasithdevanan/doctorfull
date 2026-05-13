@@ -61,8 +61,6 @@ const AdminContextProvider = ({ children }) => {
             setLogoLoading(true);
             try {
                 const res = await axios.get(`${BackendUrl}/api/admin/logo`,);
-
-                console.log(res.data.logo.image);
                 setBackendImg(res.data.logo.image);
                 setName(res.data.logo.name);
             } catch (error) {

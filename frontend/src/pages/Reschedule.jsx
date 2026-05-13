@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom';
 function Reschedule() {
     const location = useLocation();
     const appointment = location.state?.appointment || null;
-    console.log(appointment._id);
     const [selectDate, setSelectDate] = useState(null);
     const [selectTime, setSelectTime] = useState(null);
     const [bookedSlots, setBookedSlots] = useState([]);
@@ -29,7 +28,6 @@ function Reschedule() {
     useEffect(() => {
         const format = appointment?.appointmentDate;
         setCurrentDate(format);
-        console.log(format);
     }, [appointment]);
     //-------------------------Date calcualte------------------------
     for (let i = 1; i <= 11; i++) {
@@ -70,9 +68,8 @@ function Reschedule() {
 
     //-------------------------Date slote from backend------------------------
     useEffect(() => {
-        // if (!currentDate || !selectDate) return console.log("No date selected");
+        // if (!currentDate || !selectDate) return toast.error("No date selected");
         const dateFormate = selectDate ? selectDate.day + "," + selectDate.fulldate : currentDate;
-        console.log(dateFormate);
         const featchBookedSlots = async () => {
             try {
                 const res = await axios.get(`${BackendUrl}/api/patient/appointment/timeslot`, {
@@ -85,12 +82,9 @@ function Reschedule() {
                 if (res.data.success) {
                     setBookedSlots(res.data.bookedSlots);
                 }
-                console.log("Booked Slots:", res.data.bookedSlots);
-
-                console.log(res.data);
+                toast.error(res.data.message);
 
             } catch (error) {
-                console.error('Error fetching booked slots:', error);
                 toast.error('Failed to fetch booked slots. Please try again later.');
             }
         }
@@ -122,14 +116,13 @@ function Reschedule() {
                 doctorId: appointment.doctorId,
                 appointmentDate: selectDate.day + "," + selectDate.fulldate,
                 appointmentTime: selectTime,
-                status: "rescheduled"
+                status: "Rescheduled"
             });
 
             if (res.data.success) {
                 toast.success(res.data.message);
             }
         } catch (error) {
-            console.error('Error rescheduling appointment:', error);
             toast.error('Failed to reschedule appointment. Please try again later.');
         } finally {
             setPopup(false);
@@ -155,7 +148,7 @@ function Reschedule() {
     return (
         <>
             <section className=''>
-                <Link to="/appointment" className='flex gap-1 px-2 w-fit items-center'><span>{<i className="bi bi-arrow-left-short text-2xl"></i>}</span>Back</Link>
+                <Link to="/appointment" className='flex gap-1 px-2 w-fit items-center mt-4 ml-4 rounded-md py-2 hover:bg-gray-100'><span>{<i className="bi bi-arrow-left-short text-2xl"></i>}</span>Back</Link>
                 <div>
                     <h2 className='text-center text-2xl font-medium mb-4'>Reschedule Appointment</h2>
 
@@ -188,7 +181,7 @@ function Reschedule() {
 
                     </div>
                 </div>
-                <div className="flex overflow-x-auto gap-3 px-4 scroll-smooth justify-start xl:justify-center mx-auto">
+                <div className="flex overflow-x-auto gap-3 px-4 scroll-smooth justify-start xl:justify-center mx-auto no-scrollbar">
                     {dates.map((item, index) => {
                         const formet = item.day + "," + item.fulldate;
 
@@ -244,7 +237,7 @@ function Reschedule() {
                     </div>
                 </div>
 
-                <button className='bg-(--color-primary) py-2 px-4 text-(--color-white) rounded-md cursor-pointer mt-4 mx-auto flex mb-4' onClick={checkPopup}>Reschedule</button>
+               { selectTime && <button className='bg-(--color-primary) py-2 px-4 text-(--color-white) hover:bg-(--color-primary)/90 transition-all duration-300 hover:scale-105 rounded-md cursor-pointer mt-4 mx-auto flex mb-4' onClick={checkPopup}>Reschedule</button>}
 
                 {popup &&
                     <div className='absolute top-0 left-0 w-full flex items-center justify-center bg-black/20 bg-opacity-50 z-999'>

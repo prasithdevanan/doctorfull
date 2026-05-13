@@ -15,10 +15,10 @@ function signin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repassword, setRePassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const onsubmit = async (e) => {
         e.preventDefault();
-        console.log(email, password, repassword);
 
         if (!email || !password || !repassword) {
             return (
@@ -42,7 +42,6 @@ function signin() {
                     toast.error(res.data.message);
                 }
             }).catch((err) => {
-                console.log(err);
                 toast.error(err.response?.data?.message || "Login failed");
             })
         }
@@ -55,7 +54,7 @@ function signin() {
 
                 {/* Background */}
                 <img
-                    src={Images.LoginBg}
+                    src={Images?.LoginBg}
                     alt="background"
                     className="absolute inset-0 w-full h-full object-cover -z-10"
                 />
@@ -90,29 +89,35 @@ function signin() {
                     {/* Password */}
                     <div className="flex flex-col gap-1">
                         <label className="text-sm text-gray-600">Password</label>
-                        <input
-                            type="password"
-                            placeholder="Enter Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="px-3 py-2 rounded-md bg-gray-100/70 border border-gray-200 
-        focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
-                        />
+                        <div className='relative'>
+                            <input
+                                type={passwordVisible ? "text" : "password"}
+                                placeholder="Enter Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className="px-3 py-2 rounded-md bg-gray-100/70 border border-gray-200 w-full focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 cursor-pointer" onClick={() => setPasswordVisible(!passwordVisible)}>{passwordVisible ? "Hide" : "Show"}</span>
+                        </div>
                     </div>
 
                     {/* Re-Password */}
                     <div className="flex flex-col gap-1">
                         <label className="text-sm text-gray-600">Confirm Password</label>
-                        <input
-                            type="password"
-                            placeholder="Re-enter Password"
-                            value={repassword}
-                            onChange={(e) => setRePassword(e.target.value)}
-                            required
-                            className="px-3 py-2 rounded-md bg-gray-100/70 border border-gray-200 
+                        <div className='relative'>
+
+                            <input
+                                type={passwordVisible ? "text" : "password"}
+                                placeholder="Re-enter Password"
+                                value={repassword}
+                                onChange={(e) => setRePassword(e.target.value)}
+                                required
+                                className="px-3 py-2 rounded-md bg-gray-100/70 border w-full border-gray-200 
         focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
-                        />
+                            />
+                            <span className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-xs text-gray-500' onClick={() => setPasswordVisible(!passwordVisible)}>{passwordVisible ? "Hide" : "Show"}</span>
+                        </div>
                     </div>
 
                     {/* Button */}

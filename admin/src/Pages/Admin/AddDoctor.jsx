@@ -70,7 +70,6 @@ function AddDoctor() {
 
     } catch (error) {
       toast.error(error);
-      console.log(error)
     } finally {
       setLoading(false);
     }

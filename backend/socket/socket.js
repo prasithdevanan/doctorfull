@@ -10,7 +10,7 @@ export const initiSocket = (io) => {
         // register
         socket.on('register', async ({ userId, role }) => {
             users[userId] = { socketId: socket.id, role };
-            console.log(users);
+
             // send to all users
             socket.emit('check', { users });
             console.log(`${role} registered with id: ${userId}`);
@@ -18,8 +18,7 @@ export const initiSocket = (io) => {
             // check for notifications IS doctor
             if (role === "Doctor") {
                 const pendingAppointments = await NotificationModel.find({ doctorId: userId, isRead: false });
-                console.log("Check =================================================");
-                console.log(pendingAppointments);
+
                 if (pendingAppointments.length > 0) {
                     socket.emit('pending_notifications', pendingAppointments);
                 };
@@ -31,23 +30,36 @@ export const initiSocket = (io) => {
             };
 
             if (role === "Patient") {
+
+                /// find pending notifications
                 const pendingNotification = await NotificationModel.find({ userId: userId, userRead: false, delivered: true, isRead: true });
-                if (pendingNotification.length > 0) {
-                    const formattedNotifications = pendingNotification.map((item) => ({
-                        details: item,
-                        notificationId: item._id,
-                        status: item.status,
-                        message: item.message
-                    }));
-                    socket.emit('pending_notifications', formattedNotifications);
-                };
+
+                // find the last 10 notification as well
+                const lastNotifications = await NotificationModel.find({ userId: userId, userRead: true }).sort({ createdAt: -1 }).limit(10);
+
+                const formattedNotifications = pendingNotification.map((item) => ({
+                    details: item,
+                    notificationId: item._id,
+                    status: item.status,
+                    message: item.message
+                }));
+
+
+                const formattedLastNotifications = lastNotifications.map((item) => ({
+                    details: item,
+                    notificationId: item._id,
+                    status: item.status,
+                    message: item.message
+                }));
+                socket.emit('pending_notifications', { pending: formattedNotifications, last10: formattedLastNotifications });
             };
+
+
 
         });
 
         // patient book appotiments
         socket.on('book_appointment', async ({ patientId, doctorId, details }) => {
-            console.log("patient book appotiments", patientId, doctorId, details);
 
             const doctor = users[doctorId];
 
@@ -87,6 +99,11 @@ export const initiSocket = (io) => {
             await NotificationModel.updateOne(
                 { _id: notificationId },
                 { $set: { isRead: true, delivered: true, status: "Accepted" } })
+
+            await appointmentModel.updateOne(
+                { doctorId, appointmentDate: details.data.appointmentDate, appointmentTime: details.data.appointmentTime },
+                { $set: { status: "Accepted" } }
+            )
         });
 
         // reject appointment
@@ -116,10 +133,14 @@ export const initiSocket = (io) => {
 
         //user see the message
         socket.on("user_seen", async ({ notificationId }) => {
-            await NotificationModel.updateOne(
-                { _id: notificationId },
-                { $set: { userRead: true } }
-            );
+
+            if (Array.isArray(notificationId)) {
+                await NotificationModel.updateMany(
+                    { _id: { $in: notificationId } },
+                    { $set: { userRead: true } }
+                );
+            }
+
         });
 
         socket.on("disconnect", () => {

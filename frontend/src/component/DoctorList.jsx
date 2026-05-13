@@ -17,12 +17,17 @@ function DoctorList({ selectSpeciality, isHome }) {
                         <h1 className='text-2xl font-semibold text-gray-600 mt-5'>No Doctors Found</h1>
                     </div>
                     :
-                    < div className={` ${isHome ? 'flex overflow-scroll gap-6 px-6 py-4 justify-baseline xl2:justify-center' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 px-6 gap-6'}`}>
+                    <div
+                        className={`${isHome
+                                ? "no-scrollbar flex overflow-x-auto gap-6 px-6 py-4 items-baseline xl2:justify-center"
+                                : "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 px-6 gap-6"
+                            }`}
+                    >
                         {
                             newFilter.map((item, index) => {
                                 return (
                                     <Link to={`/doctor/${item._id}`} key={index} state={{ element: item, fromBooking: true }} className='flex h-fit my-auto'>
-                                        <div className={`${isHome ? 'flex flex-col justify-center w-64 cursor-pointer hover:scale-102 transition ease-in-out duration-300 bg-gray-100 rounded-2xl items-center': 'flex gap-4 items-center flex-col cursor-pointer hover:scale-102 transition ease-in-out duration-300 bg-gray-100 rounded-2xl'}`}>
+                                        <div className={`${isHome ? 'flex flex-col justify-center w-64 cursor-pointer hover:scale-102 transition ease-in-out duration-300 bg-gray-100 rounded-2xl items-center' : 'flex gap-4 items-center flex-col cursor-pointer hover:scale-102 transition ease-in-out duration-300 bg-gray-100 rounded-2xl'}`}>
                                             <img src={item.image} alt="img" className='w-full object-contain bg-blue-100 rounded-xl' />
                                             <div className='flex flex-col items-start w-full px-3 py-2 gap-2'>
                                                 {
