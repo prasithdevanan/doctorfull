@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { use, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../component/CreateContext';
 import { socket } from '../socket/socket';
 
@@ -9,7 +9,8 @@ function Notification() {
 
   // Mark as seen
   useEffect(() => {
-    if (!data || !data.length) return;
+    console.log('mark as seen');
+    if (!data || !data.length) return setLoading(false);
     const ids = data.map((data) => data.notificationId);
     socket.emit("user_seen", { notificationId: ids });
     setLoading(false);

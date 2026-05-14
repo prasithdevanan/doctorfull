@@ -70,15 +70,35 @@ function Dashboard() {
     // Listen for new_appointment events
     socket.on("new_appointment", (data) => {
       console.log(data);
-      setData((prevData) => [...prevData, data]);
-      console.log("Patient ID:", data.patientId);
-      console.log("Details:", data.details);
+
+      setData((prev) => {
+
+        // Prevent duplicates
+        const exists = prev.find(
+          (item) => item._id === data._id
+        );
+
+        if (exists) return prev;
+
+        return [...prev, data];
+      });
     });
 
     // pending notifications
     socket.on("pending_notifications", (data) => {
       console.log(data);
-      setData((prevData) => [...prevData, ...data]);
+      setData((prevData) => {
+        const merged = [...prevData];
+        data.forEach((item) => {
+          const exists = merged.find((d) => d._id === item._id);
+          console.log(exists);
+
+          if (!exists) {
+            merged.push(item);
+          }
+        })
+        return merged;
+      });
     });
 
     return () => {
@@ -98,7 +118,7 @@ function Dashboard() {
     }
     console.log(item);
     setData(data.filter((data) => data._id !== item._id));
-    socket.emit("accept_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, details: item}));
+    socket.emit("accept_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, details: item }));
     toast.success("Appointment accepted");
   };
 
