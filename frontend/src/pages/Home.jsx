@@ -7,6 +7,8 @@ import { AppContext } from '../component/CreateContext';
 import { toast } from 'react-toastify';
 import Footer from './Home/Footer';
 import axios from 'axios';
+import Choose from './Home/Choose';
+import Flow from './Home/Flow';
 
 
 
@@ -77,11 +79,13 @@ function Home() {
       <div className={`fixed inset-0 bg-black/50 flex flex-col items-center justify-center z-999 transition-opacity ${loading ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className='loader'>
         </div>
-        <p className='font-medium text-2xl text-white text-center px-3'>{messages[messageStage]}</p>
+        <p className='font-medium text-xl text-white text-center px-3'>{messages[messageStage]}</p>
       </div>
       <Header />
       <Speciality />
       <TopDoctor />
+      <Choose />
+      <Flow />
       <TrustCard />
       <Footer />
     </>

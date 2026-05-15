@@ -50,7 +50,7 @@ function Notification() {
                   </div>
 
                   {/* Date */}
-                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg w-full sm:w-auto">
+                  <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 px-3 py-2 rounded-lg w-full sm:w-auto">
                     <i className="bi bi-calendar3 text-blue-600 text-lg"></i>
 
                     <div>
@@ -63,7 +63,7 @@ function Notification() {
                   </div>
 
                   {/* Time */}
-                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg w-full sm:w-auto">
+                  <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 px-3 py-2 rounded-lg w-full sm:w-auto">
                     <i className="bi bi-clock text-purple-600 text-lg"></i>
 
                     <div>
