@@ -3,7 +3,7 @@ import { AdminContext } from '../../context/AdminContext';
 import { NavLink } from 'react-router-dom';
 
 function Sidebar() {
-    const { aToken } = useContext(AdminContext);
+    const { aToken, dToken   } = useContext(AdminContext);
 
     const featues = [
         {
@@ -26,11 +26,17 @@ function Sidebar() {
             path: "/add-doctor",
             iconClass: "bi bi-person-plus"
         }] : []),
-        {
-            name: "Doctor List",
-            path: "/doctorlist",
-            iconClass: "bi bi-list"
-        },
+        ...aToken ? [
+            {
+                name: "Doctor List",
+                path: "/doctorlist",
+                iconClass: "bi bi-list"
+            }] : [],
+        ...dToken ? [{
+            name: "Profile",
+            path: "/profile",
+            iconClass: "bi bi-person"
+        }] : [],
         ...(aToken ? [
             {
                 name: "Custom",

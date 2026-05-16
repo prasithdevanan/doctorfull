@@ -4,3 +4,8 @@ export const socket = io("https://doctorfull.onrender.com", {
     transports: ["websocket", "polling"],
     autoConnect: true
 });
+
+// export const socket = io("http://localhost:4000", {
+//     transports: ["websocket", "polling"],
+//     autoConnect: true,
+// });

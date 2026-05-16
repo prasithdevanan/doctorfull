@@ -38,12 +38,33 @@ function Navbar() {
 
     useEffect(() => {
         socket.on("pending_notifications", (data) => {
+
             const { pending, last10 } = data;
+
             if (pending.length > 0) {
                 setOpen(true);
             }
 
-            setData((prev) => [...prev, ...last10, ...pending]);
+            setData((prev) => {
+
+                const merged = [
+                    ...pending,
+                    ...last10,
+                    ...prev
+                ];
+                console.log(merged);
+
+                const unique = merged.filter(
+                    (item, index, self) =>
+                        index === self.findIndex(
+                            (t) => t.details._id === item.details._id
+                        )
+                );
+
+                return unique.slice(0, 10);
+
+            });
+
         });
 
         socket.on("appointment_status", (data) => {
