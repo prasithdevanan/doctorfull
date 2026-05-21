@@ -1,13 +1,11 @@
 import React from 'react'
 import { Images } from '../assets/img';
-import { doctorList } from '../assets/data';
 import { Link } from 'react-router-dom';
 
 
 function DoctorList({ selectSpeciality, isHome }) {
 
-    const newFilter = selectSpeciality ? selectSpeciality : doctorList;
-
+    const newFilter = selectSpeciality ? selectSpeciality : '';
     return (
         <>
             {
@@ -19,8 +17,8 @@ function DoctorList({ selectSpeciality, isHome }) {
                     :
                     <div
                         className={`${isHome
-                                ? "no-scrollbar flex overflow-x-auto gap-6 px-6 py-4 items-baseline xl2:justify-center"
-                                : "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 px-6 gap-6"
+                            ? "no-scrollbar flex overflow-x-auto gap-6 px-6 py-4 items-baseline xl2:justify-center"
+                            : "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 px-6 gap-6"
                             }`}
                     >
                         {
