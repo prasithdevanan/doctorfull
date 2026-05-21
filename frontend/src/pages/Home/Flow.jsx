@@ -25,7 +25,7 @@ function Flow() {
 
     return (
         <>
-            <section className="mt-16 px-4 flex flex-col items-center mx-auto gap-10 md:w-[80%]">
+            <section className="mt-16 px-4 flex flex-col items-center mx-auto gap-10 md:w-[80%] mb-20">
 
                 {/* -------Heading */}
                 <div className="flex flex-col items-center gap-3 text-center max-w-2xl title-card">
