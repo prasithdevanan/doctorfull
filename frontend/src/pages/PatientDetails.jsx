@@ -138,7 +138,7 @@ function PatientDetails() {
                                 Intake Department
                             </p>
 
-                            <div className="relative w-full max-w-4xl flex-col sm:flex-row flex gap-6 p-6 rounded-2xl bg-white border border-gray-100 mb-4">
+                            <div className="relative w-full max-w-4xl flex-col sm:flex-row flex gap-6 p-6 rounded-2xl bg-gray-100 border border-gray-200 mb-4">
                                 <p className='absolute right-0 top-0 opacity-50 px-4 py-2'>Doctor Details</p>
                                 {/* Image */}
                                 <div className="flex-shrink-0">
@@ -241,7 +241,7 @@ function PatientDetails() {
                             <button
                                 type="submit"
                                 className="mt-6 px-6 py-2 rounded-md bg-blue-600 text-white 
-      hover:scale-105 transition duration-300 shadow-sm hover:shadow-md"
+      hover:scale-105 transition duration-300 shadow-sm hover:shadow-md cursor-pointer"
                             >
                                 Submit Details
                             </button>

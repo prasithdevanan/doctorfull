@@ -145,7 +145,7 @@ function Login() {
                             onClick={() => navigate('/signin')}
                             className="text-(--color-primary) underline cursor-pointer"
                         >
-                            Signin
+                            SignUp
                         </span>
                     </p>
 

@@ -97,7 +97,7 @@ function Profile() {
           </div>
           <p className='text-gray-400'>Loading...</p>
         </div>) :
-        (<section className="w-full min-h-screen bg-[#f5f7fb] flex flex-col items-center px-4 py-10">
+        (<section className="w-full h-[calc(100vh-81px)] bg-[#f5f7fb] flex flex-col items-center px-4 py-10 min-h-fit justify-center">
 
           <div className="w-full max-w-3xl text-center mb-8">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">

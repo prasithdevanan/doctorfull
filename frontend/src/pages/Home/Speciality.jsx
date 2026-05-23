@@ -10,7 +10,7 @@ function Speciality() {
         const animation = gsap.from(".title-cards", {
             scrollTrigger: {
                 trigger: ".title-cards",
-                start: "top 60%",
+                start: "top 80%",
                 toggleActions: "restart none none reset",
                 invalidateOnRefresh: true,
             },
