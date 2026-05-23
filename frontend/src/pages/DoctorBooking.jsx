@@ -239,7 +239,7 @@ function DoctorBooking() {
                     <Button
                         children="Book Appointment"
                         icon={<i className="bi bi-arrow-right-short text-2xl"></i>}
-                        primary={`flex items-center gap-2 px-4 py-2 rounded-full transition duration-300 cursor-pointer
+                        primary={`flex items-center gap-2 px-4 py-2 rounded-md transition duration-300 cursor-pointer
         ${selectedTimeslot !== null
                                 ? "bg-(--color-primary) text-(--color-white) hover:scale-105"
                                 : "bg-(--color-input) text-(--color-text2) cursor-not-allowed"
