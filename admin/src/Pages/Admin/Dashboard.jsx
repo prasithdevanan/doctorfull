@@ -63,7 +63,6 @@ function Dashboard() {
       console.log("No user found");
       return;
     }
-    socket.connect();
     socket.emit("register", { userId: user._id, role: "Doctor" });
     console.log(user._id);
 
@@ -86,13 +85,10 @@ function Dashboard() {
 
     // pending notifications
     socket.on("pending_notifications", (data) => {
-      console.log(data);
       setData((prevData) => {
         const merged = [...prevData];
         data.forEach((item) => {
           const exists = merged.find((d) => d._id === item._id);
-          console.log(exists);
-
           if (!exists) {
             merged.push(item);
           }

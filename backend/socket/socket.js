@@ -12,12 +12,12 @@ export const initiSocket = (io) => {
             users[userId] = { socketId: socket.id, role };
 
             // send to all users
-            socket.emit('check', { users });
             console.log(`${role} registered with id: ${userId}`);
+            socket.emit('check', { users });
 
             // check for notifications IS doctor
             if (role === "Doctor") {
-                const pendingAppointments = await NotificationModel.find({ doctorId: userId, isRead: false });
+                const pendingAppointments = await NotificationModel.find({ doctorId: userId, isRead: false });  
 
                 if (pendingAppointments.length > 0) {
                     socket.emit('pending_notifications', pendingAppointments);
