@@ -147,9 +147,8 @@ function DoctorBooking() {
 
                         {/* Fees */}
                         <h2 className="font-medium text-(--color-text)">
-                            Appointment Fees - {element.fees}
+                            Appointment Fees - <span className="font-semibold text-green-600">₹{element.fees}</span>
                         </h2>
-
                     </div>
 
                 </div>
@@ -246,7 +245,6 @@ function DoctorBooking() {
                             }`}
                     />
                 </Link>
-
             </section>
 
         </>
