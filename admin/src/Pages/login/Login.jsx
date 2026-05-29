@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import Sidebar from './Sidebar';
 
 
 
@@ -75,8 +76,8 @@ function Login() {
 
   return (
     <>
-      <section className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-br from-blue-400/40 via-cyan-400/10 to-teal-400/40">
-
+      <section className="relative flex items-center justify-center min-h-screen w-full bg-gradient-to-br from-blue-400/40 via-cyan-400/10 to-teal-400/40">
+    <Sidebar />
         <form
           className="flex flex-col w-[90%] sm:w-[80%] md:w-[70%] lg:w-[35%] border border-gray-200 p-8 rounded-xl shadow-md bg-white/30 backdrop-blur-2xl"
           onSubmit={onSubmitHandler} autoComplete='on'
