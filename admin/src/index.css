@@ -12,7 +12,7 @@
     --color-primary: #2563EB;
     --color-secondary: #14B8A6;
     --color-text-color: #ffffff;
-    --color-primary-gradient: 135deg, #1E3A8A 0%, #3B82F6 100%;
+    --color-primary-gradient: 135deg, hsl(224, 64%, 33%) 0%, #3B82F6 100%;
     --color-gradient: 101.9deg, #FFFFFF 1.02%, #d0defe 103.17%;
 
     /*color-geadient*/

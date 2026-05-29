@@ -11,13 +11,14 @@ function PatientDetails() {
     const location = useLocation();
     const navigate = useNavigate();
     const [userElement, setUserElement] = useState({});
-    
+
     useEffect(() => {
         setUserElement(user);
-    },[user])
+    }, [user])
 
     ///change the screen from the previous
     useEffect(() => {
+        console.log(location.state)
         if (!location?.state?.fromBooking) {
             navigate('/doctor');
             return;
@@ -113,33 +114,76 @@ function PatientDetails() {
             {
                 token ? (
 
-                    <div className="w-full min-h-[calc(100vh-120px)] flex items-center justify-center px-4">
+                    <div className="w-full min-h-[calc(100vh-120px)] flex flex-col items-center justify-center px-4 py-10 gap-10 bg-gray-50">
 
+                        {/* ===== Form ===== */}
                         <form
                             onSubmit={submitHandle}
-                            className="w-full max-w-3xl flex flex-col items-center"
+                            className="w-full max-w-4xl flex flex-col items-center"
                         >
 
                             {/* Header */}
                             <div className="text-center mb-6 px-2">
-                                <h2 className="text-xl md:text-2xl font-semibold text-(--color-text)">
+                                <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
                                     Patient Details
                                 </h2>
 
-                                <p className="text-sm text-(--color-text1) mt-2">
+                                <p className="text-sm text-gray-500 mt-2 max-w-xl">
                                     Please provide your primary contact and identification details.
-                                    This information is protected and used only for clinical coordination.
                                 </p>
                             </div>
 
                             {/* Tag */}
-                            <p className="px-4 py-1 mb-5 rounded-full text-sm bg-(--color-primary)/20 text-(--color-primary)">
+                            <p className="px-4 py-1 mb-6 rounded-full text-sm bg-blue-100 text-blue-600 font-medium">
                                 Intake Department
                             </p>
 
+                            <div className="relative w-full max-w-4xl flex-col sm:flex-row flex gap-6 p-6 rounded-2xl bg-gray-100 border border-gray-200 mb-4">
+                                <p className='absolute right-0 top-0 opacity-50 px-4 py-2'>Doctor Details</p>
+                                {/* Image */}
+                                <div className="flex-shrink-0">
+                                    <img
+                                        src={location?.state?.element?.image}
+                                        alt={location?.state?.element?.name}
+                                        className="w-28 h-28 md:w-36 md:h-36 rounded-xl object-cover border-2 border-gray-200 shadow-sm"
+                                    />
+                                </div>
+
+                                {/* Details */}
+                                <div className="flex flex-col justify-center gap-2">
+
+                                    <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
+                                        {location?.state?.element?.name}
+                                    </h1>
+
+                                    <p className="text-sm md:text-base text-gray-500 capitalize">
+                                        {location?.state?.element?.speciality}
+                                    </p>
+
+                                    <p className="text-sm md:text-base font-medium text-gray-800">
+                                        Fees:{" "}
+                                        <span className="text-green-600 font-semibold">
+                                            ₹{location?.state?.element?.fees}
+                                        </span>
+                                    </p>
+
+                                    <div className="mt-2 flex gap-1 text-sm md:text-base text-gray-700">
+                                        <p className='font-semibold'>
+                                            <span className="font-medium text-gray-500">Time:</span>{" "}
+                                            {location?.state?.selectTime}
+                                        </p>
+
+                                        <p className='font-semibold'>
+                                            <span className="font-medium text-gray-500">Date:</span>{" "}
+                                            {location?.state?.selectDate?.day}, {location?.state?.selectDate?.fulldate}
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+
                             {/* Form Card */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full 
-          p-5 border border-gray-200 rounded-xl bg-(--color-white) shadow-sm">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full p-6 rounded-2xl bg-white shadow-md border border-gray-100">
 
                                 {/* Name */}
                                 <div className="flex flex-col gap-1">
@@ -150,7 +194,7 @@ function PatientDetails() {
                                         required
                                         value={patientName}
                                         onChange={(e) => setPatientName(e.target.value)}
-                                        className="px-3 py-2 rounded-md bg-(--color-input) border border-gray-200 focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+                                        className="px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                 </div>
 
@@ -164,7 +208,7 @@ function PatientDetails() {
                                         required
                                         value={patientPhone}
                                         onChange={(e) => setPatientPhone(e.target.value)}
-                                        className="px-3 py-2 rounded-md bg-(--color-input) border border-gray-200 focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+                                        className="px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                 </div>
 
@@ -176,7 +220,7 @@ function PatientDetails() {
                                         required
                                         value={reason}
                                         onChange={(e) => setReason(e.target.value)}
-                                        className="px-3 py-2 h-24 resize-none rounded-md bg-(--color-input) border border-gray-200 focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
+                                        className="px-3 py-2 h-24 resize-none rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                 </div>
 
@@ -185,9 +229,9 @@ function PatientDetails() {
                                     <label className="text-xs text-gray-500">DOCTOR NAME</label>
                                     <input
                                         type="text"
-                                        value={element.name}
+                                        value={location?.state?.element?.name}
                                         readOnly
-                                        className="px-3 py-2 rounded-md bg-gray-100 border border-gray-200 text-gray-500 cursor-not-allowed"
+                                        className="px-3 py-2 rounded-md bg-gray-100 border border-gray-200 text-gray-500"
                                     />
                                 </div>
 
@@ -196,8 +240,8 @@ function PatientDetails() {
                             {/* Button */}
                             <button
                                 type="submit"
-                                className="mt-6 px-5 py-2 rounded-md bg-(--color-primary) text-(--color-white) 
-          hover:scale-105 transition duration-300 shadow-sm hover:shadow-md mb-5 cursor-pointer"
+                                className="mt-6 px-6 py-2 rounded-md bg-blue-600 text-white 
+      hover:scale-105 transition duration-300 shadow-sm hover:shadow-md cursor-pointer"
                             >
                                 Submit Details
                             </button>

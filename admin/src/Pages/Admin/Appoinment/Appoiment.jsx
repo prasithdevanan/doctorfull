@@ -81,7 +81,7 @@ function Appoiment() {
       ) : appointments.length > 0 ? (
         <>
           {/* ---------------- Grid */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-20">
 
             {appointments.map((item, index) => (
               <div
@@ -146,9 +146,9 @@ function Appoiment() {
           </div>
 
           {/* ---------------- Pagination */}
-          <div className="sticky bottom-0 mt-10">
+          <div className="fixed bottom-2 mt-10 w-[calc(100vw-270px)] flex items-center justify-center">
 
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl px-4 py-3">
+            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl px-4 py-3">
 
               <button
                 onClick={() => setPage((prev) => prev - 1)}

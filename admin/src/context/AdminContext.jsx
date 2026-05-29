@@ -88,7 +88,7 @@ const AdminContextProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            if (!id || !dToken) return;
+            if (!id || !dToken) return console.log("no id");
 
             setUserLoading(true);
 
@@ -101,7 +101,6 @@ const AdminContextProvider = ({ children }) => {
                         },
                     }
                 );
-
                 setUser(res.data.doctor);
             } catch (err) {
                 console.log(err);

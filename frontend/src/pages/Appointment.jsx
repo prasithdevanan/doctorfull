@@ -4,7 +4,7 @@ import { AppContext } from '../component/CreateContext';
 import { Images } from '../assets/img';
 import { useNavigate } from 'react-router-dom';
 import Reschedule from './Reschedule';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function Appointment() {
     const navigate = useNavigate();
@@ -117,7 +117,7 @@ function Appointment() {
     const confirmDelete = async () => {
         const data = new Date().toLocaleDateString();
         const appoitmentData = (selectedUser.appointmentDate).split(",")[1];
-       
+
         if (data === appoitmentData) {
             alert("You can't cancel the appointment on the day of the appointment");
             return;
@@ -131,16 +131,20 @@ function Appointment() {
             }
             toast.success(res.data.message);
         } catch (error) {
-           toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message);
         } finally {
             setPopup(false);
         }
     }
 
+    const clickevent = () => {
+        console.log('clicked');
+    }
+
 
     return (
         <>
-            <section className="h-[calc(100vh-120px)] bg-gray-50">
+            <section className="h-[calc(100vh-90px)] bg-gray-50">
 
                 {popup && (
                     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]" onClick={() => setPopup(false)}>
@@ -185,56 +189,67 @@ function Appointment() {
                             <button onClick={() => setFilter(false)} className={`px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer ${!filter ? "bg-(--color-primary) text-white" : "text-gray-600"}`}>Completed</button>
                         </div>
 
-                        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 py-6 max-w-[1400px] mx-auto">
+                        {
+                            filteredAppointments.length > 0 ? (
+                                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 py-6 max-w-[1400px] mx-auto">
+                                    {
 
-                            {filteredAppointments.map((items, index) => {
+                                        filteredAppointments.map((items, index) => {
 
-                                const statusStyle = items.appointmentStatus === "Completed" ? "bg-[#10B981]/10 text-[#10B981]" : items.status === "Accepted" ? "bg-green-100 text-green-700" : items.status === "Rescheduled" ? "bg-[#3B82F6]/10 text-[#3B82F6]" : items.status === "Reject" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700";
+                                            const statusStyle = items.appointmentStatus === "Completed" ? "bg-[#10B981]/10 text-[#10B981]" : items.status === "Accepted" ? "bg-green-100 text-green-700" : items.status === "Rescheduled" ? "bg-[#3B82F6]/10 text-[#3B82F6]" : items.status === "Reject" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700";
 
-                                // ------- map the appoitments ------------
-                                return (
-                                    <li key={index} className="bg-white border border-gray-100 rounded-2xl p-4 flex gap-4 relative shadow-sm">
+                                            // ------- map the appoitments ------------
+                                            return (
+                                                <li key={index} className="bg-white border border-gray-100 rounded-2xl p-4 flex gap-4 relative shadow-sm"  onClick={() => clickevent()}>
 
-                                        <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full ${statusStyle}`}>{items.appointmentStatus === "Upcoming" ? items.status : items.appointmentStatus}</span>
+                                                    <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full ${statusStyle}`}>{items.appointmentStatus === "Upcoming" ? items.status : items.appointmentStatus}</span>
 
-                                        <img src={items.image} alt="doctor" className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl bg-gray-100" />
+                                                    <img src={items.image} alt="doctor" className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl bg-gray-100" />
 
-                                        <div className="flex flex-col justify-between flex-1">
+                                                    <div className="flex flex-col justify-between flex-1">
 
-                                            <div>
-                                                <p className="font-semibold text-gray-800">{items.doctorName}</p>
-                                                <p className="text-sm text-gray-500">{items.doctorSpeciality}</p>
+                                                        <div>
+                                                            <p className="font-semibold text-gray-800">{items.doctorName}</p>
+                                                            <p className="text-sm text-gray-500">{items.doctorSpeciality}</p>
 
-                                                <div className="flex flex-wrap gap-3 mt-2 text-sm text-gray-500">
-                                                    <p className="flex items-center gap-1"><i className="bi bi-calendar text-(--color-primary)"></i>{items.appointmentDate}</p>
-                                                    <p className="flex items-center gap-1"><i className="bi bi-clock text-(--color-primary)"></i>{items.appointmentTime}</p>
-                                                </div>
-                                            </div>
+                                                            <div className="flex flex-wrap gap-3 mt-2 text-sm text-gray-500">
+                                                                <p className="flex items-center gap-1"><i className="bi bi-calendar text-(--color-primary)"></i>{items.appointmentDate}</p>
+                                                                <p className="flex items-center gap-1"><i className="bi bi-clock text-(--color-primary)"></i>{items.appointmentTime}</p>
+                                                            </div>
+                                                        </div>
 
-                                            {items.appointmentStatus === "Upcoming" && (
-                                                <div className="flex justify-between items-center mt-3">
-                                                    <button onClick={() => appointmentReschedule(items.doctorId, items)} className="px-4 py-2 text-sm rounded-lg bg-(--color-primary) text-white cursor-pointer">Reschedule</button>
-                                                    <button onClick={() => handleDeleteClick(items)} className="text-sm text-red-500 p-2 px-3 bg-red-100 rounded-lg cursor-pointer"><i className="bi bi-trash3"></i></button>
-                                                </div>
-                                            )}
+                                                        {items.appointmentStatus === "Upcoming" && (
+                                                            <div className="flex justify-between items-center mt-3">
+                                                                <button onClick={() => appointmentReschedule(items.doctorId, items)} className="px-4 py-2 text-sm rounded-lg bg-(--color-primary) text-white cursor-pointer">Reschedule</button>
+                                                                <button onClick={() => handleDeleteClick(items)} className="text-sm text-red-500 p-2 px-3 bg-red-100 rounded-lg cursor-pointer"><i className="bi bi-trash3"></i></button>
+                                                            </div>
+                                                        )}
 
-                                        </div>
+                                                    </div>
 
-                                    </li>
-                                );
-                            })}
+                                                </li>
+                                            );
+                                        })}
 
-                        </ul>
+                                </ul>
+                            ) : (
+                                <div className="w-full h-[calc(100vh-300px)] flex flex-col items-center justify-center text-center px-4">
+                                    <img src={Images.NoAppointment} alt="No Appointments" className="w-52 sm:w-64 opacity-80" />
+                                    <p className="text-gray-500 mt-3 text-sm">You have no appointments.</p>
+                                </div>
+                            )
+
+                        }
+
 
                     </div>
 
                 ) : (
 
-                    <div className="w-full h-[calc(100vh-120px)] flex flex-col items-center justify-center text-center px-4">
+                    <div className="w-full  h-[calc(100vh-300px)] flex flex-col items-center justify-center text-center px-4 overflow-y-hidden">
                         <img src={Images.NoAppointment} alt="No Appointments" className="w-52 sm:w-64 opacity-80" />
                         <p className="text-gray-500 mt-3 text-sm">You have no appointments.</p>
                     </div>
-
                 )}
 
             </section>
