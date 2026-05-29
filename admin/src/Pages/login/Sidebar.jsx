@@ -11,7 +11,7 @@ export default function Sidebar() {
       <div className="sidebar-content">
         <span className="subtitle">You can easily</span>
         <h1 className="title">
-          Get access your personal hub for clarity and productivity
+          Manage patients and appointments with ease.
         </h1>
       </div>
     </div>
