@@ -76,72 +76,125 @@ function Login() {
 
   return (
     <>
-      <section className="relative flex items-center justify-center min-h-screen w-full bg-gradient-to-br from-blue-400/40 via-cyan-400/10 to-teal-400/40">
-    <Sidebar />
-        <form
-          className="flex flex-col w-[90%] sm:w-[80%] md:w-[70%] lg:w-[35%] border border-gray-200 p-8 rounded-xl shadow-md bg-white/30 backdrop-blur-2xl"
-          onSubmit={onSubmitHandler} autoComplete='on'
-        >
-          <div className="w-full flex justify-center mb-4">
-            <p className="text-lg font-medium">
-              <span className="text-(--color-primary) font-semibold mr-1">{state}</span> Login
-            </p>
-          </div>
+      <section className="relative flex min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-100 via-cyan-50 to-blue-100">
 
-          <label className="text-sm text-gray-600">Email ID</label>
-          <input type="email" placeholder="Enter Email ID" className="mt-1 px-4 py-2 rounded-md bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-(--color-primary)" onChange={(e) => setEmail(e.target.value)}
-            value={email} autoComplete='email'
-          />
+        {/* Sidebar */}
+        <div className="hidden lg:block top-0 left-0 w-1/2 h-screen p-4 max-w-[820px]">
+          <Sidebar />
+        </div>
 
-          <label className="mt-5 text-sm text-gray-600">Password</label>
-          <div className="relative">
-            <input
-              type={passwordVisible ? "text" : "password"}
-              placeholder="Enter Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-              required
-              className="w-full px-3 py-2 rounded-md bg-gray-100/70 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-(--color-primary)"
-            />
+        {/* Form Section */}
+        <div className="ml-auto flex w-full lg:w-(calc(100%-820px)) min-h-screen items-center justify-center px-5 py-10 sm:px-8 md:px-14">
 
-            <span
-              onClick={() => setPasswordVisible(!passwordVisible)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 cursor-pointer"
-            >
-              {passwordVisible ? "Hide" : "Show"}
-            </span>
-          </div>
-
-          <button
-            className="flex py-2 bg-(--color-primary) w-[50%] cursor-pointer items-center justify-center rounded-md text-white mt-6 mx-auto hover:scale-105 transition duration-200 hover:shadow-lg"
-            type="submit"
+          {/* Form */}
+          <form
+            onSubmit={onSubmitHandler}
+            autoComplete="on"
+            className="relative z-10 w-full max-w-[480px] rounded-[32px] bg-white/75 p-7 sm:p-10 backdrop-blur-2xl border border-gray-300"
           >
-            {load ? "Verifying..." : "Login"}
-          </button>
 
-          {state === "Admin" ? (
-            <p className="text-gray-500 text-sm mt-5 text-center">
-              Doctor Login?{" "}
-              <span
-                className="text-(--color-primary) cursor-pointer"
-                onClick={() => setState("Doctor")}
-              >
-                Click Here
-              </span>
-            </p>
-          ) : (
-            <p className="text-gray-500 text-sm mt-5 text-center">
-              Admin Login?{" "}
-              <span
-                className="text-(--color-primary) cursor-pointer"
-                onClick={() => setState("Admin")}
-              >
-                Click Here
-              </span>
-            </p>
-          )}
-        </form>
+            {/* Heading */}
+            <div className="mb-8 text-center">
+
+              <p className="text-sm uppercase tracking-[0.25em] text-slate-500">
+                Welcome Back
+              </p>
+
+              <h1 className="mt-3 text-4xl font-bold tracking-[-0.03em] text-slate-800">
+                <span className="bg-linear-(--color-primary-gradient) bg-clip-text text-transparent">
+                  {state}
+                </span>{" "}
+                Login
+              </h1>
+
+            </div>
+
+            {/* Email */}
+            <div className="mb-5">
+
+              <label className="mb-2 block text-sm font-medium text-slate-600">
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                placeholder="Enter your email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-700 placeholder:text-slate-400 outline-none transition-all duration-300 focus:border-(--color-primary) focus:ring-4 focus:ring-(--color-primary)/10"
+              />
+
+            </div>
+
+            {/* Password */}
+            <div>
+
+              <label className="mb-2 block text-sm font-medium text-slate-600">
+                Password
+              </label>
+
+              <div className="relative">
+
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                  required
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 pr-16 text-slate-700 placeholder:text-slate-400 outline-none transition-all duration-300 focus:border-(--color-primary) focus:ring-4 focus:ring-(--color-primary)/10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-sm font-medium text-(--color-primary) transition hover:text-(--color-primary)/90"
+                >
+                  {passwordVisible ? "Hide" : "Show"}
+                </button>
+
+              </div>
+
+            </div>
+
+            {/* Button */}
+            <button
+              type="submit"
+              className="cursor-pointer mt-8 flex w-full items-center justify-center rounded-2xl bg-(--color-primary) py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-blue-500/50"
+            >
+              {load ? "Verifying..." : "Login"}
+            </button>
+
+            {/* Switch */}
+            <div className="mt-7 text-center text-sm text-slate-500">
+
+              {state === "Admin" ? (
+                <p>
+                  Doctor Login?{" "}
+                  <span
+                    onClick={() => setState("Doctor")}
+                    className="cursor-pointer font-semibold text-(--color-primary) transition hover:text-(--color-primary)/90"
+                  >
+                    Click Here
+                  </span>
+                </p>
+              ) : (
+                <p>
+                  Admin Login?{" "}
+                  <span
+                    onClick={() => setState("Admin")}
+                    className="cursor-pointer font-semibold text-(--color-primary) transition hover:text-(--color-primary)/90"
+                  >
+                    Click Here
+                  </span>
+                </p>
+              )}
+
+            </div>
+
+          </form>
+        </div>
       </section>
     </>
   )
