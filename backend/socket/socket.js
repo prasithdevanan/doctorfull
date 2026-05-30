@@ -9,15 +9,19 @@ export const initiSocket = (io) => {
 
         // register
         socket.on('register', async ({ userId, role }) => {
+            socket.userId = userId;
             users[userId] = { socketId: socket.id, role };
 
             // send to all users
             console.log(`${role} registered with id: ${userId}`);
-            socket.emit('check', { users });
+            io.emit("onlineStatus", {
+                userId,
+                isOnline: true
+            });
 
             // check for notifications IS doctor
             if (role === "Doctor") {
-                const pendingAppointments = await NotificationModel.find({ doctorId: userId, isRead: false });  
+                const pendingAppointments = await NotificationModel.find({ doctorId: userId, isRead: false });
 
                 if (pendingAppointments.length > 0) {
                     socket.emit('pending_notifications', pendingAppointments);
@@ -57,6 +61,16 @@ export const initiSocket = (io) => {
 
 
         });
+
+        socket.on("checkOnline", ({ userId }) => {
+            const isOnline = !!users[userId];
+
+            socket.emit("onlineStatus", {
+                userId,
+                isOnline
+            });
+        });
+
 
         // patient book appotiments
         socket.on('book_appointment', async ({ patientId, doctorId, details }) => {
@@ -144,15 +158,15 @@ export const initiSocket = (io) => {
         });
 
         socket.on("disconnect", () => {
-            console.log("a user disconnected", socket.id);
+            if (socket.userId) {
+                delete users[socket.userId];
 
-            //remove the users
-
-            for (let userId in users) {
-                if (users[userId]?.socketId === socket.id) {
-                    delete users[userId];
-                }
+                io.emit("onlineStatus", {
+                    userId: socket.userId,
+                    isOnline: false
+                });
+                console.log("a user disconnected", socket.userId);
             }
-        })
+        });
     })
 }

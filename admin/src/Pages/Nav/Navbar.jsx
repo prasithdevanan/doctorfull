@@ -10,27 +10,22 @@ function Navbar() {
     body.style.overflow = 'hidden';
     const navigate = useNavigate();
     const { setAToken, setDToken, backendImg, name, setUser, BackendUrl, user } = useContext(AdminContext);
-    console.log("user in navbar", user);
     const atoken = localStorage.getItem("aToken") ? "Admin" : "Doctor";
     const [logout, setLogout] = useState(false);
     const [enabled, setEnabled] = useState(false);
-    console.log("enabled----------", enabled);
 
     //Check the enable or not
     useEffect(() => {
         if (atoken === "Admin") return;
         setEnabled(user?.available);
-        console.log("user available", user?.available);
     }, [user]);
 
     // logout function
     const logOutHandle = () => {
-        console.log("calling function working")
         setLogout(true);
     }
 
     const logoutFunction = () => {
-        console.log("logout");
         localStorage.removeItem('aToken');
         localStorage.removeItem('dToken');
         localStorage.removeItem('dEmail');
@@ -51,7 +46,6 @@ function Navbar() {
                         available: !enabled
                     }
                 });
-                console.log("Updating availability to:", !enabled, res.data);
             }
 
             updateAvailability();

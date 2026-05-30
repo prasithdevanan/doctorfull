@@ -7,16 +7,18 @@ import TextAnimation from '../component/TextAnimation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AppContext } from '../component/CreateContext';
+import { socket } from '../socket/socket';
 
 function DoctorBooking() {
     const { BackendUrl } = useContext(AppContext);
     const location = useLocation();
     const navigate = useNavigate();
     const element = location.state ? location.state.element : false;
+    console.log(element);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedTimeslot, setSelectedTimeslot] = useState(null);
     const [bookedSlots, setBookedSlots] = useState([]);
-
+    const [onlineStatus, setOnlineStatus] = useState(false);
     ///select the time and date
     const [selectDate, setSelectDate] = useState(null);
     const [selectTime, setSelectTime] = useState(null);
@@ -93,6 +95,28 @@ function DoctorBooking() {
     }, [selectDate]);
 
 
+    //check the user login or not
+    useEffect(() => {
+        const handleOnlineStatus = ({ userId, isOnline }) => {
+            if (userId === element._id) {
+                setOnlineStatus(isOnline);
+            }
+        };
+
+        socket.on("onlineStatus", handleOnlineStatus);
+
+        return () => {
+            socket.off("onlineStatus", handleOnlineStatus);
+        };
+    }, [element._id]);
+
+    //check the user is online or not
+    useEffect(() => {
+        socket.emit("checkOnline", {
+            userId: element._id
+        });
+    }, [element._id]);
+
 
     return (
         <>
@@ -111,7 +135,7 @@ function DoctorBooking() {
 
                     {/* Content */}
                     <div className="flex flex-col gap-4 w-full md:w-[60%]">
-
+                        <p>{onlineStatus ? "Online" : "Offline"}</p>
                         {/* Availability */}
                         <p className={`text-sm font-medium ${element.avilable ? 'text-green-600' : 'text-red-600'}`}>
                             {element.avilable ? "Available" : "Unavailable"}
