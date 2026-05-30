@@ -156,7 +156,7 @@ function DoctorBooking() {
             </section>
 
             {/* Booking Section */}
-            <section className="mt-6 px-4">
+            <section className="mt-6 px-4 mb-30">
 
                 <div className="flex flex-col items-center">
 
@@ -229,22 +229,49 @@ function DoctorBooking() {
             </section>
 
             {/* Button */}
-            <section className="flex justify-center mt-6 mb-8 px-4">
+            <section className="fixed bottom-3 left-1/2 -translate-x-1/2 w-[95%] max-w-5xl z-50">
+                <div className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl px-4 py-3 sm:px-6 sm:py-4">
 
-                <Link
-                    to={selectedTimeslot !== null ? `/doctor/${element._id}/patientdetails` : "#"}
-                    state={{ element, fromBooking: true, selectDate, selectTime }}
-                >
-                    <Button
-                        children="Book Appointment"
-                        icon={<i className="bi bi-arrow-right-short text-2xl"></i>}
-                        primary={`flex items-center gap-2 px-4 py-2 rounded-md transition duration-300 cursor-pointer
-        ${selectedTimeslot !== null
-                                ? "bg-(--color-primary) text-(--color-white) hover:scale-105"
-                                : "bg-(--color-input) text-(--color-text2) cursor-not-allowed"
-                            }`}
-                    />
-                </Link>
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+
+                        {/* Fee Section */}
+                        <div className="flex flex-col items-center sm:items-start">
+                            <span className="text-xs uppercase tracking-wider text-gray-400">
+                                Consultation Fee
+                            </span>
+                            <span className="text-2xl sm:text-3xl font-bold text-gray-800">
+                                ₹{element.fees}
+                            </span>
+                        </div>
+
+                        {/* Book Button */}
+                        <Link
+                            to={
+                                selectedTimeslot !== null
+                                    ? `/doctor/${element._id}/patientdetails`
+                                    : "#"
+                            }
+                            state={{
+                                element,
+                                fromBooking: true,
+                                selectDate,
+                                selectTime,
+                            }}
+                            className="w-full sm:w-auto"
+                        >
+                            <Button
+                                children="Book Appointment"
+                                icon={<i className="bi bi-arrow-right-short text-xl"></i>}
+                                primary={`w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300
+          ${selectedTimeslot !== null
+                                        ? "bg-(--color-primary) text-white hover:shadow-lg hover:scale-105"
+                                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                                    }`}
+                            />
+                        </Link>
+
+                    </div>
+                </div>
             </section>
 
         </>

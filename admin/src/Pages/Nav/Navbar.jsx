@@ -1,18 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Images } from '../../Components/Images';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AdminContext } from '../../context/AdminContext';
+import axios from 'axios';
 
 function Navbar() {
     const body = document.querySelector('body')
     body.style.overflow = 'hidden';
     const navigate = useNavigate();
-    const { setAToken, setDToken, backendImg, name, setUser } = useContext(AdminContext);
-
+    const { setAToken, setDToken, backendImg, name, setUser, BackendUrl, user } = useContext(AdminContext);
+    console.log("user in navbar", user);
     const atoken = localStorage.getItem("aToken") ? "Admin" : "Doctor";
     const [logout, setLogout] = useState(false);
+    const [enabled, setEnabled] = useState(false);
+    console.log("enabled----------", enabled);
 
+    //Check the enable or not
+    useEffect(() => {
+        if (atoken === "Admin") return;
+        setEnabled(user?.available);
+        console.log("user available", user?.available);
+    }, [user]);
+
+    // logout function
     const logOutHandle = () => {
         console.log("calling function working")
         setLogout(true);
@@ -30,6 +41,31 @@ function Navbar() {
         setUser(null);
         navigate('/login', { replace: true });
     }
+
+    const toggleAvailability = () => {
+        setEnabled(!enabled);
+        try {
+            const updateAvailability = async () => {
+                const res = await axios.post(`${BackendUrl}/api/doctor/doctor/profile/update/${localStorage.getItem("id")}`, {
+                    data: {
+                        available: !enabled
+                    }
+                });
+                console.log("Updating availability to:", !enabled, res.data);
+            }
+
+            updateAvailability();
+        } catch (err) {
+            if (err.response.status === 401) {
+                logout();
+            } else {
+                console.error("Error fetching doctor info:", err);
+            }
+        }
+    };
+
+    // onclick
+
 
     return (
         <>
@@ -49,6 +85,24 @@ function Navbar() {
                             <p className="font-semibold text-gray-800">Logo</p>
                         )}
                         <p className='text-xs px-2 bg-(--color-primary)/20 text-(--color-primary) rounded-full border border-(--color-primary)'>{atoken}</p>
+                    </div>
+                    {/* Center - Toggle */}
+                    <div>
+                        <button
+                            onClick={() => {
+                                toggleAvailability();
+                            }}
+                            className={`cursor-pointer relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300 ${enabled ? "bg-green-500" : "bg-gray-300"
+                                }`}
+                        >
+                            <span
+                                className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${enabled ? "translate-x-8" : "translate-x-1"
+                                    }`}
+                            />
+                        </button>
+                        <p className={`text-md tracking-[0.07em] ${enabled ? "text-green-500" : "text-gray-500"}`}>
+                            {enabled ? "Available" : "Unavailable"}
+                        </p>
                     </div>
 
                     {/* Right - Profile */}

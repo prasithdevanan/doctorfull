@@ -100,7 +100,7 @@ function Appointment() {
             return item.doctorName.toLowerCase().includes(searchTerm.toLowerCase());
         }).sort((a, b) => new Date(formatToISO(a.appointmentDate)) - new Date(formatToISO(b.appointmentDate)));
         setUpdatedAppointments(processedAppointments);
-
+        console.log(processedAppointments);
     }, [appointments, searchTerm])
 
     const [filter, setFilter] = useState(true);
@@ -200,7 +200,7 @@ function Appointment() {
 
                                             // ------- map the appoitments ------------
                                             return (
-                                                <li key={index} className="bg-white border border-gray-100 rounded-2xl p-4 flex gap-4 relative shadow-sm"  onClick={() => clickevent()}>
+                                                <li key={index} className="bg-white border border-gray-100 rounded-2xl p-4 flex gap-4 relative shadow-sm" onClick={() => clickevent()}>
 
                                                     <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full ${statusStyle}`}>{items.appointmentStatus === "Upcoming" ? items.status : items.appointmentStatus}</span>
 
@@ -209,12 +209,27 @@ function Appointment() {
                                                     <div className="flex flex-col justify-between flex-1">
 
                                                         <div>
-                                                            <p className="font-semibold text-gray-800">{items.doctorName}</p>
-                                                            <p className="text-sm text-gray-500">{items.doctorSpeciality}</p>
+                                                            <p className="font-semibold text-gray-800">{items.patientName}</p>
+                                                            <p className="text-sm text-gray-500" title={items.reason}>{items.reason.length > 20 ? items.reason.slice(0, 20) + "..." : items.reason}</p>
 
                                                             <div className="flex flex-wrap gap-3 mt-2 text-sm text-gray-500">
                                                                 <p className="flex items-center gap-1"><i className="bi bi-calendar text-(--color-primary)"></i>{items.appointmentDate}</p>
                                                                 <p className="flex items-center gap-1"><i className="bi bi-clock text-(--color-primary)"></i>{items.appointmentTime}</p>
+                                                            </div>
+                                                            <div className="flex flex-col gap-x-6 gap-y-2 mt-3 text-sm">
+                                                                <div className="flex items-center gap-1">
+                                                                    <span className="text-gray-400">Doctor:</span>
+                                                                    <span className="font-medium text-gray-700">
+                                                                        {items.doctorName}
+                                                                    </span>
+                                                                </div>
+
+                                                                <div className="flex items-center gap-1">
+                                                                    <span className="text-gray-400">Speciality:</span>
+                                                                    <span className="font-medium text-gray-700">
+                                                                        {items.doctorSpeciality}
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
 
