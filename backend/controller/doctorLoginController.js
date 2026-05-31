@@ -51,4 +51,31 @@ export const getDoctor = async (req, res) => {
     }
 }
 
+export const getDoctorByEmail = async (req, res) => {
+    const { email } = req.params;
+    try {
+        const doctor = await doctorModel.findOne({ email });
+        if (!doctor) {
+            return res.status(400).json({ success: false, message: "Doctor not found" });
+        }
+        return res.json({ success: true, doctor });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export const updateDoctor = async (req, res) => {
+    const { data } = req.body;
+    const { id } = req.params;
+    try {
+        const doctor = await doctorModel.findByIdAndUpdate(id, data, { new: true });
+        if (!doctor) {
+            return res.status(400).json({ success: false, message: "Doctor not found" });
+        }
+        return res.json({ success: true, doctor });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
 export default doctorLogin;

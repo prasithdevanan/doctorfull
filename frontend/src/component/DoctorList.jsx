@@ -29,7 +29,7 @@ function DoctorList({ selectSpeciality, isHome }) {
                                             <img src={item.image} alt="img" className='w-full object-contain bg-blue-100 rounded-xl max-w-[260px]' />
                                             <div className='flex flex-col items-start w-full px-3 py-2 gap-2'>
                                                 {
-                                                    item.avilable ? <div className='px-2 bg-green-300 rounded-full'><p className='text-green-600 text-sm'>Available</p></div> : <div className='px-2 bg-red-100 rounded-full'><p className='text-red-500'>Unavailable</p></div>
+                                                    item.available ? <div className='px-2 bg-green-300 rounded-full'><p className='text-green-600 text-sm'>Available</p></div> : <div className='px-2 bg-red-100 rounded-full'><p className='text-red-500'>Unavailable</p></div>
                                                 }
                                                 <div>
                                                     <h1 className='font-bold text-gray-600'>{item.name}</h1>

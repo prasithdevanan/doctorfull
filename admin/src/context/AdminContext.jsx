@@ -48,7 +48,6 @@ const AdminContextProvider = ({ children }) => {
 
                 }
 
-                console.log("Token is valid:", res.data);
 
             } catch (error) {
                 console.log("Error:", error.response?.data);

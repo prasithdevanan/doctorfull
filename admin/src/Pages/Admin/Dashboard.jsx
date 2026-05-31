@@ -64,11 +64,9 @@ function Dashboard() {
       return;
     }
     socket.emit("register", { userId: user._id, role: "Doctor" });
-    console.log(user._id);
 
     // Listen for new_appointment events
     socket.on("new_appointment", (data) => {
-      console.log(data);
 
       setData((prev) => {
 
@@ -98,9 +96,9 @@ function Dashboard() {
     });
 
     return () => {
+      console.log("Cleaning up socket listeners");
       socket.off("new_appointment");
       socket.off("pending_notifications");
-      socket.disconnect();
       setData([]);
     }
   }, [user, userLoading]);
@@ -112,7 +110,6 @@ function Dashboard() {
     if (!item) {
       return;
     }
-    console.log(item);
     setData(data.filter((data) => data._id !== item._id));
     socket.emit("accept_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, details: item }));
     toast.success("Appointment accepted");
@@ -121,7 +118,6 @@ function Dashboard() {
 
   const rejectHandle = (item) => {
     if (!item) return;
-    console.log(item);
 
     socket.emit("reject_appointment", ({ doctorId: item.doctorId, patientId: item.userId, notificationId: item._id, details: item }));
     setData(data.filter((data) => data._id !== item._id));
