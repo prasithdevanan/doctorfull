@@ -68,7 +68,7 @@ export const updateDoctor = async (req, res) => {
     const { data } = req.body;
     const { id } = req.params;
     try {
-        const doctor = await doctorModel.findByIdAndUpdate(id, data, { new: true });
+        const doctor = await doctorModel.findByIdAndUpdate(id, data, { returnDocument: 'after' });
         if (!doctor) {
             return res.status(400).json({ success: false, message: "Doctor not found" });
         }
