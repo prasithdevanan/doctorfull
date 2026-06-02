@@ -6,7 +6,7 @@ const getDoctorAppointments = async (req, res) => {
 
     try {
         const { doctorId, appointmentDate } = req.query;
-        const appointments = await appointmentModel.find({ doctorId, appointmentDate });
+        const appointments = await appointmentModel.find({ doctorId, appointmentDate, status: { $ne: "Rejected" } });
 
         if (!appointments) {
             return res.json({ success: false, message: "No appointments found" });
