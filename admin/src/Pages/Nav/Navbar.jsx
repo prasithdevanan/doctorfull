@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AdminContext } from '../../context/AdminContext';
 import axios from 'axios';
+import {socket} from '../../socket/socket';
 
 function Navbar() {
     const body = document.querySelector('body')
@@ -34,6 +35,7 @@ function Navbar() {
         setDToken(null);
         setLogout(false);
         setUser(null);
+        socket.disconnect();
         navigate('/login', { replace: true });
     }
 

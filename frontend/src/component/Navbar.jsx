@@ -61,7 +61,9 @@ function Navbar() {
                         )
                 );
 
-                return unique.slice(0, 10);
+                const sort = unique.sort((a, b) => new Date(b.details.createdAt) - new Date(a.details.createdAt));
+
+                return sort.slice(0, 10);
 
             });
 
@@ -69,8 +71,21 @@ function Navbar() {
 
         socket.on("appointment_status", (data) => {
             setOpen(true);
-            setData((prev) => [...prev, data]);
-        })
+            setData((prev) => {
+                const merged = [
+                    ...prev,
+                    data
+                ];
+                const unique = merged.filter(
+                    (item, index, self) =>
+                        index === self.findIndex(
+                            (t) => t.details._id === item.details._id
+                        )
+                );
+                const sort = unique.sort((a, b) => new Date(b.details.createdAt) - new Date(a.details.createdAt));
+                return sort;
+            });
+        });
 
         return () => {
             setData([]);
@@ -94,6 +109,7 @@ function Navbar() {
         setUserId(null);
         setUser(null);
         setData([]);
+        socket.disconnect();
         navigate('/login');
     }
 

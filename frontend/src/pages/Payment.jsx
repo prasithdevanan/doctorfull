@@ -23,6 +23,7 @@ function Payment() {
   const time = location.state ? location?.state?.selectTime : false;
   const fees = location.state ? location?.state?.fees : false;
   const [appCharge, setAppCharge] = useState(200);
+  const [loading, setLoading] = useState(false);
 
   ///check the active button
   const [paymentMethod, setPaymentMethod] = useState(true);
@@ -37,6 +38,7 @@ function Payment() {
 
   //handle payment method
   const handlePayment = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (paymentMethod) {
       return alert("Please select the razorpay. Apple pay under development");
@@ -67,6 +69,8 @@ function Payment() {
           }
         } catch (error) {
           console.log(error);
+        } finally {
+          setLoading(false);
         }
       },
       "prefill": {
@@ -426,7 +430,7 @@ function Payment() {
                 onClick={(e) => handlePayment(e)}
                 className="w-full py-3 sm:py-4 rounded-2xl bg-linear-(--color-primary-gradient) text-white font-semibold text-base sm:text-lg hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-(--color-primary) cursor-pointer"
               >
-                Proceed to Pay
+                {loading ? "Processing..." : "Pay Now"}
               </button>
 
             </div>

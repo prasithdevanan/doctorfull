@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import Sidebar from './Sidebar';
+import { socket } from '../../socket/socket';
 
 
 
@@ -68,6 +69,7 @@ function Login() {
       toast.error(error.message);
       console.log(error.message);
     } finally {
+      socket.connect();
       setLoad(false);
     }
 

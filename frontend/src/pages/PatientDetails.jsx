@@ -11,6 +11,7 @@ function PatientDetails() {
     const location = useLocation();
     const navigate = useNavigate();
     const [userElement, setUserElement] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setUserElement(user);
@@ -65,6 +66,8 @@ function PatientDetails() {
 
 
     const submitHandle = async (e) => {
+        socket.connect();
+        setLoading(true);
         e.preventDefault();
 
         const data = {
@@ -96,7 +99,6 @@ function PatientDetails() {
                 toast.error(res.data.message);
                 return
             }
-
             socket.emit("book_appointment", { patientId: userElement?.id, doctorId, details: data });
 
 
@@ -106,6 +108,8 @@ function PatientDetails() {
 
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -241,9 +245,9 @@ function PatientDetails() {
                             <button
                                 type="submit"
                                 className="mt-6 px-6 py-2 rounded-md bg-blue-600 text-white 
-      hover:scale-105 transition duration-300 shadow-sm hover:shadow-md cursor-pointer"
+      hover:scale-105 transition duration-300 shadow-sm hover:shadow-md cursor-pointer shrink-0"
                             >
-                                Submit Details
+                                {loading ? "Loading..." : "Book Appointment"}
                             </button>
 
                         </form>

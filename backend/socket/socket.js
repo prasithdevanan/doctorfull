@@ -140,7 +140,7 @@ export const initiSocket = (io) => {
 
             await appointmentModel.updateOne(
                 { doctorId, appointmentDate: details.data.appointmentDate, appointmentTime: details.data.appointmentTime },
-                { $set: { status: "Rejected", appointmentTime: null, appointmentDate: null } }
+                { $set: { status: "Rejected", appointmentTime: details.data.appointmentTime, appointmentDate: details.data.appointmentDate } }
             )
 
         });

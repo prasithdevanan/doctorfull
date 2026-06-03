@@ -24,14 +24,11 @@ appointmentSchema.index(
   {
     doctorId: 1,
     appointmentDate: 1,
-    appointmentTime: 1
+    appointmentTime: 1,
+    status: 1
   },
   {
-    unique: true,
-    partialFilterExpression: {
-      appointmentDate: { $exists: true, $ne: null },
-      appointmentTime: { $exists: true, $ne: null }
-    }
+    unique: true
   }
 );
 

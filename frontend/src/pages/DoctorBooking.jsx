@@ -288,7 +288,7 @@ function DoctorBooking() {
                                 icon={<i className="bi bi-arrow-right-short text-xl"></i>}
                                 primary={`w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300
           ${selectedTimeslot !== null
-                                        ? "bg-(--color-primary) text-white hover:shadow-lg hover:scale-105"
+                                        ? "bg-(--color-primary) text-white hover:shadow-lg hover:scale-105 cursor-pointer"
                                         : "bg-gray-200 text-gray-400 cursor-not-allowed"
                                     }`}
                             />
