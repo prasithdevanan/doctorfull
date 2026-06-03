@@ -66,6 +66,7 @@ function PatientDetails() {
 
 
     const submitHandle = async (e) => {
+        socket.connect();
         setLoading(true);
         e.preventDefault();
 
@@ -98,7 +99,6 @@ function PatientDetails() {
                 toast.error(res.data.message);
                 return
             }
-
             socket.emit("book_appointment", { patientId: userElement?.id, doctorId, details: data });
 
 

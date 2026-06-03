@@ -2,6 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import dns from "node:dns/promises";
+// set dns
 if (process.env.NODE_ENV !== "production") {
     dns.setServers(["1.1.1.1"]);
 }
