@@ -33,6 +33,7 @@ function Appoiment() {
           }
         );
 
+        console.log(res.data);
         setAppointments(res.data.appointments);
         setTotalPages(res.data.totalPages);
       } catch (error) {
@@ -51,9 +52,14 @@ function Appoiment() {
       {/* ---------------- Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 
-        <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 tracking-tight">
-          Appointments
-        </h1>
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+            Appointments
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage your appointments
+          </p>
+        </div>
 
         <div className="relative w-full sm:w-72">
           <input
@@ -96,7 +102,7 @@ function Appoiment() {
                       ? "bg-green-100 text-green-700"
                       : item?.status === "Pending"
                         ? "bg-yellow-100 text-yellow-700" : item?.status === "Rejected" ? "bg-red-100 text-red-700" : item?.status === "Cancelled" ? "bg-red-100 text-red-700"
-                        : "bg-red-100 text-red-700"
+                          : "bg-red-100 text-red-700"
                     }`}
                 >
                   {item?.status}
@@ -113,22 +119,22 @@ function Appoiment() {
 
                   <div>
                     <h2 className="text-lg font-semibold text-gray-800">
-                      {item?.doctorName}
+                      {item?.patientName}
                     </h2>
                     <p className="text-sm text-gray-500">
-                      {item?.doctorSpeciality}
+                      {item?.reason}
                     </p>
                   </div>
 
                 </div>
 
                 <p className="text-xs text-gray-400 break-all mb-3">
-                  {item?.doctorEmail}
+                  {item?.patientEmail}
                 </p>
 
                 {/* Patient */}
                 <div className="bg-gray-50 rounded-xl p-3 text-sm text-gray-700 space-y-1">
-                  <p><span className="font-medium">Patient:</span> {item?.patientName}</p>
+                  <p><span className="font-medium">Patient ID:</span> {item?.patientId}</p>
                   <p><span className="font-medium">Phone:</span> {item?.patientPhone}</p>
                 </div>
 

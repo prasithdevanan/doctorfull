@@ -72,8 +72,6 @@ function Login() {
       socket.connect();
       setLoad(false);
     }
-
-
   }
 
   return (
@@ -86,7 +84,7 @@ function Login() {
         </div>
 
         {/* Form Section */}
-        <div className="ml-auto flex w-full lg:w-(calc(100%-820px)) min-h-screen items-center justify-center px-5 py-10 sm:px-8 md:px-14">
+        <div className="mx-auto flex w-full max-w-[600px] lg:w-(calc(100%-820px)) min-h-screen items-center justify-center px-5 py-10 sm:px-8 md:px-10">
 
           {/* Form */}
           <form

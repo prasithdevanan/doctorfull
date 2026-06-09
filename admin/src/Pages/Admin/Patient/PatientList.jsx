@@ -38,10 +38,10 @@ function PatientList() {
                 {/* Header */}
                 <div className="mb-6">
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-                        Appointments
+                        Patient List
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">
-                        Manage all patient appointments
+                        Manage all patients
                     </p>
                 </div>
 
