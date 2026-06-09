@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AdminContext } from '../../context/AdminContext';
 import axios from 'axios';
-import {socket} from '../../socket/socket';
+import { socket } from '../../socket/socket';
 
 function Navbar() {
     const body = document.querySelector('body')
@@ -14,6 +14,8 @@ function Navbar() {
     const atoken = localStorage.getItem("aToken") ? "Admin" : "Doctor";
     const [logout, setLogout] = useState(false);
     const [enabled, setEnabled] = useState(false);
+    const title = atoken === "Admin" ? "Admin Dashboard" : "Doctor Dashboard";
+    document.title = title;
 
     //Check the enable or not
     useEffect(() => {
@@ -69,7 +71,7 @@ function Navbar() {
                 <section className="flex justify-between items-center px-6 sm:px-10 py-3">
 
                     {/* Left - Logo */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
                         {backendImg ? (
                             <div className="flex items-center gap-2">
                                 <img src={backendImg} alt="logo" className="w-9 h-9 rounded-lg object-cover shadow-sm" />
@@ -82,24 +84,30 @@ function Navbar() {
                         )}
                         <p className='text-xs px-2 bg-(--color-primary)/20 text-(--color-primary) rounded-full border border-(--color-primary)'>{atoken}</p>
                     </div>
+
+
                     {/* Center - Toggle */}
-                    <div>
-                        <button
-                            onClick={() => {
-                                toggleAvailability();
-                            }}
-                            className={`cursor-pointer relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300 ${enabled ? "bg-green-500" : "bg-gray-300"
-                                }`}
-                        >
-                            <span
-                                className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${enabled ? "translate-x-8" : "translate-x-1"
+                    {atoken === "Doctor" &&
+                        (<div>
+                            <button
+                                onClick={() => {
+                                    toggleAvailability();
+                                }}
+                                className={`cursor-pointer relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300 ${enabled ? "bg-green-500" : "bg-gray-300"
                                     }`}
-                            />
-                        </button>
-                        <p className={`text-md tracking-[0.07em] ${enabled ? "text-green-500" : "text-gray-500"}`}>
-                            {enabled ? "Available" : "Unavailable"}
-                        </p>
-                    </div>
+                            >
+                                <span
+                                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${enabled ? "translate-x-8" : "translate-x-1"
+                                        }`}
+                                />
+                            </button>
+                            <p className={`text-md tracking-[0.07em] ${enabled ? "text-green-500" : "text-gray-500"}`}>
+                                {enabled ? "Available" : "Unavailable"}
+                            </p>
+                        </div>
+                        )
+                    }
+
 
                     {/* Right - Profile */}
                     <div className="relative group">

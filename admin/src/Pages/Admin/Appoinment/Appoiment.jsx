@@ -14,7 +14,7 @@ function Appoiment() {
   const [limit] = useState(9); // items per page
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-
+  document.title = "Appointments";
   // Fetch with pagination + search + doctor filter
   useEffect(() => {
     const fetchData = async () => {
