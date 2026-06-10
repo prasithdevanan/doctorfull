@@ -14,7 +14,6 @@ function DoctorBooking() {
     const location = useLocation();
     const navigate = useNavigate();
     const element = location.state ? location.state.element : false;
-    console.log(element);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedTimeslot, setSelectedTimeslot] = useState(null);
     const [bookedSlots, setBookedSlots] = useState([]);
@@ -137,8 +136,8 @@ function DoctorBooking() {
                     <div className="flex flex-col gap-4 w-full md:w-[60%]">
                         <p>{onlineStatus ? "Online" : "Offline"}</p>
                         {/* Availability */}
-                        <p className={`text-sm font-medium ${element.avilable ? 'text-green-600' : 'text-red-600'}`}>
-                            {element.avilable ? "Available" : "Unavailable"}
+                        <p className={`text-sm font-medium ${element.available ? 'text-green-600' : 'text-red-600'}`}>
+                            {element.available ? "Available" : "Unavailable"}
                         </p>
 
                         {/* Name & speciality */}

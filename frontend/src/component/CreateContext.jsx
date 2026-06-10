@@ -23,7 +23,6 @@ export const AppProvider = ({ children }) => {
 
         setUserLoading(true);
         const res = await axios.get(`${BackendUrl}/api/patient/signin/${userId}`);
-        console.log(res.data);
 
         if (res.data.success) {
           setToken(true);
@@ -45,13 +44,6 @@ export const AppProvider = ({ children }) => {
     }
     feach();
   }, [userId, BackendUrl]);
-
-
-  useEffect(() => {
-    console.log("Context rerendered:", userId);
-  }, [userId]);
-
-
 
   useEffect(() => {
     const fech = async () => {
