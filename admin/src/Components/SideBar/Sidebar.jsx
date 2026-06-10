@@ -7,10 +7,6 @@ function Sidebar() {
     const { aToken, dToken } = useContext(AdminContext);
     const [isOpen, setIsOpen] = useState(true);
 
-    useEffect(() => {
-        console.log(isOpen)
-    }, [isOpen]);
-
     const featues = [
         {
             name: "Dashboard",

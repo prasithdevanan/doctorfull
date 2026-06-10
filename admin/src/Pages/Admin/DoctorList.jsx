@@ -24,7 +24,6 @@ function DoctorList() {
         }
 
         //set the data to the doctorsList
-        console.log(res.data.doctorsList);
         return setDoctorsList(res.data.doctorsList);
 
       } catch (error) {
@@ -46,7 +45,6 @@ function DoctorList() {
       }
 
     } catch (error) {
-      console.log(error?.response?.data?.message);
       toast.error(error?.response?.data?.message);
     }
   }

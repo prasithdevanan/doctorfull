@@ -24,7 +24,6 @@ function Login() {
   const onSubmitHandler = async (event) => {
     setLoad(true);
     event.preventDefault();
-    console.log("work")
     try {
       if (!email) {
         toast.error("Email is required");
@@ -38,7 +37,6 @@ function Login() {
 
       if (state === "Admin") {
         const { data } = await axios.post(BackendUrl + '/api/admin/login', { email, password });
-        console.log(data);
         if (data.success) {
           localStorage.setItem("aToken", data.token);
           setAToken(data.token);
@@ -49,11 +47,9 @@ function Login() {
         }
       } else if (state === "Doctor") {
         const { data } = await axios.post(BackendUrl + '/api/doctor/doctor/login', { email, password });
-        console.log(data);
 
         if (!data.success) {
           toast.error(data.message);
-          console.log(data.message);
         }
         if (data.success) {
           localStorage.setItem("dToken", data.token);
@@ -67,7 +63,6 @@ function Login() {
 
     } catch (error) {
       toast.error(error.message);
-      console.log(error.message);
     } finally {
       socket.connect();
       setLoad(false);

@@ -32,8 +32,6 @@ function Appoiment() {
             },
           }
         );
-
-        console.log(res.data);
         setAppointments(res.data.appointments);
         setTotalPages(res.data.totalPages);
       } catch (error) {

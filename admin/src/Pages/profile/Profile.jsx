@@ -24,7 +24,6 @@ function Profile() {
         const { name, value } = e.target;
         setProfile((prev) => {
             const updatedProfile = { ...prev, [name]: value };
-            console.log(updatedProfile);
             return updatedProfile;
         })
     };
@@ -55,7 +54,6 @@ function Profile() {
             const res = await axios.post(`${BackendUrl}/api/doctor/doctor/profile/update/${localStorage.getItem("id")}`, formData);
 
             if (res.data.success) {
-                console.log(res.data);
                 toast.success(res.data.message);
             }
         } catch (error) {
@@ -64,7 +62,6 @@ function Profile() {
             setEdit(false);
             setProfileLoading(false);
         }
-        console.log("Saved:", profile);
     };
 
     /// handle the logout
@@ -80,7 +77,6 @@ function Profile() {
             setLoading(true);
             const fetchDoctorInfo = async () => {
                 const res = await axios.get(`${BackendUrl}/api/doctor/doctor/email/${profile.email}`);
-                console.log(res.data);
                 setProfile({
                     ...profile,
                     mobile: res.data.doctor.mobile || profile.mobile,

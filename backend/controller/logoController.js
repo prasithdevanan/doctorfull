@@ -5,7 +5,6 @@ export const getLogo = async (req, res) => {
     try {
         const { companyName } = req.body;
         const image = req.file;
-        console.log(companyName, image);
         if (!image || !companyName) {
             return res.json({ success: false, message: "Missing data" });
         }

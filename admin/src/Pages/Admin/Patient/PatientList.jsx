@@ -22,7 +22,6 @@ function PatientList() {
                 setPatientList(res.data.patientsList.map((patient) => ({
                     ...patient, name: patient.email.split('@')[0].charAt(0).toUpperCase() + patient.email.split('@')[0].slice(1)
                 })));
-                console.log(res.data.patientsList);
 
             } catch (error) {
                 console.log(error?.response?.data?.message || error.message);
