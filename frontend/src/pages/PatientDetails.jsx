@@ -103,7 +103,7 @@ function PatientDetails() {
 
             toast.success(res.data.message);
 
-            navigate(`/doctor/${doctorId}/patientdetails/payment`, { state: { appointmentId: res.data.appointmentId, fees: element?.fees, element: element, selectTime: appointmentTime, selectDate: appointmentDate, fromBooking: true } });
+            navigate(`/doctor/${doctorId}/patientdetails/payment`, { state: { appointmentId: res.data.appointmentId, fees: element?.fees, element: element, selectTime: appointmentTime, selectDate: appointmentDate, patientName: patientName, patientPhone: patientPhone, patientEmail: patientEmail, fromBooking: true } });
 
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);
@@ -118,8 +118,7 @@ function PatientDetails() {
                 token ? (
 
                     <div
-                        className="w-full flex flex-col xl:flex-row gap-5 items-stretch justify-center h-[100vh] xl:h-[90vh]"
-                    >
+                        className="w-full flex flex-col xl:flex-row gap-5 items-stretch justify-center h-fit xl:h-[90vh]">
 
                         {/* ===== Form ===== */}
                         <form
@@ -215,7 +214,7 @@ function PatientDetails() {
                                             <label
                                                 className="text-sm font-semibold text-gray-700 uppercase tracking-wide"
                                             >
-                                                Patient Name
+                                                Patient Name <span className="text-red-600">*</span>
                                             </label>
 
                                             <input
@@ -233,7 +232,7 @@ function PatientDetails() {
                                             <label
                                                 className="text-sm font-semibold text-gray-700 uppercase tracking-wide"
                                             >
-                                                Patient Phone
+                                                Patient Phone <span className="text-red-600">*</span>
                                             </label>
 
                                             <input
@@ -252,7 +251,7 @@ function PatientDetails() {
                                             <label
                                                 className="text-sm font-semibold text-gray-700 uppercase tracking-wide"
                                             >
-                                                Reason
+                                                Reason <span className="text-red-600">*</span>
                                             </label>
 
                                             <textarea
@@ -285,7 +284,7 @@ function PatientDetails() {
                                     <div className="flex justify-center md:justify-end mt-8">
                                         <button
                                             type="submit"
-                                            className="w-full md:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-base shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+                                            className="w-full md:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-base hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
                                         >
                                             {loading ? "Loading..." : "Book Appointment"}
                                         </button>

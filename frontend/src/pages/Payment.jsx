@@ -14,16 +14,35 @@ function Payment() {
     }
   }, []);
 
+
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+
+    const handleBack = () => {
+      window.history.pushState(null, "", window.location.href);
+      // optional: show modal instead of silent block
+      alert("You cannot go back during payment");
+    };
+
+    window.addEventListener("popstate", handleBack);
+
+    return () => {
+      window.removeEventListener("popstate", handleBack);
+    }
+  }, []);
+
   const { token, BackendUrl } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
   const height = window.innerHeight - 120; // Subtracting the height of the navbar (assuming it's 120px)
   const element = location.state ? location.state.element : false;
+  const allElement = location.state ? location.state.allElement : false;
   const date = location.state ? location?.state?.selectDate : false;
   const time = location.state ? location?.state?.selectTime : false;
   const fees = location.state ? location?.state?.fees : false;
   const [appCharge, setAppCharge] = useState(200);
   const [loading, setLoading] = useState(false);
+  console.log(element.fees);
 
   ///check the active button
   const [paymentMethod, setPaymentMethod] = useState(true);
@@ -74,9 +93,9 @@ function Payment() {
         }
       },
       "prefill": {
-        "name": 'Alex',
-        "email": 'alex@example.com',
-        "contact": '9999999999'
+        "name": allElement.patientName,
+        "email": allElement.patientEmail,
+        "contact": allElement.patientPhone
       },
       "theme": {
         "color": "(--color-primary)"
