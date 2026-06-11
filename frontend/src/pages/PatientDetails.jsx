@@ -137,11 +137,7 @@ function PatientDetails() {
                             </div>
 
                             {/* Department Tag */}
-                            <p
-                                className="px-5 py-2 mb-8 rounded-full text-sm font-semibold bg-(--color-primary)/10 text-(--color-primary) tracking-wider"
-                            >
-                                Intake Department
-                            </p>
+
 
                             {/* Main Container */}
                             <div
@@ -161,19 +157,18 @@ function PatientDetails() {
                                         <img
                                             src={location?.state?.element?.image}
                                             alt={location?.state?.element?.name}
-                                            className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-white shadow-md mt-4"
+                                            className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-white mt-4"
                                         />
 
-                                        <div className="mt-6 flex flex-col gap-3">
+                                        <div className="mt-6 flex flex-col gap-2">
                                             <h1
                                                 className="text-2xl md:text-3xl font-bold text-gray-900"
                                             >
                                                 {location?.state?.element?.name}
                                             </h1>
 
-                                            <p
-                                                className="text-sm md:text-base text-blue-600 font-medium capitalize"
-                                            >
+                                            <p className="text-sm md:text-base text-gray-600 m-0">{location?.state?.element?.email}</p>
+                                            <p className="text-sm md:text-base text-blue-600 font-medium capitalize" >
                                                 {location?.state?.element?.speciality}
                                             </p>
 
@@ -208,6 +203,10 @@ function PatientDetails() {
                                 <div
                                     className="w-full xl:w-[65%] bg-white rounded-3xl shadow-sm border border-gray-100 p-6 md:p-8"
                                 >
+                                    <p
+                                        className="px-5 w-fit mx-auto py-2 mb-4 rounded-full text-sm font-semibold bg-(--color-primary)/10 text-(--color-primary) tracking-wider" >
+                                        Intake Department
+                                    </p>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {/* Patient Name */}
                                         <div className="flex flex-col gap-2">

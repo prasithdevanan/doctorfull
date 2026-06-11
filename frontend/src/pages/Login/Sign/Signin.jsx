@@ -139,7 +139,7 @@ function signin() {
                         className="mt-4 py-2 rounded-md bg-(--color-primary) text-(--color-white) 
       hover:scale-105 transition duration-200 cursor-pointer"
                     >
-                        Signin
+                        SignUp
                     </button>
 
                     {/* Footer */}

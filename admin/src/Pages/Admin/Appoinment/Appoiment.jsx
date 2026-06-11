@@ -150,35 +150,36 @@ function Appoiment() {
           </div>
 
           {/* ---------------- Pagination */}
-          <div className="fixed bottom-2 mt-10 w-[calc(100vw-270px)] flex items-center justify-center">
+          {(appointments.length > 8 || totalPages > 1) &&
+            <div className="fixed bottom-2 mt-10 w-[calc(100vw-270px)] flex items-center justify-center">
 
-            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl px-4 py-3">
+              <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl px-4 py-3">
 
-              <button
-                onClick={() => setPage((prev) => prev - 1)}
-                disabled={page === 1}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 transition cursor-pointer"
-              >
-                <i className="bi bi-arrow-left-short text-lg"></i>
-                Prev
-              </button>
+                <button
+                  onClick={() => setPage((prev) => prev - 1)}
+                  disabled={page === 1}
+                  className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 transition cursor-pointer"
+                >
+                  <i className="bi bi-arrow-left-short text-lg"></i>
+                  Prev
+                </button>
 
-              <div className="text-sm text-gray-600">
-                Page <span className="font-semibold text-gray-900">{page}</span> of {totalPages}
+                <div className="text-sm text-gray-600">
+                  Page <span className="font-semibold text-gray-900">{page}</span> of {totalPages}
+                </div>
+
+                <button
+                  onClick={() => setPage((prev) => prev + 1)}
+                  disabled={page === totalPages}
+                  className="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition cursor-pointer"
+                >
+                  Next
+                  <i className="bi bi-arrow-right-short text-lg"></i>
+                </button>
+
               </div>
 
-              <button
-                onClick={() => setPage((prev) => prev + 1)}
-                disabled={page === totalPages}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition cursor-pointer"
-              >
-                Next
-                <i className="bi bi-arrow-right-short text-lg"></i>
-              </button>
-
-            </div>
-
-          </div>
+            </div>}
         </>
       ) : (
         <div className="text-center text-gray-500 py-10">
