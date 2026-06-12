@@ -11,6 +11,7 @@ const connetDB = async () => {
 
     // await NotificationModel.deleteMany({"doctorId":"69d8969ea6048c81e273d166"});
     await appointmentModel.syncIndexes();
+    await NotificationModel.syncIndexes();
     // const indexes = await appointmentModel.collection.indexes();
     // console.log(indexes);
 };

@@ -66,18 +66,18 @@ function Dashboard() {
     socket.emit("register", { userId: user._id, role: "Doctor" });
 
     // Listen for new_appointment events
-    socket.on("new_appointment", (data) => {
 
-      setData((prev) => {
+    socket.on("new_appointment", (newData) => {
 
-        // Prevent duplicates
+      setData((prev = []) => {
+
         const exists = prev.find(
-          (item) => item._id === data._id
+          (item) => item._id === newData._id
         );
 
         if (exists) return prev;
 
-        return [...prev, data];
+        return [...prev, newData];
       });
     });
 
@@ -95,10 +95,18 @@ function Dashboard() {
       });
     });
 
+    // user_appointment_delete
+    socket.on("user_appointment_delete", ({ appointmentId, doctorId }) => {
+      setData((prev) => {
+        prev.filter((item) => item.appointmentId !== appointmentId)
+      });
+    });
+
     return () => {
       console.log("Cleaning up socket listeners");
       socket.off("new_appointment");
       socket.off("pending_notifications");
+      socket.off("user_appointment_delete");
       setData([]);
     }
   }, [user, userLoading]);
@@ -178,11 +186,11 @@ function Dashboard() {
                 </h2>
 
                 <span className="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-600 font-medium">
-                  {data.length} Requests
+                  {data?.length} Requests
                 </span>
               </div>
 
-              {data.length > 0 ? (
+              {data?.length > 0 ? (
                 <div className="max-h-[400px] overflow-y-auto px-8 space-y-4 custom-scrollbar ">
                   {data.map((item, index) => (
                     <div

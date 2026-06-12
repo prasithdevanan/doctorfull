@@ -98,7 +98,7 @@ function PatientDetails() {
                 toast.error(res.data.message);
                 return
             }
-            socket.emit("book_appointment", { patientId: userElement?.id, doctorId, details: data });
+            socket.emit("book_appointment", { patientId: userElement?.id, doctorId, appointmentId: res.data.appointmentId, details: data });
 
 
             toast.success(res.data.message);

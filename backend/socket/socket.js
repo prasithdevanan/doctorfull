@@ -73,7 +73,7 @@ export const initiSocket = (io) => {
 
 
         // patient book appotiments
-        socket.on('book_appointment', async ({ patientId, doctorId, details }) => {
+        socket.on('book_appointment', async ({ patientId, doctorId, details, appointmentId }) => {
 
             const doctor = users[doctorId];
 
@@ -81,9 +81,10 @@ export const initiSocket = (io) => {
             const notification = await NotificationModel.create({
                 userId: patientId,
                 doctorId: doctorId,
-                userType: users[patientId]?.role || "patient",
+                userType: users[patientId]?.role || "Patient",
                 message: "New Appointment Booked",
                 data: details,
+                appointmentId,
             });
 
             if (doctor) {
@@ -155,6 +156,17 @@ export const initiSocket = (io) => {
                 );
             }
 
+        });
+
+        //user delete the appointment
+        socket.on("user_appointment_delete", async ({ appointmentId, doctorId }) => {
+            console.log(appointmentId);
+            await NotificationModel.findOneAndDelete({ appointmentId: appointmentId });
+
+            const doctor = users[doctorId];
+            if (doctor) {
+                io.to(doctor.socketId).emit("user_appointment_delete", { appointmentId: appointmentId, doctorId: doctorId });
+            }
         });
 
         socket.on("disconnect", () => {
