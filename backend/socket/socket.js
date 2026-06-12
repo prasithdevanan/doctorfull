@@ -62,6 +62,7 @@ export const initiSocket = (io) => {
 
         });
 
+        // check online
         socket.on("checkOnline", ({ userId }) => {
             const isOnline = !!users[userId];
 
@@ -69,6 +70,16 @@ export const initiSocket = (io) => {
                 userId,
                 isOnline
             });
+        });
+
+        // get all online status
+        socket.on("getAllDoctorsOnlineStatus", ({ doctorIds }) => {
+            const doctorsStatus = doctorIds.map((doctorId) => ({
+                doctorId,
+                isOnline: !!users[doctorId]
+            }));
+
+            socket.emit("allDoctorsOnlineStatus", doctorsStatus);
         });
 
 
