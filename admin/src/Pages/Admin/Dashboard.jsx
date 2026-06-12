@@ -16,6 +16,7 @@ function Dashboard() {
   const [newDoctor, setNewDoctor] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
   const [newAppointment, setNewAppointment] = useState([]);
+  const doctor = localStorage.getItem("dToken") ? true : false;
 
   //feach the data from the DB doctorList
   useEffect(() => {
@@ -65,8 +66,8 @@ function Dashboard() {
     }
     socket.emit("register", { userId: user._id, role: "Doctor" });
 
-    // Listen for new_appointment events
 
+    // Listen for new_appointment events
     socket.on("new_appointment", (newData) => {
 
       setData((prev = []) => {
@@ -147,7 +148,7 @@ function Dashboard() {
           < section className="w-full h-[calc(100vh-64px)] overflow-y-auto px-4 sm:px-6 py-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
 
             {/* ===== STATS CARDS ===== */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {!doctor && <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 
               {[
                 { label: "Doctors", count: doctorsList.length.toString().padStart(2, "0"), img: Images.Doctor },
@@ -175,7 +176,7 @@ function Dashboard() {
                 </div>
               ))}
 
-            </div>
+            </div>}
 
 
             {/* ===================New Appointement=================== */}

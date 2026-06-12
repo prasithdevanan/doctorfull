@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AdminContext } from '../../context/AdminContext';
 import axios from 'axios';
 import { socket } from '../../socket/socket';
+import { toast } from 'react-toastify';
 
 function Navbar() {
     const body = document.querySelector('body')
@@ -45,11 +46,15 @@ function Navbar() {
         setEnabled(!enabled);
         try {
             const updateAvailability = async () => {
-                const res = await axios.post(`${BackendUrl}/api/doctor/doctor/profile/update/${localStorage.getItem("id")}`, {
-                    data: {
-                        available: !enabled
+                const res = await axios.post(`${BackendUrl}/api/doctor/doctor/profile/update/${localStorage.getItem("id")}`, { available: !enabled });
+
+                if (res.data.success) {
+                    if (!enabled) {
+                        toast.success("You are available now");
+                    } else {
+                        toast.error("You are not available now");
                     }
-                });
+                }
             }
 
             updateAvailability();
@@ -57,7 +62,7 @@ function Navbar() {
             if (err.response.status === 401) {
                 logout();
             } else {
-                console.error("Error fetching doctor info:", err);
+                toast.error("Error fetching doctor info:", err);
             }
         }
     };

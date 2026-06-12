@@ -283,7 +283,7 @@ function PatientDetails() {
                                     <div className="flex justify-center md:justify-end mt-8">
                                         <button
                                             type="submit"
-                                            className="w-full md:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-base hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+                                            className="w-full md:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-base hover:shadow-lg hover:scale-102 active:scale-95 transition-all duration-300 cursor-pointer"
                                         >
                                             {loading ? "Loading..." : "Book Appointment"}
                                         </button>

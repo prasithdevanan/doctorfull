@@ -129,7 +129,6 @@ function Appointment() {
         }
         const deleteUpdate = updateAppointments.filter((item) => selectedUser._id !== item._id);
         setUpdatedAppointments(deleteUpdate);
-        console.log(selectedUser);
         try {
             const res = await axios.delete(`${BackendUrl}/api/patient/appointment/delete/${selectedUser._id}`);
             socket.emit("user_appointment_delete", { appointmentId: selectedUser._id, doctorId: selectedUser.doctorId });

@@ -5,8 +5,11 @@ import { useEffect } from 'react';
 
 function Sidebar() {
     const { aToken, dToken } = useContext(AdminContext);
-    const [isOpen, setIsOpen] = useState(true);
-
+    // const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(() => {
+        const saved = localStorage.getItem("isOpen");
+        return saved ? JSON.parse(saved) : true;
+    });
     const featues = [
         {
             name: "Dashboard",
@@ -52,7 +55,7 @@ function Sidebar() {
 
     return (
         <>
-            <section className={`w-fit relative ${isOpen ? "sm:w-56" : "sm:w-fit"} bg-white/80 backdrop-blur-lg border-r border-gray-200 flex flex-col py-6 px-2 shadow-sm shrink-0 group/sidebar transition-all duration-300 ease-in-out justify-between`}>
+            <section className={`w-fit relative ${isOpen ? "sm:w-56" : "sm:w-fit"} bg-white/80 backdrop-blur-lg border-r border-gray-200 flex flex-col py-6 px-2 shadow-sm shrink-0 group/sidebar transition-all duration-300 ease-in-out justify-between overflow-hidden`}>
 
                 <div className="flex flex-col gap-2">
 
@@ -95,7 +98,7 @@ function Sidebar() {
                     ))}
 
                 </div>
-                <button onClick={() => setIsOpen(!isOpen)} className="hidden w-fit ml-auto opacity-50 translate-x-2 group-hover/sidebar:opacity-100 group-hover/sidebar:translate-x-0 sm:flex cursor-pointer justify-end p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 ease-in-out" title="Toggle Sidebar">
+                <button onClick={() => { setIsOpen(!isOpen); localStorage.setItem("isOpen", !isOpen) }} className="hidden w-fit ml-auto opacity-50 translate-x-2 group-hover/sidebar:opacity-100 group-hover/sidebar:translate-x-0 sm:flex cursor-pointer justify-end p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 ease-in-out" title="Toggle Sidebar">
                     <i className={`text-2xl bi ${isOpen ? "bi-layout-sidebar-inset" : "bi-layout-sidebar-inset-reverse"} text-gray-600`}></i>
                 </button>
             </section >

@@ -75,6 +75,7 @@ export const updateDoctor = async (req, res) => {
         const {
             name,
             email,
+            available,
             password,
             speciality,
             degree,
@@ -99,7 +100,7 @@ export const updateDoctor = async (req, res) => {
 
         // Default old image
         let imageUrl = doctor.image;
-        
+
         // If new image uploaded
         if (image) {
 
@@ -130,6 +131,7 @@ export const updateDoctor = async (req, res) => {
         doctor.fees = fees || doctor.fees;
         doctor.address = address || doctor.address;
         doctor.mobile = mobile || doctor.mobile;
+        doctor.available = available ?? doctor.available;
 
         // Update image
         doctor.image = imageUrl;

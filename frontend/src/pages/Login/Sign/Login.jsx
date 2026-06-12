@@ -30,6 +30,8 @@ function Login() {
 
         e.preventDefault();
 
+        if (loading) return;
+
         if (!email || !password) {
             return toast.error("Missing data");
         }
@@ -83,7 +85,7 @@ function Login() {
                     <br />
                     at a time
                 </h1>
-                
+
                 <img src={Images.LoginBg} alt="Login Background" className="absolute inset-0 w-full h-full object-cover -z-10"
                 />
 

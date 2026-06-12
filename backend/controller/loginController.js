@@ -14,7 +14,7 @@ const Login = async (req, res) => {
         const isMatch = await bycrypt.compare(password, user.password);
 
         if (!isMatch) {
-            res.status(400).json({ success: false, message: "Invaild Credentials" });
+           return res.status(400).json({ success: false, message: "Invaild Credentials" });
         }
         // Success
         res.json({
@@ -24,7 +24,7 @@ const Login = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: error });
+       return res.status(500).json({ success: false, message: error.message || "Server Error" });
         
     }
 }

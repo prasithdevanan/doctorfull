@@ -135,7 +135,7 @@ function AddDoctor() {
             </div>
 
             {/* ====================================== FORM =================================================== */}
-            <form onSubmit={onSubmitHandle} className="space-y-6">
+            <form onSubmit={onSubmitHandle} className="space-y-6" autoComplete='off'>
 
               {/* Section 1 */}
               <div>
@@ -155,6 +155,8 @@ function AddDoctor() {
 
                   <input
                     type="text"
+                    name="random-email-field"
+                    autoComplete="new-email"
                     placeholder="Email Address"
                     className="input-soft"
                     value={doctorEmail || ""}
@@ -165,11 +167,14 @@ function AddDoctor() {
                   <div className="relative">
                     <input
                       type={passwordVisible ? "text" : "password"}
+                      name="random-password-field"
+                      autoComplete="new-password"
                       placeholder="Password"
                       className="input-soft pr-14"
                       value={doctorPassword}
                       onChange={(e) => setDoctorPassword(e.target.value)}
                     />
+
                     <span
                       onClick={() => setPasswordVisible(!passwordVisible)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 cursor-pointer"
