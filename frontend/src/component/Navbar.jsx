@@ -52,8 +52,6 @@ function Navbar() {
                     ...last10,
                     ...prev
                 ];
-                console.log(merged);
-
                 const unique = merged.filter(
                     (item, index, self) =>
                         index === self.findIndex(

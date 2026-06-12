@@ -19,7 +19,6 @@ function PatientDetails() {
 
     ///change the screen from the previous
     useEffect(() => {
-        console.log(location.state)
         if (!location?.state?.fromBooking) {
             navigate('/doctor');
             return;
@@ -99,12 +98,12 @@ function PatientDetails() {
                 toast.error(res.data.message);
                 return
             }
-            socket.emit("book_appointment", { patientId: userElement?.id, doctorId, details: data });
+            socket.emit("book_appointment", { patientId: userElement?.id, doctorId, appointmentId: res.data.appointmentId, details: data });
 
 
             toast.success(res.data.message);
 
-            navigate(`/doctor/${doctorId}/patientdetails/payment`, { state: { appointmentId: res.data.appointmentId, fees: element?.fees, element: element, selectTime: appointmentTime, selectDate: appointmentDate, fromBooking: true } });
+            navigate(`/doctor/${doctorId}/patientdetails/payment`, { state: { appointmentId: res.data.appointmentId, fees: element?.fees, element: element, selectTime: appointmentTime, selectDate: appointmentDate, patientName: patientName, patientPhone: patientPhone, patientEmail: patientEmail, fromBooking: true } });
 
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);
@@ -118,140 +117,180 @@ function PatientDetails() {
             {
                 token ? (
 
-                    <div className="w-full min-h-[calc(100vh-120px)] flex flex-col items-center justify-center px-4 py-10 gap-10 bg-gray-50">
+                    <div
+                        className="w-full flex flex-col xl:flex-row gap-5 items-stretch justify-center h-fit xl:h-[90vh]">
 
                         {/* ===== Form ===== */}
                         <form
                             onSubmit={submitHandle}
-                            className="w-full max-w-4xl flex flex-col items-center"
+                            className="w-full max-w-7xl mx-auto flex flex-col items-center px-4 sm:px-6 lg:px-8 py-8"
                         >
-
                             {/* Header */}
-                            <div className="text-center mb-6 px-2">
-                                <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
                                     Patient Details
                                 </h2>
 
-                                <p className="text-sm text-gray-500 mt-2 max-w-xl">
+                                <p className="text-sm md:text-base text-gray-500 mt-3 max-w-2xl leading-relaxed">
                                     Please provide your primary contact and identification details.
                                 </p>
                             </div>
 
-                            {/* Tag */}
-                            <p className="px-4 py-1 mb-6 rounded-full text-sm bg-blue-100 text-blue-600 font-medium">
-                                Intake Department
-                            </p>
+                            {/* Department Tag */}
 
-                            <div className="relative w-full max-w-4xl flex-col sm:flex-row flex gap-6 p-6 rounded-2xl bg-gray-100 border border-gray-200 mb-4">
-                                <p className='absolute right-0 top-0 opacity-50 px-4 py-2'>Doctor Details</p>
-                                {/* Image */}
-                                <div className="flex-shrink-0">
-                                    <img
-                                        src={location?.state?.element?.image}
-                                        alt={location?.state?.element?.name}
-                                        className="w-28 h-28 md:w-36 md:h-36 rounded-xl object-cover border-2 border-gray-200 shadow-sm"
-                                    />
+
+                            {/* Main Container */}
+                            <div
+                                className="w-full flex flex-col xl:flex-row gap-8 items-stretch justify-center"
+                            >
+                                {/* Doctor Card */}
+                                <div
+                                    className="relative w-full xl:w-[35%] bg-gray-50 border border-gray-200 rounded-3xl p-6 overflow-hidden"
+                                >
+                                    <p
+                                        className="absolute top-4 right-4 text-xs md:text-sm text-gray-400 font-semibold uppercase tracking-wider"
+                                    >
+                                        Doctor Details
+                                    </p>
+
+                                    <div className="flex flex-col items-center text-center">
+                                        <img
+                                            src={location?.state?.element?.image}
+                                            alt={location?.state?.element?.name}
+                                            className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-white mt-4"
+                                        />
+
+                                        <div className="mt-6 flex flex-col gap-2">
+                                            <h1
+                                                className="text-2xl md:text-3xl font-bold text-gray-900"
+                                            >
+                                                {location?.state?.element?.name}
+                                            </h1>
+
+                                            <p className="text-sm md:text-base text-gray-600 m-0">{location?.state?.element?.email}</p>
+                                            <p className="text-sm md:text-base text-blue-600 font-medium capitalize" >
+                                                {location?.state?.element?.speciality}
+                                            </p>
+
+                                            <p className="text-lg font-semibold text-gray-800">
+                                                Fees :
+                                                <span className="text-green-600 ml-2">
+                                                    ₹{location?.state?.element?.fees}
+                                                </span>
+                                            </p>
+
+                                            <div
+                                                className="mt-3 flex flex-col sm:flex-row items-center justify-center gap-3"
+                                            >
+                                                <div
+                                                    className="px-4 py-2 rounded-xl bg-blue-50 text-blue-700 text-sm font-semibold"
+                                                >
+                                                    Time : {location?.state?.selectTime}
+                                                </div>
+
+                                                <div
+                                                    className="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 text-sm font-semibold"
+                                                >
+                                                    Date : {location?.state?.selectDate?.day},{" "}
+                                                    {location?.state?.selectDate?.fulldate}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                {/* Details */}
-                                <div className="flex flex-col justify-center gap-2">
-
-                                    <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
-                                        {location?.state?.element?.name}
-                                    </h1>
-
-                                    <p className="text-sm md:text-base text-gray-500 capitalize">
-                                        {location?.state?.element?.speciality}
+                                {/* Form Card */}
+                                <div
+                                    className="w-full xl:w-[65%] bg-white rounded-3xl shadow-sm border border-gray-100 p-6 md:p-8"
+                                >
+                                    <p
+                                        className="px-5 w-fit mx-auto py-2 mb-4 rounded-full text-sm font-semibold bg-(--color-primary)/10 text-(--color-primary) tracking-wider" >
+                                        Intake Department
                                     </p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {/* Patient Name */}
+                                        <div className="flex flex-col gap-2">
+                                            <label
+                                                className="text-sm font-semibold text-gray-700 uppercase tracking-wide"
+                                            >
+                                                Patient Name <span className="text-red-600">*</span>
+                                            </label>
 
-                                    <p className="text-sm md:text-base font-medium text-gray-800">
-                                        Fees:{" "}
-                                        <span className="text-green-600 font-semibold">
-                                            ₹{location?.state?.element?.fees}
-                                        </span>
-                                    </p>
+                                            <input
+                                                type="text"
+                                                placeholder="Enter Patient Name"
+                                                required
+                                                value={patientName}
+                                                onChange={(e) => setPatientName(e.target.value)}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-300"
+                                            />
+                                        </div>
 
-                                    <div className="mt-2 flex gap-1 text-sm md:text-base text-gray-700">
-                                        <p className='font-semibold'>
-                                            <span className="font-medium text-gray-500">Time:</span>{" "}
-                                            {location?.state?.selectTime}
-                                        </p>
+                                        {/* Patient Phone */}
+                                        <div className="flex flex-col gap-2">
+                                            <label
+                                                className="text-sm font-semibold text-gray-700 uppercase tracking-wide"
+                                            >
+                                                Patient Phone <span className="text-red-600">*</span>
+                                            </label>
 
-                                        <p className='font-semibold'>
-                                            <span className="font-medium text-gray-500">Date:</span>{" "}
-                                            {location?.state?.selectDate?.day}, {location?.state?.selectDate?.fulldate}
-                                        </p>
+                                            <input
+                                                type="tel"
+                                                maxLength={10}
+                                                placeholder="Enter Phone Number"
+                                                required
+                                                value={patientPhone}
+                                                onChange={(e) => setPatientPhone(e.target.value)}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-300"
+                                            />
+                                        </div>
+
+                                        {/* Reason */}
+                                        <div className="flex flex-col gap-2 md:col-span-2">
+                                            <label
+                                                className="text-sm font-semibold text-gray-700 uppercase tracking-wide"
+                                            >
+                                                Reason <span className="text-red-600">*</span>
+                                            </label>
+
+                                            <textarea
+                                                placeholder="Enter Reason"
+                                                required
+                                                value={reason}
+                                                onChange={(e) => setReason(e.target.value)}
+                                                className="w-full px-4 py-3 h-32 resize-none rounded-xl border border-gray-300 bg-gray-50 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-300"
+                                            />
+                                        </div>
+
+                                        {/* Doctor Name */}
+                                        <div className="flex flex-col gap-2 md:col-span-2">
+                                            <label
+                                                className="text-sm font-semibold text-gray-700 uppercase tracking-wide"
+                                            >
+                                                Doctor Name
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                value={location?.state?.element?.name}
+                                                readOnly
+                                                className="w-full px-4 py-3 rounded-xl bg-gray-100 border border-gray-200 text-gray-500 cursor-not-allowed"
+                                            />
+                                        </div>
                                     </div>
 
+                                    {/* Button */}
+                                    <div className="flex justify-center md:justify-end mt-8">
+                                        <button
+                                            type="submit"
+                                            className="w-full md:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-base hover:shadow-lg hover:scale-102 active:scale-95 transition-all duration-300 cursor-pointer"
+                                        >
+                                            {loading ? "Loading..." : "Book Appointment"}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* Form Card */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full p-6 rounded-2xl bg-white shadow-md border border-gray-100">
-
-                                {/* Name */}
-                                <div className="flex flex-col gap-1">
-                                    <label className="text-xs text-gray-500">PATIENT NAME</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Enter Patient Name"
-                                        required
-                                        value={patientName}
-                                        onChange={(e) => setPatientName(e.target.value)}
-                                        className="px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
-                                </div>
-
-                                {/* Phone */}
-                                <div className="flex flex-col gap-1">
-                                    <label className="text-xs text-gray-500">PATIENT PHONE</label>
-                                    <input
-                                        type="tel"
-                                        maxLength={10}
-                                        placeholder="Enter Phone Number"
-                                        required
-                                        value={patientPhone}
-                                        onChange={(e) => setPatientPhone(e.target.value)}
-                                        className="px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
-                                </div>
-
-                                {/* Reason */}
-                                <div className="flex flex-col gap-1 sm:col-span-2">
-                                    <label className="text-xs text-gray-500">REASON</label>
-                                    <textarea
-                                        placeholder="Enter Reason"
-                                        required
-                                        value={reason}
-                                        onChange={(e) => setReason(e.target.value)}
-                                        className="px-3 py-2 h-24 resize-none rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
-                                </div>
-
-                                {/* Doctor */}
-                                <div className="flex flex-col gap-1 sm:col-span-2">
-                                    <label className="text-xs text-gray-500">DOCTOR NAME</label>
-                                    <input
-                                        type="text"
-                                        value={location?.state?.element?.name}
-                                        readOnly
-                                        className="px-3 py-2 rounded-md bg-gray-100 border border-gray-200 text-gray-500"
-                                    />
-                                </div>
-
-                            </div>
-
-                            {/* Button */}
-                            <button
-                                type="submit"
-                                className="mt-6 px-6 py-2 rounded-md bg-blue-600 text-white 
-      hover:scale-105 transition duration-300 shadow-sm hover:shadow-md cursor-pointer shrink-0"
-                            >
-                                {loading ? "Loading..." : "Book Appointment"}
-                            </button>
-
                         </form>
-
                     </div>
 
                 ) : (

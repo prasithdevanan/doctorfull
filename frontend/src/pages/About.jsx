@@ -4,7 +4,6 @@ import { Images } from '../assets/img';
 function About() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-6">
-
       {/* Title */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">About Us</h1>

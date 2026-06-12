@@ -14,7 +14,6 @@ function DoctorBooking() {
     const location = useLocation();
     const navigate = useNavigate();
     const element = location.state ? location.state.element : false;
-    console.log(element);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedTimeslot, setSelectedTimeslot] = useState(null);
     const [bookedSlots, setBookedSlots] = useState([]);
@@ -125,54 +124,99 @@ function DoctorBooking() {
                 <div className="flex flex-col md:flex-row gap-6 items-center max-w-5xl w-full">
 
                     {/* Image */}
-                    <div className="overflow-hidden border border-(--color-text1) rounded-xl w-full max-w-xs">
+                    <div className="w-full max-w-xs overflow-hidden rounded-3xl border border-gray-200 bg-(--color-primary)/20 shadow-sm">
+
                         <img
                             src={element.image}
                             alt="doctor"
                             className="w-full h-auto object-cover"
                         />
+
                     </div>
 
                     {/* Content */}
-                    <div className="flex flex-col gap-4 w-full md:w-[60%]">
-                        <p>{onlineStatus ? "Online" : "Offline"}</p>
-                        {/* Availability */}
-                        <p className={`text-sm font-medium ${element.avilable ? 'text-green-600' : 'text-red-600'}`}>
-                            {element.avilable ? "Available" : "Unavailable"}
-                        </p>
+                    <div className="w-full md:w-[60%] bg-white rounded-3xl p-6 border border-gray-200 flex flex-col gap-6">
 
-                        {/* Name & speciality */}
-                        <div>
-                            <TextAnimation
-                                text={element.name}
-                                className="text-xl md:text-2xl font-medium"
-                                icon={<i className="bi bi-patch-check-fill text-blue-600"></i>}
-                            />
+                        {/* Status Row */}
+                        <div className="flex items-center justify-between flex-wrap gap-3">
 
-                            <p className="text-base md:text-lg font-medium text-(--color-text)">
-                                {element.speciality}
+                            <div className="relative flex items-center gap-2">
 
-                                <span className="ml-2 px-2 py-0.5 border border-(--color-text1) rounded-full text-xs text-(--color-text1)">
-                                    {element.experience}
+                                {/* Dot */}
+                                <span
+                                    className={`w-3 h-3 rounded-full ${onlineStatus ? "bg-green-500" : "bg-gray-400"
+                                        }`}
+                                ></span>
+
+                                {onlineStatus && (
+                                    <span className="absolute left-0 w-3 h-3 rounded-full bg-green-500 animate-ping opacity-75"></span>
+                                )}
+
+                                <p className="text-sm font-medium text-gray-600">
+                                    {onlineStatus ? "Online" : "Offline"}
+                                </p>
+
+                            </div>
+
+                            <span
+                                className={`px-3 py-1 rounded-full text-xs font-semibold border ${element.available
+                                    ? "bg-green-50 text-green-700 border-green-200"
+                                    : "bg-red-50 text-red-700 border-red-200"
+                                    }`}
+                            >
+                                {element.available ? "Available" : "Unavailable"}
+                            </span>
+                        </div>
+
+                        {/* Name & Speciality */}
+                        <div className="space-y-2">
+
+                            <div className="flex items-center gap-2">
+                                <TextAnimation
+                                    text={element.name}
+                                    className="text-2xl md:text-3xl font-bold text-gray-900"
+                                    icon={
+                                        <i className="bi bi-patch-check-fill text-blue-500 text-lg"></i>
+                                    }
+                                />
+                            </div>
+
+                            <div className="flex items-center flex-wrap gap-3">
+
+                                <p className="text-base md:text-lg font-medium text-gray-700">
+                                    {element.speciality}
+                                </p>
+
+                                <span className="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-medium">
+                                    {element.experience} Experience
                                 </span>
-                            </p>
+                            </div>
                         </div>
 
                         {/* About */}
-                        <div>
-                            <h1 className="font-semibold text-sm md:text-base">
-                                About <i className="bi bi-info-circle"></i>
-                            </h1>
+                        <div className="space-y-2">
 
-                            <p className="text-sm text-(--color-text2) leading-relaxed">
+                            <h2 className="flex items-center gap-2 text-base font-semibold text-gray-900">
+                                About
+                                <i className="bi bi-info-circle text-gray-500"></i>
+                            </h2>
+
+                            <p className="text-sm md:text-base leading-7 text-gray-500">
                                 {element.about}
                             </p>
                         </div>
 
                         {/* Fees */}
-                        <h2 className="font-medium text-(--color-text)">
-                            Appointment Fees - <span className="font-semibold text-green-600">₹{element.fees}</span>
-                        </h2>
+                        <div className="flex items-center justify-between border-t border-gray-100 pt-4">
+
+                            <p className="text-gray-600 font-medium">
+                                Consultation Fee
+                            </p>
+
+                            <h2 className="text-2xl font-bold text-green-600">
+                                ₹{element.fees}
+                            </h2>
+                        </div>
                     </div>
 
                 </div>
@@ -189,54 +233,78 @@ function DoctorBooking() {
                     </h1>
 
                     {/* Date Slots */}
-                    <div className="w-full flex gap-3 overflow-x-auto xl:justify-center pb-2 no-scrollbar">
+                    <div className="w-full flex gap-4 overflow-x-auto pb-3 pt-2 no-scrollbar xl:justify-center">
 
                         {dates.map((item, index) => (
-                            <div
+                            <button
                                 key={index}
                                 onClick={() => {
                                     setSelectedIndex(index);
                                     setSelectDate(item);
                                 }}
-                                className={`min-w-[80px] flex flex-col items-center p-3 border rounded-md cursor-pointer transition
-            ${selectedIndex === index
-                                        ? "bg-blue-500 text-white border-blue-500"
-                                        : "border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)"
+                                className={`group min-w-[90px] cursor-pointer rounded-2xl border px-4 py-3 flex flex-col items-center justify-center transition-all duration-300 shadow-sm ${selectedIndex === index
+                                    ? "bg-gradient-to-br from-blue-500 to-indigo-500 text-white border-blue-500 shadow-blue-200 shadow-lg scale-105"
+                                    : "bg-white border-gray-200 hover:border-blue-400 hover:shadow-md hover:-translate-y-1"
                                     }`}
                             >
-                                <p className="text-sm">{item.day}</p>
-                                <p className="text-xs">{item.date}</p>
-                            </div>
+
+                                <p className={`text-sm font-semibold
+                ${selectedIndex === index ? "text-white" : "text-gray-700"}
+            `}>
+                                    {item.day}
+                                </p>
+
+                                <p className={`text-xs mt-1
+                ${selectedIndex === index ? "text-blue-100" : "text-gray-500"}
+            `}>
+                                    {item.date}
+                                </p>
+
+                            </button>
                         ))}
 
                     </div>
 
+
                     {/* Time Slots */}
                     {selectedIndex !== null && (
-                        <div className="flex gap-2 mt-4 mb-2 overflow-x-auto pb-2 w-full xl:justify-center no-scrollbar">
+                        <div className="w-full flex gap-3 mt-6 overflow-auto pb-3 pt-2 no-scrollbar xl:justify-center">
 
                             {timeSlots.map((item, index) => {
+
                                 const isBooked = bookedSlots.includes(item);
 
                                 return (
-                                    <div
+                                    <button
                                         key={index}
                                         onClick={() => {
                                             if (isBooked) return;
+
                                             setSelectedTimeslot(index);
                                             setSelectTime(item);
                                         }}
-                                        className={`min-w-[90px] flex flex-col items-center justify-center p-3 border rounded-md cursor-pointer transition
-                ${isBooked
-                                                ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
-                                                : selectedTimeslot === index
-                                                    ? "bg-blue-500 text-white border-blue-500"
-                                                    : "border-(--color-text1) hover:border-(--color-primary) hover:text-(--color-primary)"
+
+                                        className={`relative cursor-pointer min-w-[110px] rounded-2xl border px-4 py-3 flex flex-col items-center justify-center transition-all duration-300 shadow-sm ${isBooked
+                                            ? "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-70"
+                                            : selectedTimeslot === index
+                                                ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-blue-500 shadow-lg shadow-blue-200 scale-105"
+                                                : "bg-white border-gray-200 hover:border-blue-400 hover:shadow-md hover:-translate-y-1"
                                             }`}
                                     >
-                                        <p className="text-sm">{item}</p>
-                                        {isBooked && <span className="text-xs">Booked</span>}
-                                    </div>
+
+                                        <p className={`text-sm font-medium
+                        ${selectedTimeslot === index ? "text-white" : ""}
+                    `}>
+                                            {item}
+                                        </p>
+
+                                        {isBooked && (
+                                            <span className="text-[10px] mt-1 px-2 py-0.5 rounded-full bg-red-100 text-red-500 font-medium">
+                                                Booked
+                                            </span>
+                                        )}
+
+                                    </button>
                                 );
                             })}
 
@@ -288,7 +356,7 @@ function DoctorBooking() {
                                 icon={<i className="bi bi-arrow-right-short text-xl"></i>}
                                 primary={`w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300
           ${selectedTimeslot !== null
-                                        ? "bg-(--color-primary) text-white hover:shadow-lg hover:scale-105 cursor-pointer"
+                                        ? "bg-(--color-primary) text-white hover:shadow-lg hover:scale-102 cursor-pointer"
                                         : "bg-gray-200 text-gray-400 cursor-not-allowed"
                                     }`}
                             />

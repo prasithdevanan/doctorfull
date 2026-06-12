@@ -5,6 +5,7 @@ import { Images } from '../assets/img';
 import { useNavigate } from 'react-router-dom';
 import Reschedule from './Reschedule';
 import { toast } from 'react-toastify';
+import { socket } from '../socket/socket';
 
 function Appointment() {
     const navigate = useNavigate();
@@ -16,13 +17,17 @@ function Appointment() {
     const [popup, setPopup] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
+    // useEffect(() => {
+
+    //     socket.emit("user_appointment_delete", { appointmentId: "6a2b97f28c0bf573a3627c80" });
+    // }, [])
 
     ///check the user is login or not
     useEffect(() => {
         if (!token) {
             window.location.href = '/login';
         }
-    })
+    });
 
 
 
@@ -126,6 +131,7 @@ function Appointment() {
         setUpdatedAppointments(deleteUpdate);
         try {
             const res = await axios.delete(`${BackendUrl}/api/patient/appointment/delete/${selectedUser._id}`);
+            socket.emit("user_appointment_delete", { appointmentId: selectedUser._id, doctorId: selectedUser.doctorId });
             if (!res.data.success) {
                 return toast.error(res.data.message);
             }

@@ -53,6 +53,19 @@ function signin() {
             <section className="relative w-full min-h-screen flex items-center justify-center px-4">
 
                 {/* Background */}
+                <h1 className="absolute top-10 left-4 sm:left-10 text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase leading-tight text-white">
+
+                    Caring for life,{" "}
+
+                    <span className="outlined-text text-(--color-primary)">
+                        one patient
+                    </span>
+
+                    <br />
+
+                    at a time
+
+                </h1>
                 <img
                     src={Images?.LoginBg}
                     alt="background"
@@ -126,7 +139,7 @@ function signin() {
                         className="mt-4 py-2 rounded-md bg-(--color-primary) text-(--color-white) 
       hover:scale-105 transition duration-200 cursor-pointer"
                     >
-                        Signin
+                        SignUp
                     </button>
 
                     {/* Footer */}

@@ -62,6 +62,7 @@ export const initiSocket = (io) => {
 
         });
 
+        // check online
         socket.on("checkOnline", ({ userId }) => {
             const isOnline = !!users[userId];
 
@@ -71,9 +72,19 @@ export const initiSocket = (io) => {
             });
         });
 
+        // get all online status
+        socket.on("getAllDoctorsOnlineStatus", ({ doctorIds }) => {
+            const doctorsStatus = doctorIds.map((doctorId) => ({
+                doctorId,
+                isOnline: !!users[doctorId]
+            }));
+
+            socket.emit("allDoctorsOnlineStatus", doctorsStatus);
+        });
+
 
         // patient book appotiments
-        socket.on('book_appointment', async ({ patientId, doctorId, details }) => {
+        socket.on('book_appointment', async ({ patientId, doctorId, details, appointmentId }) => {
 
             const doctor = users[doctorId];
 
@@ -81,9 +92,10 @@ export const initiSocket = (io) => {
             const notification = await NotificationModel.create({
                 userId: patientId,
                 doctorId: doctorId,
-                userType: users[patientId]?.role || "patient",
+                userType: users[patientId]?.role || "Patient",
                 message: "New Appointment Booked",
                 data: details,
+                appointmentId,
             });
 
             if (doctor) {
@@ -155,6 +167,16 @@ export const initiSocket = (io) => {
                 );
             }
 
+        });
+
+        //user delete the appointment
+        socket.on("user_appointment_delete", async ({ appointmentId, doctorId }) => {
+            await NotificationModel.findOneAndDelete({ appointmentId: appointmentId });
+
+            const doctor = users[doctorId];
+            if (doctor) {
+                io.to(doctor.socketId).emit("user_appointment_delete", { appointmentId: appointmentId, doctorId: doctorId });
+            }
         });
 
         socket.on("disconnect", () => {

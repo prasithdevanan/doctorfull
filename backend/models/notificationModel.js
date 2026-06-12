@@ -42,6 +42,10 @@ const notificationSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    appointmentId: {
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now

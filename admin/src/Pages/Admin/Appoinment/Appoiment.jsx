@@ -14,7 +14,7 @@ function Appoiment() {
   const [limit] = useState(9); // items per page
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-
+  document.title = "Appointments";
   // Fetch with pagination + search + doctor filter
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +32,6 @@ function Appoiment() {
             },
           }
         );
-
         setAppointments(res.data.appointments);
         setTotalPages(res.data.totalPages);
       } catch (error) {
@@ -46,96 +45,112 @@ function Appoiment() {
   }, [BackendUrl, dToken, search, page, limit]);
 
   return (
-    <section className="h-[calc(100vh-56px)] w-full px-4 sm:px-6 py-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 overflow-y-auto">
+    <section className="h-[calc(100vh-56px)] w-full px-4 sm:px-6 py-6 bg-gray-50 overflow-y-auto">
 
       {/* ---------------- Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
 
-        <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 tracking-tight">
-          Appointments
-        </h1>
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800">
+            Appointments
+          </h1>
+          <p className="text-sm text-gray-400 mt-1">
+            Manage your appointments
+          </p>
+        </div>
 
+        {/* Search */}
         <div className="relative w-full sm:w-72">
           <input
             type="text"
             placeholder="Search doctor..."
-            className="w-full px-4 py-2.5 pl-10 border border-gray-200 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            className="w-full px-4 py-2 pl-10 text-sm border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
               setPage(1);
             }}
           />
-          <i className="bi bi-search absolute left-3 top-3 text-gray-400"></i>
+          <i className="bi bi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
         </div>
 
       </div>
 
       {/* ---------------- Loading */}
       {loading ? (
-        <div className="text-center py-10 text-gray-500 animate-pulse flex flex-col items-center justify-center gap-2">
-          <div className="w-10 h-10 border-t-2 border-b-2 border-(--color-primary) rounded-full animate-spin">
-          </div>
+        <div className="text-center py-10 text-gray-400 flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
           Loading appointments...
         </div>
+
       ) : appointments.length > 0 ? (
         <>
           {/* ---------------- Grid */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-20">
+          <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-20">
 
             {appointments.map((item, index) => (
               <div
                 key={index}
-                className="relative group bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300"
+                className="relative group bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition"
               >
 
                 {/* Status */}
                 <span
-                  className={`absolute top-4 right-4 px-3 py-1 text-xs font-medium rounded-full
+                  className={`absolute top-4 right-4 px-2.5 py-1 text-[11px] font-medium rounded-full border
               ${item?.status === "Accepted"
-                      ? "bg-green-100 text-green-700"
+                      ? "bg-green-50 text-green-600 border-green-100"
                       : item?.status === "Pending"
-                        ? "bg-yellow-100 text-yellow-700" : item?.status === "Rejected" ? "bg-red-100 text-red-700" : item?.status === "Cancelled" ? "bg-red-100 text-red-700"
-                        : "bg-red-100 text-red-700"
+                        ? "bg-yellow-50 text-yellow-600 border-yellow-100"
+                        : "bg-red-50 text-red-600 border-red-100"
                     }`}
                 >
                   {item?.status}
                 </span>
 
-                {/* Doctor */}
-                <div className="flex items-center gap-3 mb-4">
+                {/* Patient */}
+                <div className="flex items-center gap-3 mb-3">
 
                   <img
                     src={item?.image}
                     alt="doctor"
-                    className="w-14 h-14 rounded-full object-cover border border-gray-200"
+                    className="w-12 h-12 rounded-full object-cover border border-gray-300"
                   />
 
                   <div>
-                    <h2 className="text-lg font-semibold text-gray-800">
-                      {item?.doctorName}
+                    <h2 className="text-sm font-semibold text-gray-800">
+                      {item?.patientName}
                     </h2>
-                    <p className="text-sm text-gray-500">
-                      {item?.doctorSpeciality}
+
+                    <p className="text-xs text-gray-400">
+                      {item?.reason?.length > 14
+                        ? item.reason.slice(0, 14) + "..."
+                        : item.reason}
                     </p>
                   </div>
 
                 </div>
 
-                <p className="text-xs text-gray-400 break-all mb-3">
-                  {item?.doctorEmail}
+                {/* Email */}
+                <p className="text-xs text-gray-400 mb-3 break-all">
+                  {item?.patientEmail}
                 </p>
 
-                {/* Patient */}
-                <div className="bg-gray-50 rounded-xl p-3 text-sm text-gray-700 space-y-1">
-                  <p><span className="font-medium">Patient:</span> {item?.patientName}</p>
-                  <p><span className="font-medium">Phone:</span> {item?.patientPhone}</p>
+                {/* Info box */}
+                <div className="bg-gray-50 rounded-xl p-3 text-xs text-gray-600 space-y-1 border border-gray-100">
+                  <p>
+                    <span className="font-medium">Patient ID:</span> {item?.patientId}
+                  </p>
+                  <p>
+                    <span className="font-medium">Phone:</span> {item?.patientPhone}
+                  </p>
                 </div>
 
                 {/* Button */}
                 <button
-                  onClick={() => navigate('/appoinment/details', { state: { body: item } })}
-                  className="mt-4 w-full py-2.5 rounded-xl bg-(--color-primary)/20 cursor-pointer text-(--color-primary) font-medium hover:bg-(--color-primary)/40 active:scale-[0.98] transition"
+                  onClick={() =>
+                    navigate('/appoinment/details', { state: { body: item } })
+                  }
+                  className="mt-4 cursor-pointer w-full py-2.5 rounded-xl bg-blue-50 text-blue-600 font-medium hover:bg-blue-100 transition active:scale-95"
                 >
                   View Details
                 </button>
@@ -146,38 +161,40 @@ function Appoiment() {
           </div>
 
           {/* ---------------- Pagination */}
-          <div className="fixed bottom-2 mt-10 w-[calc(100vw-270px)] flex items-center justify-center">
+          {(appointments.length > 8 || totalPages > 1) && (
+            <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[95%] sm:w-[calc(100vw-280px)]">
 
-            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl px-4 py-3">
+              <div className="flex items-center justify-between bg-white border border-gray-200 shadow-sm rounded-2xl px-4 py-3">
 
-              <button
-                onClick={() => setPage((prev) => prev - 1)}
-                disabled={page === 1}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 transition cursor-pointer"
-              >
-                <i className="bi bi-arrow-left-short text-lg"></i>
-                Prev
-              </button>
+                <button
+                  onClick={() => setPage((prev) => prev - 1)}
+                  disabled={page === 1}
+                  className="px-4 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 transition"
+                >
+                  Prev
+                </button>
 
-              <div className="text-sm text-gray-600">
-                Page <span className="font-semibold text-gray-900">{page}</span> of {totalPages}
+                <div className="text-sm text-gray-600">
+                  Page <span className="font-semibold text-gray-900">{page}</span> of {totalPages}
+                </div>
+
+                <button
+                  onClick={() => setPage((prev) => prev + 1)}
+                  disabled={page === totalPages}
+                  className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition"
+                >
+                  Next
+                </button>
+
               </div>
 
-              <button
-                onClick={() => setPage((prev) => prev + 1)}
-                disabled={page === totalPages}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition cursor-pointer"
-              >
-                Next
-                <i className="bi bi-arrow-right-short text-lg"></i>
-              </button>
-
             </div>
+          )}
 
-          </div>
         </>
+
       ) : (
-        <div className="text-center text-gray-500 py-10">
+        <div className="text-center text-gray-400 py-10">
           No appointments found
         </div>
       )}

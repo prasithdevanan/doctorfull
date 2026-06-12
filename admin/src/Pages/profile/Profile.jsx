@@ -1,57 +1,88 @@
 import { useState, useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Profile() {
     const { aToken, dToken, BackendUrl } = useContext(AdminContext);
     const [edit, setEdit] = useState(false);
     const [name, setName] = useState(aToken ? "Admin" : localStorage.getItem("dEmail").split("@")[0]);
-    console.log(aToken, dToken);
     const [loading, setLoading] = useState(false);
+    const [profileLoading, setProfileLoading] = useState(false);
 
+    // profile
     const [profile, setProfile] = useState({
         name: name,
         email: aToken ? "admin@metix.com" : localStorage.getItem("dEmail"),
-        phone: aToken ? "N/A" : "Enter phone number",
+        mobile: aToken ? "N/A" : "Enter phone number",
         role: aToken ? "Admin" : "Doctor",
         image: null,
     });
 
+    // handle the change on Edit
     const handleChange = (e) => {
-        setProfile({ ...profile, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setProfile((prev) => {
+            const updatedProfile = { ...prev, [name]: value };
+            return updatedProfile;
+        })
     };
 
+
+    // handle the image upload
     const handleImage = (e) => {
         const file = e.target.files[0];
         if (file) {
             setProfile({
                 ...profile,
-                image: URL.createObjectURL(file),
+                image: "",
+                imageFile: file,
+                imagePreview: URL.createObjectURL(file),
             });
         }
     };
 
-    const handleSave = () => {
-        setEdit(false);
-        console.log("Saved:", profile);
+    // handle the save on DB 
+    const handleSave = async () => {
+        setProfileLoading(true);
+        const formData = new FormData();
+        formData.append("name", profile.name);
+        formData.append("email", profile.email);
+        formData.append("mobile", profile.mobile);
+        formData.append("image", profile.imageFile);
+        try {
+            const res = await axios.post(`${BackendUrl}/api/doctor/doctor/profile/update/${localStorage.getItem("id")}`, formData);
+
+            if (res.data.success) {
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        } finally {
+            setEdit(false);
+            setProfileLoading(false);
+        }
     };
 
+    /// handle the logout
     const logout = () => {
         localStorage.clear();
         window.location.href = "/login";
     };
 
+    // Fetch doctor info
     useEffect(() => {
         if (aToken) return; // If admin, skip fetching doctor info
         try {
             setLoading(true);
             const fetchDoctorInfo = async () => {
                 const res = await axios.get(`${BackendUrl}/api/doctor/doctor/email/${profile.email}`);
-                console.log(res.data);
                 setProfile({
                     ...profile,
-                    phone: res.data.doctor.mobile || profile.phone,
+                    mobile: res.data.doctor.mobile || profile.mobile,
                     image: res.data.doctor.image || profile.image,
+                    imagePreview: res.data.doctor.image || profile.imagePreview,
+                    role: res.data.doctor.role || profile.role,
                     name: res.data.doctor.name || profile.name,
                 });
             }
@@ -91,7 +122,7 @@ function Profile() {
                         <div className="relative group">
                             <img
                                 src={
-                                    profile.image ||
+                                    profile.imagePreview || profile.image ||
                                     "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                                 }
                                 alt="profile"
@@ -145,8 +176,8 @@ function Profile() {
                         <div className="flex flex-col gap-1">
                             <label className="text-xs text-gray-500">Phone</label>
                             <input
-                                name="phone"
-                                value={profile.phone}
+                                name="mobile"
+                                value={profile.mobile}
                                 onChange={handleChange}
                                 disabled={!edit}
                                 className="px-4 py-2 rounded-xl border border-gray-200 bg-white/80 focus:ring-2 focus:ring-blue-400 outline-none transition"
@@ -180,7 +211,7 @@ function Profile() {
                                 onClick={handleSave}
                                 className="cursor-pointer px-8 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg transition"
                             >
-                                Save Changes
+                                {profileLoading ? "Uploading..." : "Save Changes"}
                             </button>
                         )}
                     </div>

@@ -12,7 +12,7 @@ export const order = async (req, res) => {
 
         const option = req.body;
         const response = await razorpay.orders.create(option);
-        res.status(200).json({ success: true, order: response });
+        res.status(200).json({ success: true, order: response, message: "Order created successfully" });
 
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -30,7 +30,7 @@ export const verify = async (req, res) => {
         }
 
         if (sha == razorpay_signature) {
-            res.status(200).json({ success: true, message: "Payment verified successfully", order: { payementID:razorpay_payment_id, orderId:razorpay_order_id } }); 
+            res.status(200).json({ success: true, message: "Payment verified successfully", order: { payementID: razorpay_payment_id, orderId: razorpay_order_id } });
         }
 
 

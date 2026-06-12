@@ -13,6 +13,6 @@ expressRouter.get('/list', getDoctors);
 expressRouter.post('/doctor/login', doctorLogin);
 expressRouter.get('/doctor/:id', getDoctor);
 expressRouter.get('/doctor/email/:email', getDoctorByEmail);
-expressRouter.post('/doctor/profile/update/:id', upload.single('profileImage'), updateDoctor);
+expressRouter.post('/doctor/profile/update/:id', upload.single('image'), updateDoctor);
 
 export default expressRouter;

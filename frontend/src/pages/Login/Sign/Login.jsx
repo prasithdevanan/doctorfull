@@ -30,6 +30,8 @@ function Login() {
 
         e.preventDefault();
 
+        if (loading) return;
+
         if (!email || !password) {
             return toast.error("Missing data");
         }
@@ -75,6 +77,14 @@ function Login() {
         <>
             <section className="relative w-full min-h-screen flex items-center justify-center px-4 sm:overflow-hidden">
 
+                <h1 className="absolute top-10 left-4 sm:left-10 text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase leading-tight text-white">
+                    Caring for life,{" "}
+                    <span className="outlined-text text-(--color-primary)">
+                        one patient
+                    </span>
+                    <br />
+                    at a time
+                </h1>
 
                 <img src={Images.LoginBg} alt="Login Background" className="absolute inset-0 w-full h-full object-cover -z-10"
                 />

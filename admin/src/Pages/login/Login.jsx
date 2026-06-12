@@ -24,7 +24,6 @@ function Login() {
   const onSubmitHandler = async (event) => {
     setLoad(true);
     event.preventDefault();
-    console.log("work")
     try {
       if (!email) {
         toast.error("Email is required");
@@ -38,7 +37,6 @@ function Login() {
 
       if (state === "Admin") {
         const { data } = await axios.post(BackendUrl + '/api/admin/login', { email, password });
-        console.log(data);
         if (data.success) {
           localStorage.setItem("aToken", data.token);
           setAToken(data.token);
@@ -49,11 +47,9 @@ function Login() {
         }
       } else if (state === "Doctor") {
         const { data } = await axios.post(BackendUrl + '/api/doctor/doctor/login', { email, password });
-        console.log(data);
 
         if (!data.success) {
           toast.error(data.message);
-          console.log(data.message);
         }
         if (data.success) {
           localStorage.setItem("dToken", data.token);
@@ -67,13 +63,10 @@ function Login() {
 
     } catch (error) {
       toast.error(error.message);
-      console.log(error.message);
     } finally {
       socket.connect();
       setLoad(false);
     }
-
-
   }
 
   return (
@@ -86,7 +79,7 @@ function Login() {
         </div>
 
         {/* Form Section */}
-        <div className="ml-auto flex w-full lg:w-(calc(100%-820px)) min-h-screen items-center justify-center px-5 py-10 sm:px-8 md:px-14">
+        <div className="mx-auto flex w-full max-w-[600px] lg:w-(calc(100%-820px)) min-h-screen items-center justify-center px-5 py-10 sm:px-8 md:px-10">
 
           {/* Form */}
           <form

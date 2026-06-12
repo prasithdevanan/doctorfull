@@ -1,10 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Sidebar() {
-    const { aToken, dToken   } = useContext(AdminContext);
-
+    const { aToken, dToken } = useContext(AdminContext);
+    // const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(() => {
+        const saved = localStorage.getItem("isOpen");
+        return saved ? JSON.parse(saved) : true;
+    });
     const featues = [
         {
             name: "Dashboard",
@@ -50,7 +55,7 @@ function Sidebar() {
 
     return (
         <>
-            <section className="h-screen w-20 sm:w-56 bg-white/80 backdrop-blur-lg border-r border-gray-200 flex flex-col py-6 px-2 shadow-sm shrink-0">
+            <section className={`w-fit relative ${isOpen ? "sm:w-56" : "sm:w-fit"} bg-white/80 backdrop-blur-lg border-r border-gray-200 flex flex-col py-6 px-2 shadow-sm shrink-0 group/sidebar transition-all duration-300 ease-in-out justify-between overflow-hidden`}>
 
                 <div className="flex flex-col gap-2">
 
@@ -81,19 +86,22 @@ function Sidebar() {
                                     />
 
                                     {/* Text */}
-                                    <span
+                                    {isOpen && <span
                                         className={`hidden sm:inline z-10 text-sm transition-all duration-300 
               ${isActive ? "font-semibold text-blue-600" : "text-gray-700 group-hover:text-black"}`}
                                     >
                                         {item.name}
-                                    </span>
+                                    </span>}
                                 </>
                             )}
                         </NavLink>
                     ))}
 
                 </div>
-            </section>
+                <button onClick={() => { setIsOpen(!isOpen); localStorage.setItem("isOpen", !isOpen) }} className="hidden w-fit ml-auto opacity-50 translate-x-2 group-hover/sidebar:opacity-100 group-hover/sidebar:translate-x-0 sm:flex cursor-pointer justify-end p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 ease-in-out" title="Toggle Sidebar">
+                    <i className={`text-2xl bi ${isOpen ? "bi-layout-sidebar-inset" : "bi-layout-sidebar-inset-reverse"} text-gray-600`}></i>
+                </button>
+            </section >
         </>
     )
 }

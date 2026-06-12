@@ -165,3 +165,17 @@ html {
         width: 100%;
     }
 }
+
+
+.main-card {
+
+    will-change: transform;
+
+    transform: translate3d(0, 0, 0);
+
+}
+
+.outlined-text {
+    -webkit-text-stroke: 1.5px white;
+    paint-order: stroke fill;
+}

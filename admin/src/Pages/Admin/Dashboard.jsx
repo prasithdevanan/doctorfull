@@ -16,6 +16,7 @@ function Dashboard() {
   const [newDoctor, setNewDoctor] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
   const [newAppointment, setNewAppointment] = useState([]);
+  const doctor = localStorage.getItem("dToken") ? true : false;
 
   //feach the data from the DB doctorList
   useEffect(() => {
@@ -65,19 +66,19 @@ function Dashboard() {
     }
     socket.emit("register", { userId: user._id, role: "Doctor" });
 
+
     // Listen for new_appointment events
-    socket.on("new_appointment", (data) => {
+    socket.on("new_appointment", (newData) => {
 
-      setData((prev) => {
+      setData((prev = []) => {
 
-        // Prevent duplicates
         const exists = prev.find(
-          (item) => item._id === data._id
+          (item) => item._id === newData._id
         );
 
         if (exists) return prev;
 
-        return [...prev, data];
+        return [...prev, newData];
       });
     });
 
@@ -95,10 +96,18 @@ function Dashboard() {
       });
     });
 
+    // user_appointment_delete
+    socket.on("user_appointment_delete", ({ appointmentId, doctorId }) => {
+      setData((prev) => {
+        prev.filter((item) => item.appointmentId !== appointmentId)
+      });
+    });
+
     return () => {
       console.log("Cleaning up socket listeners");
       socket.off("new_appointment");
       socket.off("pending_notifications");
+      socket.off("user_appointment_delete");
       setData([]);
     }
   }, [user, userLoading]);
@@ -139,7 +148,7 @@ function Dashboard() {
           < section className="w-full h-[calc(100vh-64px)] overflow-y-auto px-4 sm:px-6 py-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
 
             {/* ===== STATS CARDS ===== */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {!doctor && <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 
               {[
                 { label: "Doctors", count: doctorsList.length.toString().padStart(2, "0"), img: Images.Doctor },
@@ -167,7 +176,7 @@ function Dashboard() {
                 </div>
               ))}
 
-            </div>
+            </div>}
 
 
             {/* ===================New Appointement=================== */}
@@ -178,11 +187,11 @@ function Dashboard() {
                 </h2>
 
                 <span className="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-600 font-medium">
-                  {data.length} Requests
+                  {data?.length} Requests
                 </span>
               </div>
 
-              {data.length > 0 ? (
+              {data?.length > 0 ? (
                 <div className="max-h-[400px] overflow-y-auto px-8 space-y-4 custom-scrollbar ">
                   {data.map((item, index) => (
                     <div

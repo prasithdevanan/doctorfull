@@ -12,8 +12,6 @@ function PatientDetails() {
 
   ///store the data
   const element = location.state;
-  console.log(element);
-
 
   //check the previose page
   useEffect(() => {
@@ -21,8 +19,6 @@ function PatientDetails() {
       window.location.href = "/";
     }
   }, [])
-
-
 
   // fetch the patient appointment details
 
@@ -36,7 +32,6 @@ function PatientDetails() {
           console.log(res.data.message);
           return;
         }
-        console.log(res.data.appointments);
         setAppointments(res.data.appointments);
       } catch (error) {
         console.log(error?.response?.data?.message || error.message);

@@ -4,6 +4,7 @@ import { AdminContext } from '../../context/AdminContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { socket } from '../../socket/socket';
 
 function DoctorList() {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ function DoctorList() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedDoctorId, setSelectedDoctorId] = useState(null);
   const [search, setSearch] = useState('');
+
+
 
   useEffect(() => {
     setLoad(true);
@@ -24,7 +27,6 @@ function DoctorList() {
         }
 
         //set the data to the doctorsList
-        console.log(res.data.doctorsList);
         return setDoctorsList(res.data.doctorsList);
 
       } catch (error) {
@@ -46,142 +48,270 @@ function DoctorList() {
       }
 
     } catch (error) {
-      console.log(error?.response?.data?.message);
       toast.error(error?.response?.data?.message);
     }
   }
 
+
+  useEffect(() => {
+
+    if (!doctorsList.length) return;
+
+    socket.emit(
+      "getAllDoctorsOnlineStatus",
+      {
+        doctorIds: doctorsList.map((d) => d._id)
+      }
+    );
+
+    const handleOnlineStatus = (data = []) => {
+
+      const statusMap = {};
+
+      data.forEach((item) => {
+        statusMap[item.doctorId] = item.isOnline;
+      });
+
+      setDoctorsList((prev = []) =>
+        prev.map((doctor) => ({
+          ...doctor,
+          isOnline: statusMap[doctor._id] ?? false
+        }))
+      );
+
+    };
+
+    socket.on("allDoctorsOnlineStatus", handleOnlineStatus);
+    return () => {
+      socket.off("allDoctorsOnlineStatus", handleOnlineStatus);
+    };
+
+  }, [doctorsList.length]);
+
   return (
     <>
-      <section className="w-full px-4 sm:px-6 py-4 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
-        {/* ===== HEADER ===== */}
-        < div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <section className="w-full h-[calc(100vh-60px)] bg-[#f6f8fc] px-4 sm:px-6 py-6 overflow-y-auto">
 
-          {/* Left Section */}
+        {/* ================= HEADER ================= */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
+
+          {/* Left */}
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-800">
               Doctors
             </h1>
+
             <p className="text-sm text-gray-500 mt-1">
-              Total:
-              <span className="ml-1 font-semibold text-gray-800">
-                {doctorsList.length}
-              </span>
+              Manage doctors & profiles
             </p>
           </div>
 
-          {/* Right Section */}
-          <div className="flex items-center gap-3 w-full sm:w-auto">
+          {/* Right */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
 
             {/* Search */}
-            <div className="relative w-full sm:w-72">
+            <div className="relative w-full sm:w-80">
+
+              <i className="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+
               <input
                 type="text"
                 placeholder="Search doctor..."
-                className="w-full px-4 py-2 pl-10 border border-gray-200 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
+                className="w-full h-12 pl-11 pr-4 rounded-2xl border border-gray-200 bg-white text-sm outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition"
               />
-              <span className="absolute left-3 top-2.5 text-gray-400">
-                <i className="bi bi-search"></i>
-              </span>
+
             </div>
 
-            {/* Add Doctor Button */}
+            {/* Add */}
             {aToken && (
               <button
-                onClick={() => navigate('/add-doctor')}
-                className="whitespace-nowrap px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 hover:shadow-md transition cursor-pointer"
+                onClick={() => navigate("/add-doctor")}
+                className="h-12 px-5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium shadow-md hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer"
               >
-                + Add Doctor
+                <i className="bi bi-plus-lg mr-2"></i>
+                Add Doctor
               </button>
             )}
 
           </div>
-        </div >
+        </div>
 
+        {/* ================= LOADING ================= */}
         {load ? (
-          <div className="flex flex-col items-center justify-center py-16 w-full h-full my-auto">
-            <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
-            <p className="text-sm text-gray-500 flex items-center gap-1">
-              Fetching doctors
-              <span className="animate-bounce">.</span>
-              <span className="animate-bounce delay-200">.</span>
-              <span className="animate-bounce delay-400">.</span>
+
+          <div className="h-[60vh] flex flex-col items-center justify-center">
+
+            <div className="w-12 h-12 rounded-full border-[3px] border-blue-500 border-t-transparent animate-spin"></div>
+
+            <p className="text-sm text-gray-400 mt-4">
+              Loading doctors...
             </p>
+
           </div>
+
         ) : (
+
           <>
-            {/* ===== LIST ===== */}
+            {/* ================= GRID ================= */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
 
-            < div className="h-[75vh] overflow-y-auto space-y-3 pr-1" >
+              {doctorsList.map((item, index) => (
 
-              {
-                doctorsList.map((item, index) => (
-                  <div
-                    key={index}
-                    className="group flex flex-col sm:flex-row gap-4 sm:items-center p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
-                  >
+                <div
+                  key={index}
+                  className="group relative overflow-hidden bg-white rounded-3xl border border-gray-100 p-5 shadow-sm transition duration-300"
+                >
 
-                    {/* Image */}
-                    <img
-                      src={item.image}
-                      alt="doctor"
-                      className="w-full sm:w-24 h-24 rounded-lg object-cover border border-black/20"
-                    />
+                  {/* Glow Effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-blue-50/40 to-indigo-50/40 pointer-events-none"></div>
 
-                    {/* Info */}
-                    <div className="flex-1 text-sm space-y-1">
-                      <p className="text-base font-semibold text-gray-800">
-                        {item.name}
-                      </p>
-                      <p className="text-gray-500">{item.email}</p>
+                  <div className="relative flex flex-col sm:flex-row gap-5">
 
-                      <div className="flex flex-wrap gap-2 text-xs mt-1">
-                        <span className="px-2 py-1 bg-gray-100 rounded-md text-gray-600">
-                          {item.degree}
-                        </span>
-                        <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded-md">
-                          {item.speciality}
-                        </span>
+                    {/* IMAGE */}
+                    <div className="relative">
+
+                      <img
+                        src={item.image}
+                        alt="doctor"
+                        className="w-full sm:w-28 h-28 rounded-2xl object-cover border border-gray-100"
+                      />
+
+                      {/* Online Badge */}
+                      <div className='flex justify-center items-center mt-4 gap-2.5 relative'>
+                        <span className={`${item.isOnline ? "bg-green-500" : "bg-gray-300"} w-4 h-4 rounded-full border-2 border-white`}></span>
+                        <span className={`${item.isOnline ? "bg-green-500" : "bg-gray-300"} absolute left-5 ${item.isOnline && "animate-ping"} w-4 h-4 rounded-full border-2 border-white`}></span>
+                        <span>{item.isOnline ? "Online" : "Offline"}</span>
                       </div>
+
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex sm:flex-col gap-2 sm:items-end">
+                    {/* INFO */}
+                    <div className="flex-1">
 
-                      <button
-                        onClick={() => { setSelectedDoctorId(item._id); setShowConfirm(true); }}
-                        className="cursor-pointer px-4 py-2 text-xs rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"
-                      >
-                        Delete
-                      </button>
+                      {/* Top */}
+                      <div className="flex items-start justify-between gap-3">
+
+                        <div>
+
+                          <h2 className="text-xl font-semibold text-gray-800">
+                            {item.name}
+                          </h2>
+
+                          <p className="text-sm text-gray-400 mt-1 break-all">
+                            {item.email}
+                          </p>
+
+                        </div>
+
+                        {/* Delete */}
+                        <button
+                          onClick={() => {
+                            setSelectedDoctorId(item._id);
+                            setShowConfirm(true);
+                          }}
+                          className="w-10 h-10 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition cursor-pointer"
+                        >
+                          <i className="bi bi-trash"></i>
+                        </button>
+
+                      </div>
+
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2 mt-4">
+
+                        <span className="px-3 py-1 rounded-xl bg-gray-100 text-gray-700 text-xs font-medium">
+                          {item.degree}
+                        </span>
+
+                        <span className="px-3 py-1 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 text-xs font-medium">
+                          {item.speciality}
+                        </span>
+
+                      </div>
+
+                      {/* Bottom */}
+                      <div className="mt-5 flex items-center justify-between">
+
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+
+                          <i className="bi bi-telephone text-gray-400"></i>
+
+                          {item.mobile || "No Phone"}
+
+                        </div>
+
+                        <button
+                          className="cursor-pointer px-4 py-2 rounded-xl bg-gray-900 text-white text-sm hover:bg-black transition"
+                        >
+                          View Profile
+                        </button>
+
+                      </div>
 
                     </div>
 
                   </div>
-                ))
-              }
 
-            </div >
+                </div>
 
+              ))}
+
+            </div>
+
+            {/* ================= EMPTY ================= */}
+            {doctorsList.length === 0 && (
+              <div className="h-[50vh] flex flex-col items-center justify-center">
+
+                <div className="w-24 h-24 rounded-full bg-blue-50 flex items-center justify-center mb-4">
+                  <i className="bi bi-person-x text-4xl text-blue-400"></i>
+                </div>
+
+                <h2 className="text-lg font-semibold text-gray-700">
+                  No Doctors Found
+                </h2>
+
+                <p className="text-sm text-gray-400 mt-1">
+                  Try searching with another keyword
+                </p>
+
+              </div>
+            )}
+
+            {/* ================= MODAL ================= */}
             {showConfirm && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-                <div className="bg-white rounded-xl p-6 w-[300px] shadow-lg text-center space-y-4">
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    Confirm Delete
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    Are you sure you want to delete this doctor?
-                  </p>
+              <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4">
 
-                  <div className="flex justify-center gap-3 mt-4">
+                <div className="w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl">
+
+                  {/* Icon */}
+                  <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-5">
+                    <i className="bi bi-trash text-2xl text-red-500"></i>
+                  </div>
+
+                  {/* Content */}
+                  <div className="text-center">
+
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      Delete Doctor
+                    </h2>
+
+                    <p className="text-sm text-gray-400 mt-2">
+                      This action cannot be undone.
+                    </p>
+
+                  </div>
+
+                  {/* Actions */}
+                  <div className="grid grid-cols-2 gap-3 mt-6">
+
                     <button
                       onClick={() => setShowConfirm(false)}
-                      className="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                      className="cursor-pointer h-11 rounded-2xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
                     >
                       Cancel
                     </button>
@@ -191,22 +321,22 @@ function DoctorList() {
                         onDeleteHandle(selectedDoctorId);
                         setShowConfirm(false);
                       }}
-                      className="px-4 py-2 text-sm rounded-lg bg-red-500 text-white hover:bg-red-600 cursor-pointer"
+                      className="cursor-pointer h-11 rounded-2xl bg-red-500 text-white hover:bg-red-600 transition"
                     >
-                      Yes, Delete
+                      Delete
                     </button>
-                  </div>
-                </div>
-              </div>
-            )
-            }
 
+                  </div>
+
+                </div>
+
+              </div>
+            )}
 
           </>
+        )}
 
-        )
-        }
-      </section >
+      </section>
     </>
   )
 }

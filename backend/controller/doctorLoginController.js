@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import doctorModel from "../models/doctorModel.js";
 import bcrypt from 'bcrypt';
+import { uploadToCloudinary } from "../utils/cloudinary.js";
+import { cloudinary } from "../config/cloudinary.js";
 
 
 const comparePassword = async (password, hashedPassword) => {
@@ -65,17 +67,90 @@ export const getDoctorByEmail = async (req, res) => {
 }
 
 export const updateDoctor = async (req, res) => {
-    const { data } = req.body;
-    const { id } = req.params;
+
     try {
-        const doctor = await doctorModel.findByIdAndUpdate(id, data, { returnDocument: 'after' });
+
+        const { id } = req.params;
+
+        const {
+            name,
+            email,
+            available,
+            password,
+            speciality,
+            degree,
+            experience,
+            about,
+            fees,
+            address,
+            mobile
+        } = req.body;
+
+        const image = req.file;
+
+        // Find existing doctor
+        const doctor = await doctorModel.findById(id);
+
         if (!doctor) {
-            return res.status(400).json({ success: false, message: "Doctor not found" });
+            return res.status(400).json({
+                success: false,
+                message: "Doctor not found"
+            });
         }
-        return res.json({ success: true, doctor });
+
+        // Default old image
+        let imageUrl = doctor.image;
+
+        // If new image uploaded
+        if (image) {
+
+            // DELETE OLD CLOUDINARY IMAGE
+            if (doctor.imagePublicId) {
+                await cloudinary.uploader.destroy(
+                    doctor.imagePublicId
+                );
+            }
+
+            // Upload new image
+            const imageUpload = await uploadToCloudinary(image);
+
+            imageUrl = imageUpload.secure_url;
+
+            // Save public_id for future delete/update
+            doctor.imagePublicId = imageUpload.public_id;
+        }
+
+        // Update fields
+        doctor.name = name || doctor.name;
+        doctor.email = email || doctor.email;
+        doctor.password = password || doctor.password;
+        doctor.speciality = speciality || doctor.speciality;
+        doctor.degree = degree || doctor.degree;
+        doctor.experience = experience || doctor.experience;
+        doctor.about = about || doctor.about;
+        doctor.fees = fees || doctor.fees;
+        doctor.address = address || doctor.address;
+        doctor.mobile = mobile || doctor.mobile;
+        doctor.available = available ?? doctor.available;
+
+        // Update image
+        doctor.image = imageUrl;
+
+        await doctor.save();
+
+        return res.json({
+            success: true,
+            doctor,
+            message: "Doctor updated successfully"
+        });
+
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
+
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
 
 export default doctorLogin;

@@ -22,7 +22,6 @@ function PatientList() {
                 setPatientList(res.data.patientsList.map((patient) => ({
                     ...patient, name: patient.email.split('@')[0].charAt(0).toUpperCase() + patient.email.split('@')[0].slice(1)
                 })));
-                console.log(res.data.patientsList);
 
             } catch (error) {
                 console.log(error?.response?.data?.message || error.message);
@@ -38,10 +37,10 @@ function PatientList() {
                 {/* Header */}
                 <div className="mb-6">
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-                        Appointments
+                        Patient List
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">
-                        Manage all patient appointments
+                        Manage all patients
                     </p>
                 </div>
 

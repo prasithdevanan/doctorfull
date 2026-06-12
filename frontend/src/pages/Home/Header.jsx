@@ -4,6 +4,11 @@ import { Images } from '../../assets/img';
 
 
 function Header() {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const useCountAnimation = (end, duration) => {
         const [count, setCount] = useState(0);
 
@@ -126,7 +131,7 @@ function Header() {
                             />
 
                             {/* Floating Card */}
-                            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 sm:left-8 sm:translate-x-0 bg-white rounded-2xl shadow-lg px-4 sm:px-5 py-3 sm:py-4 flex items-center gap-3 w-[90%] sm:w-auto max-w-xs">
+                            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 sm:left-8 sm:translate-x-0 bg-white rounded-2xl shadow-lg px-4 sm:px-5 py-3 sm:py-4 flex items-center gap-3 w-[90%] sm:w-auto max-w-xs main-card">
 
                                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-green-100 flex items-center justify-center">
 
