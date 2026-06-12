@@ -160,7 +160,6 @@ export const initiSocket = (io) => {
 
         //user delete the appointment
         socket.on("user_appointment_delete", async ({ appointmentId, doctorId }) => {
-            console.log(appointmentId);
             await NotificationModel.findOneAndDelete({ appointmentId: appointmentId });
 
             const doctor = users[doctorId];

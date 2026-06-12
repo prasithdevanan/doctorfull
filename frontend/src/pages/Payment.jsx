@@ -42,7 +42,6 @@ function Payment() {
   const fees = location.state ? location?.state?.fees : false;
   const [appCharge, setAppCharge] = useState(200);
   const [loading, setLoading] = useState(false);
-  console.log(allElement);
 
   ///check the active button
   const [paymentMethod, setPaymentMethod] = useState(true);
