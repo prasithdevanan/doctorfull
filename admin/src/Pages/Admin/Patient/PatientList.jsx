@@ -35,13 +35,21 @@ function PatientList() {
         <>
             <section className="px-4 sm:px-6 py-6 w-full overflow-y-auto h-[calc(100vh-4.5rem)]">
                 {/* Header */}
-                <div className="mb-6">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-                        Patient List
+                <div className="mb-6 flex justify-between items-center">
+                    <div>
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+                            Patient List
+                        </h1>
+                        <p className="text-sm text-gray-500 mt-1">
+                            Manage all patients
+                        </p>
+                    </div>
+
+                    <h1 className="text-sm text-gray-700 mt-1 bg-amber-100 px-2 py-1 rounded-full w-fit">Patients:
+                        <span className="font-bold ml-1">
+                            {String(patientList.length).padStart(2, '0')}
+                        </span>
                     </h1>
-                    <p className="text-sm text-gray-500 mt-1">
-                        Manage all patients
-                    </p>
                 </div>
 
                 {/* Loading State */}
