@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://doctor-metix.netlify.app/sitemap.xml
