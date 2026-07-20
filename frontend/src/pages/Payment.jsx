@@ -92,9 +92,9 @@ function Payment() {
         }
       },
       "prefill": {
-        "name": allElement.patientName,
-        "email": allElement.patientEmail,
-        "contact": allElement.patientPhone
+        "name":'Testing',
+        "email":'bH5ZG@example.com',
+        "contact":'9999999999'
       },
       "theme": {
         "color": "(--color-primary)"
