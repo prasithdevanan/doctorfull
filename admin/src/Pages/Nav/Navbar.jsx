@@ -67,6 +67,20 @@ function Navbar() {
         }
     };
 
+    useEffect(() => {
+        const handlePageHide = () => {
+            console.log("Page hidden");
+            socket.disconnect();
+        };
+
+        window.addEventListener("pagehide", handlePageHide);
+        window.addEventListener("beforeunload", handlePageHide);
+
+        return () => {
+            window.removeEventListener("pagehide", handlePageHide);
+            window.removeEventListener("beforeunload", handlePageHide);
+        };
+    }, []);
     // onclick
 
 
