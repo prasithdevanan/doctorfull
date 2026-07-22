@@ -179,7 +179,7 @@ export const initiSocket = (io) => {
             }
         });
 
-        socket.on("disconnect", () => {
+        socket.on("disconnect", (reason) => {
             if (socket.userId) {
                 delete users[socket.userId];
 
@@ -187,6 +187,7 @@ export const initiSocket = (io) => {
                     userId: socket.userId,
                     isOnline: false
                 });
+                console.log("a user disconnected : reason", reason);
                 console.log("a user disconnected", socket.userId);
             }
         });
