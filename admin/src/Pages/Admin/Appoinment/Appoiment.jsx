@@ -162,14 +162,14 @@ function Appoiment() {
 
           {/* ---------------- Pagination */}
           {(appointments.length > 8 || totalPages > 1) && (
-            <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[95%] sm:w-[calc(100vw-280px)]">
+            <div className="fixed bottom-4 left-[240px] right-4 px-4 max-w-4xl mx-auto">
 
-              <div className="flex items-center justify-between bg-white border border-gray-200 shadow-sm rounded-2xl px-4 py-3">
+              <div className="flex items-center justify-between bg-white border-2 border-gray-100 shadow-md rounded-2xl px-4 py-3">
 
                 <button
                   onClick={() => setPage((prev) => prev - 1)}
                   disabled={page === 1}
-                  className="px-4 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 transition"
+                  className="px-4 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 transition cursor-pointer"
                 >
                   Prev
                 </button>
@@ -181,7 +181,7 @@ function Appoiment() {
                 <button
                   onClick={() => setPage((prev) => prev + 1)}
                   disabled={page === totalPages}
-                  className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition"
+                  className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition cursor-pointer"
                 >
                   Next
                 </button>
