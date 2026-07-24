@@ -13,7 +13,7 @@ import { socket } from '../../socket/socket';
 
 function Login() {
   const navigate = useNavigate();
-  const [state, setState] = useState("Admin");
+  const [state, setState] = useState("Doctor");
   const [load, setLoad] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { setAToken, BackendUrl, setDToken } = useContext(AdminContext);
