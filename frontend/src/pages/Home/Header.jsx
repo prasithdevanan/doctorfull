@@ -121,13 +121,13 @@ function Header() {
                         <div className="hidden lg:flex relative lg:min-h-full bg-cyan-50 items-center justify-center p-6 sm:p-8">
 
                             {/* Circle Background */}
-                            <div className="absolute w-[280px] h-[280px] sm:w-[200px] sm:h-[200px] lg:w-[300px] lg:h-[300px] bg-blue-400 rounded-full blur-3xl opacity-40"></div>
+                            <div className="absolute w-[280px] h-[280px] sm:w-[200px] sm:h-[200px] lg:w-[300px] lg:h-[350px] bg-blue-400 rounded-full blur-3xl opacity-40"></div>
 
                             {/* Doctor Image */}
                             <img
                                 src={Images.Header}
                                 alt="doctor"
-                                className="relative z-10 w-full max-w-[250px] sm:max-w-sm lg:max-w-lg object-contain"
+                                className="relative w-full max-w-[350px] sm:max-w-sm lg:max-w-lg object-contain"
                             />
 
                             {/* Floating Card */}
