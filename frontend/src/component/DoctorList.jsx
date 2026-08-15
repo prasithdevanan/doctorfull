@@ -30,7 +30,7 @@ function DoctorList({ selectSpeciality, isHome }) {
                     <div
                         className={`${isHome
                             ? "no-scrollbar flex overflow-x-auto gap-5 px-5 py-5 items-stretch xl2:justify-center"
-                            : "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 px-5 gap-5"
+                            : "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 px-5 gap-5 max-w-[1500px]"
                             }`}
                     >
                         {
