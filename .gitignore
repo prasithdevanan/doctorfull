@@ -5,8 +5,14 @@ node_modules/
 .env
 .env
 .env.*
-!.env.example
+# Backend environment
 backend/.env
+
+# Frontend environment
+frontend/.env
+
+# Admin environment
+admin/.env
 
 
 # Build folders
