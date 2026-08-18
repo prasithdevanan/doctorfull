@@ -8,10 +8,11 @@ import { patientUpdate } from '../controller/paitentListController.js';
 import upload from '../middlewares/multer.js';
 import getDoctorAppointments, { getPatientAppointments, deleteAppointments } from '../controller/appointmentSlot.js';
 import { updateSchedule } from '../controller/appointmentUpdate.js';
+import passport from '../controller/googleLogin.js';
 
 
 const patientRouter = express.Router();
-
+const frontendUrl = process.env.FRONTEND_URL;
 
 patientRouter.post('/signin', Signin);
 patientRouter.post('/login', Login);
@@ -23,5 +24,27 @@ patientRouter.get('/appointment/timeslot', getDoctorAppointments);
 patientRouter.get('/appointment/patient', getPatientAppointments);
 patientRouter.patch('/appointment/reschedule/:id', updateSchedule);
 patientRouter.delete('/appointment/delete/:id', deleteAppointments);
+patientRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+patientRouter.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: `${frontendUrl}/login?googleError=1` }), (req, res) => {
+    res.redirect(`${frontendUrl}/googleSuccess`);
+});
+patientRouter.get("/auth/me", (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({
+            success: false,
+            message: "Not authenticated",
+        });
+    }
 
+    return res.json({
+        success: true,
+        user: {
+            id: req.user._id,
+            email: req.user.email,
+            name: req.user.username,
+            profileImage: req.user.image,
+            patientId: req.user.patientId,
+        },
+    });
+});
 export default patientRouter;

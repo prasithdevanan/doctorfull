@@ -14,7 +14,10 @@ import { validate } from './validate/JsonToken.js';
 import patientRouter from './routes/patientRouter.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import cookieParser from 'cookie-parser';
 import { initiSocket } from './socket/socket.js';
+import session from "express-session";
+import passport from "passport";
 
 //app config
 const app = express();
@@ -35,7 +38,21 @@ initiSocket(io);
 
 //middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:5174", "https://doctor-metix.netlify.app"],
+    credentials: true
+}));
+app.use(cookieParser("metix"));
+app.use(session({
+    secret: "metixcentersecret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //API Endpoint
 app.use('/api/admin', adminRouter);
