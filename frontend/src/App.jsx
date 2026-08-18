@@ -1,7 +1,8 @@
 import { createContext } from 'react'
 import { Outlet } from 'react-router-dom';
 import Navbar from '../src/component/Navbar';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import ScrollToUp from './component/ScrollToUp';
 
 function App() {

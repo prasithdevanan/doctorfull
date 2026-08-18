@@ -136,10 +136,9 @@ function signin() {
                     {/* Button */}
                     <button
                         type="submit"
-                        className="mt-4 py-2 rounded-md bg-(--color-primary) text-(--color-white) 
-      hover:scale-105 transition duration-200 cursor-pointer"
+                        className="mt-2 w-full rounded-lg bg-(--color-primary) px-4 py-3 text-sm font-semibold text-(--color-white) shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                     >
-                        SignUp
+                        Sign Up
                     </button>
 
                     {/* Footer */}

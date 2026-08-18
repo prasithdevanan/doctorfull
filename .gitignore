@@ -3,6 +3,17 @@ node_modules/
 
 # Environment variables
 .env
+.env
+.env.*
+# Backend environment
+backend/.env
+
+# Frontend environment
+frontend/.env
+
+# Admin environment
+admin/.env
+
 
 # Build folders
 dist/

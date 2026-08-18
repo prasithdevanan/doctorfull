@@ -18,6 +18,7 @@ import Appointment from "./pages/Appointment";
 import Reschedule from "./pages/Reschedule";
 import PaymentSuccess from "./pages/paymentStatus";
 import Notification from "./Notification/Notification";
+import GoogleSuccess from "./pages/Login/Sign/googleSuccess";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
             {
                 path: '/signin',
                 element: <PubilcRouter><Signin /></PubilcRouter>
+            },
+            {
+                path: '/googleSuccess',
+                element: <GoogleSuccess />
             },
             {
                 path: "/home",
