@@ -44,11 +44,14 @@ app.use(cors({
 }));
 app.use(cookieParser("metix"));
 app.use(session({
-    secret: "metixcentersecret",
+    secret: process.env.SESSION_SECRET || "metixcentersecret",
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
     },
 }));
 app.use(passport.initialize());
