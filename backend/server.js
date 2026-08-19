@@ -41,7 +41,7 @@ initiSocket(io);
 // --- CORS ---
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://metxi.netlify.app",
+    "https://doctor-metix.netlify.app",
 ];
 //middleware
 app.use(express.json());
