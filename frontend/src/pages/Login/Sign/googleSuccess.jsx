@@ -1,28 +1,31 @@
 import { useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { AppContext } from '../../../component/CreateContext';
 import { toast } from 'react-toastify';
 
 const GoogleSuccess = () => {
     const navigate = useNavigate();
-    const {
-        BackendUrl,
-        setToken,
-        setUser,
-        userId,
-        setUserId
-    } = useContext(AppContext);
+    const [searchParams] = useSearchParams();
+    const { BackendUrl, setToken, setUser, setUserId } = useContext(AppContext);
 
     useEffect(() => {
         const getUser = async () => {
+            const token = searchParams.get("token");
+            if (!token) {
+                toast.error("Missing auth token");
+                navigate("/login");
+                return;
+            }
+
+            localStorage.setItem("authToken", token);
+
             try {
-                const response = await fetch(
-                    `${BackendUrl}/api/patient/auth/me`,
-                    {
-                        method: "GET",
-                        credentials: "include",
-                    }
-                );
+                const response = await fetch(`${BackendUrl}/api/patient/auth/me`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
 
                 const data = await response.json();
 
@@ -30,12 +33,9 @@ const GoogleSuccess = () => {
                     toast.success("Login successful");
                     localStorage.setItem("userId", data.user.id);
                     localStorage.setItem("patientId", data.user.patientId);
-
                     setUserId(data.user.id);
                     setUser(data.user);
                     setToken(true);
-                    console.log(data.user);
-
                     navigate("/");
                 } else {
                     toast.error(data.message);
@@ -66,7 +66,7 @@ const GoogleSuccess = () => {
                     Please wait while we securely verify your Google account.
                 </p>
 
-            </div>  
+            </div>
         </section>
     );
 };

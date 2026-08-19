@@ -22,6 +22,7 @@ import MongoStore from "connect-mongo";
 
 //app config
 const app = express();
+const isProd = process.env.NODE_ENV === "production";
 const server = createServer(app);
 const port = process.env.PORT || 4000;
 connetDB();
@@ -37,15 +38,26 @@ const io = new Server(server, {
 //connect socket
 initiSocket(io);
 
+// --- CORS ---
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://metxi.netlify.app",
+];
 //middleware
 app.use(express.json());
 app.use(cors({
-    origin: "https://doctor-metix.netlify.app",
+    origin: (origin, callback) => {
+        // allow non-browser requests (curl, server-to-server) with no origin
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(new Error("Not allowed by CORS: " + origin));
+    },
     credentials: true,
 }));
 app.use(cookieParser("metix"));
 app.set("trust proxy", 1);
 app.use(session({
+    name: "doctorfull.sid",
     secret: process.env.SESSION_SECRET || "metixcentersecret",
     resave: false,
     saveUninitialized: false,
@@ -55,8 +67,8 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
     },
 }));
 app.use(passport.initialize());
