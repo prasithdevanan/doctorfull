@@ -37,6 +37,12 @@ patientRouter.get('/auth/google/callback', passport.authenticate('google', { fai
 
 });
 patientRouter.get("/auth/me", (req, res) => {
+    console.log("========== AUTH ME ==========");
+    console.log("isAuthenticated:", req.isAuthenticated());
+    console.log("user:", req.user);
+    console.log("sessionID:", req.sessionID);
+    console.log("session:", req.session);
+    console.log("cookie:", req.headers.cookie);
     if (!req.isAuthenticated()) {
         return res.status(401).json({
             success: false,
