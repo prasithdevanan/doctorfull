@@ -42,45 +42,71 @@ function Choose() {
 
     return (
         <>
-            <section className="mt-16 px-4 flex flex-col items-center gap-10 bg-gradient-to-b from-(--color-primary)/5 via-white to-white py-6" ref={sectionRef}>
-                <div className="flex flex-col items-center gap-3 text-center max-w-2xl" ref={titleRef}>
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-800">
+            <section className="mt-16 sm:mt-20 px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-gradient-to-b from-(--color-primary)/5 via-white to-white" ref={sectionRef}>
+
+                {/* Heading */}
+                <div className="flex flex-col items-center gap-3 text-center max-w-2xl mx-auto" ref={titleRef}>
+                    <span className="text-xs sm:text-sm font-medium uppercase tracking-[0.18em] text-(--color-primary)">
+                        Why Metix
+                    </span>
+
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-800">
                         Why Choose Us
                     </h1>
 
-                    <p className="text-sm sm:text-base font-light text-gray-500">
+                    <p className="text-sm sm:text-base font-light leading-6 text-slate-500">
                         Committed to providing premium healthcare accessibility
                     </p>
                 </div>
 
-                <div className='features-card w-full flex flex-wrap justify-center gap-4'>
-                    <div className='flex flex-col border border-gray-200 rounded-xl p-4 sm:p-5 transition hover:bg-(--color-primary)/5 cursor-pointer max-w-[300px]  bg-white hover:shadow-[0_0_10px_0_rgba(0,0,0,0.1)]'>
-                        <span className='p-3 px-4 rounded-full bg-(--color-primary)/10 flex mx-auto items-center justify-center gap-3'><i className="bi bi-shield-check text-(--color-primary) text-2xl"></i></span>
-                        <h1 className="text-md  font-semibold text-gray-600 flex flex-col items-center pt-2">
+                {/* Features */}
+                <div className="features-card w-full max-w-6xl mx-auto mt-10 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+
+                    {/* Verified Doctors */}
+                    <div className="flex flex-col items-center text-center border border-slate-200 rounded-xl p-6 sm:p-7 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)] transition-all duration-200 hover:border-(--color-primary)/20 hover:shadow-[0_4px_16px_rgba(15,23,42,0.07)] cursor-pointer">
+                        <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-(--color-primary)/10 flex items-center justify-center">
+                            <i className="bi bi-shield-check text-(--color-primary) text-2xl"></i>
+                        </span>
+
+                        <h2 className="mt-4 text-base sm:text-lg font-semibold text-slate-700">
                             Verified Doctors
-                        </h1>
-                        <p className="text-sm font-light text-gray-400 text-center">
+                        </h2>
+
+                        <p className="mt-2 text-xs sm:text-sm leading-6 text-slate-500 max-w-xs">
                             All our specialists go through a rigorous verification process.
                         </p>
                     </div>
-                    <div className='flex flex-col border border-gray-200 rounded-xl p-4 sm:p-5 transition bg-white hover:shadow-[0_0_10px_0_rgba(0,0,0,0.1)] hover:bg-(--color-primary)/5 cursor-pointer max-w-[300px]'>
-                        <span className='p-3 px-4 rounded-full bg-(--color-primary)/10 flex mx-auto items-center justify-center gap-3'><i className="bi bi-calendar3 text-(--color-primary) text-2xl"></i></span>
-                        <h1 className="text-md  font-semibold text-gray-600 flex flex-col items-center pt-2">
+
+                    {/* Easy Booking */}
+                    <div className="flex flex-col items-center text-center border border-slate-200 rounded-xl p-6 sm:p-7 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)] transition-all duration-200 hover:border-(--color-primary)/20 hover:shadow-[0_4px_16px_rgba(15,23,42,0.07)] cursor-pointer">
+                        <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-(--color-primary)/10 flex items-center justify-center">
+                            <i className="bi bi-calendar3 text-(--color-primary) text-2xl"></i>
+                        </span>
+
+                        <h2 className="mt-4 text-base sm:text-lg font-semibold text-slate-700">
                             Easy Booking
-                        </h1>
-                        <p className="text-sm font-light text-gray-400 text-center">
+                        </h2>
+
+                        <p className="mt-2 text-xs sm:text-sm leading-6 text-slate-500 max-w-xs">
                             Book appointments in just a few clicks from any device.
                         </p>
                     </div>
-                    <div className='flex flex-col border border-gray-200 rounded-xl p-4 sm:p-5 transition hover:bg-(--color-primary)/5 cursor-pointer max-w-[300px]  bg-white hover:shadow-[0_0_10px_0_rgba(0,0,0,0.1)]'>
-                        <span className='p-3 px-4 rounded-full bg-(--color-primary)/10 flex mx-auto items-center justify-center gap-3'><i className="bi bi-headset text-(--color-primary) text-2xl"></i></span>
-                        <h1 className="text-md  font-semibold text-gray-600 flex flex-col items-center pt-2">
+
+                    {/* 24/7 Support */}
+                    <div className="flex flex-col items-center text-center border border-slate-200 rounded-xl p-6 sm:p-7 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)] transition-all duration-200 hover:border-(--color-primary)/20 hover:shadow-[0_4px_16px_rgba(15,23,42,0.07)] cursor-pointer">
+                        <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-(--color-primary)/10 flex items-center justify-center">
+                            <i className="bi bi-headset text-(--color-primary) text-2xl"></i>
+                        </span>
+
+                        <h2 className="mt-4 text-base sm:text-lg font-semibold text-slate-700">
                             24/7 Support
-                        </h1>
-                        <p className="text-sm font-light text-gray-400 text-center">
+                        </h2>
+
+                        <p className="mt-2 text-xs sm:text-sm leading-6 text-slate-500 max-w-xs">
                             Our dedicated support team is available around the clock.
                         </p>
                     </div>
+
                 </div>
             </section>
         </>
