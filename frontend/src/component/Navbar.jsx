@@ -119,119 +119,248 @@ function Navbar() {
         <>
             {
                 !hideNavbar &&
-                <section className='flex justify-between lg:px-10 md:px-5 px-4 py-5 items-center border-b border-gray-300 sticky top-0 bg-white/50 backdrop-blur-sm z-100'>
-                    <div className='flex items-center gap-2 cursor-pointer' onClick={() => navigate('/')} >
-                        {
-                            backendImg ? <img src={backendImg} alt="img" className='w-10' /> : <h4>Logo</h4>
-                        }
-                        {
-                            name && <p>{name}</p>
-                        }
+                <section className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
 
-                    </div>
+                    <div className="w-full max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-[70px] flex items-center justify-between">
 
-                    <ul className='hidden lg:flex gap-10'>
-                        {
-                            navItems.map((item, index) => (
-                                <NavLink key={index} to={item.link}>
-                                    <li className='py-1'>{item.name}</li>
-                                    <hr className='border-none border-2 bg-(--color-primary) w-3/5 outline-none h-0.5 m-auto hidden' />
-                                </NavLink>
-                            ))
-
-                        }
-                    </ul>
-
-                    <div className='flex'>
-                        {
-                            token ?
-                                <>
-                                    <div className='mr-6'>
-                                        {/* //----Notification-------------- */}
-                                        <div className='px-2 py-1 bg-gray-100 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-200 relative' onClick={() => { navigate('/notification', { state: data }); setOpen(false) }} title='Notification'>
-                                            <i className="bi bi-bell text-xl text-gray-500 hover:text-(--color-primary)"></i>
-                                            <div >
-                                                {
-                                                    open &&
-                                                    <span className='absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full'></span>
-                                                }
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='relative cursor-pointer group'>
-                                        <div className=' border border-gray-300 w-5 h-5 p-4 rounded-full flex justify-center items-center bg-gray-100' onClick={() => setOpenMenu(!openMenu)}>
-                                            <p>{slice}</p>
-                                        </div>
-
-                                        {/* popup screen */}
-                                        <div className={`${openMenu ? 'block' : 'hidden'} absolute top-6 right-0 lg:group-hover:block z-50 pt-4`} >
-
-                                            <div className='w-56 bg-white/90 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-2xl overflow-hidden animate-fadeIn'>
-
-                                                <div
-                                                    onClick={() => { navigate('/profile'); setOpenMenu(false); }}
-                                                    className='flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-gray-100 transition-all duration-300'
-                                                >
-                                                    <i className="bi bi-person text-lg text-(--color-primary)"></i>
-                                                    <p className='text-gray-700 font-medium'>My Profile</p>
-                                                </div>
-
-                                                <div
-                                                    onClick={() => { navigate('/appointment'); setOpenMenu(false); }}
-                                                    className='flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-gray-100 transition-all duration-300'
-                                                >
-                                                    <i className="bi bi-calendar-check text-lg text-(--color-primary)"></i>
-                                                    <p className='text-gray-700 font-medium'>Appointments</p>
-                                                </div>
-
-                                                <div className='border-t border-gray-200'></div>
-
-                                                <div
-                                                    onClick={() => { logout(); setOpenMenu(false); }}
-                                                    className='flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-red-50 transition-all duration-300'
-                                                >
-                                                    <i className="bi bi-box-arrow-right text-lg text-red-500"></i>
-                                                    <p className='text-red-500 font-semibold'>Logout</p>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    </div> </> : <Button children='Login' primary='bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md flex gap-1 justify-center items-center cursor-pointer' onclick={() => navigate('/login')} />
-                        }
-                        <div className='lg:hidden flex justify-center items-center ml-5 cursor-pointer' onClick={() => setMenu(true)} title='Menu'>
-                            <p><i className="bi bi-list text-gray-500 text-3xl hover:text-(--color-primary)"></i></p>
-                        </div>
-                        {
-                            menu && <div className={` fixed w-60 right-0 top-0 h-ful transform transition-transform duration-500 ease-in-out ${menu ? "translate-x-0" : "translate-x-full"}`}>
-                                <div className='absolute top-0 right-0 flex flex-col bg-gray-100 w-full justify-start items-center h-screen py-10 gap-10'>
-                                    <div className='mx-auto flex w-fit justify-center px-2 hover:bg-gray-100 py-1 rounded-md cursor-pointer' onClick={() => setMenu(false)}>
-                                        <i
-                                            className="bi bi-x text-3xl cursor-pointer"
-                                        ></i>
-                                    </div>
-                                    <ul className='flex flex-col lg:hidden gap-10'>
-                                        {
-                                            navItems.map((item, index) => (
-                                                <NavLink key={index} to={item.link} onClick={() => setMenu(false)}>
-                                                    <li className='py-1'>{item.name}</li>
-                                                    <hr className='border-none border-2 bg-(--color-primary) w-3/4 outline-none h-0.5 mx-auto hidden' />
-                                                </NavLink>
-                                            ))
-
-                                        }
-                                    </ul>
+                        {/* ================= LOGO ================= */}
+                        <div
+                            className="flex items-center gap-2.5 cursor-pointer shrink-0"
+                            onClick={() => navigate('/')}
+                        >
+                            {backendImg ? (
+                                <img
+                                    src={backendImg}
+                                    alt="Logo"
+                                    className="w-9 h-9 sm:w-10 sm:h-10 object-contain"
+                                />
+                            ) : (
+                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-(--color-primary)/10 flex items-center justify-center">
+                                    <span className="text-(--color-primary) font-bold text-lg">
+                                        M
+                                    </span>
                                 </div>
+                            )}
 
-                            </div>
-                        }
+                            {name && (
+                                <p className="text-base sm:text-lg font-semibold text-slate-800 tracking-tight">
+                                    {name}
+                                </p>
+                            )}
+                        </div>
+
+
+                        {/* ================= DESKTOP NAV ================= */}
+                        <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
+
+                            {navItems.map((item, index) => (
+                                <NavLink
+                                    key={index}
+                                    to={item.link}
+                                    className={({ isActive }) =>
+                                        `relative py-2 text-sm font-medium transition-colors duration-200 ${isActive
+                                            ? 'text-(--color-primary)'
+                                            : 'text-slate-600 hover:text-(--color-primary)'
+                                        }`
+                                    }
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            {item.name}
+
+                                            <span
+                                                className={`absolute left-1/2 -bottom-1 h-0.5 -translate-x-1/2 rounded-full bg-(--color-primary) transition-all duration-200 ${isActive ? 'w-5' : 'w-0'
+                                                    }`}
+                                            />
+                                        </>
+                                    )}
+                                </NavLink>
+                            ))}
+
+                        </nav>
+
+
+                        {/* ================= RIGHT ACTIONS ================= */}
+                        <div className="flex items-center gap-2 sm:gap-3">
+
+                            {token ? (
+                                <>
+                                    {/* Notification */}
+                                    <button
+                                        type="button"
+                                        className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-500 hover:text-(--color-primary) hover:bg-slate-50 transition-colors duration-200 cursor-pointer"
+                                        onClick={() => {
+                                            navigate('/notification', { state: data });
+                                            setOpen(false);
+                                        }}
+                                        title="Notifications"
+                                    >
+                                        <i className="bi bi-bell text-lg"></i>
+
+                                        {open && (
+                                            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                                        )}
+                                    </button>
+
+
+                                    {/* Profile */}
+                                    <div className="relative">
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setOpenMenu(!openMenu)}
+                                            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-(--color-primary)/10 text-(--color-primary) border border-(--color-primary)/10 flex items-center justify-center text-sm font-semibold hover:bg-(--color-primary)/15 transition-colors duration-200 cursor-pointer"
+                                        >
+                                            {slice}
+                                        </button>
+
+
+                                        {/* Profile Dropdown */}
+                                        {openMenu && (
+                                            <div className="absolute right-0 top-12 sm:top-13 w-52 bg-white border border-slate-200 rounded-xl shadow-[0_8px_25px_rgba(15,23,42,0.10)] overflow-hidden">
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        navigate('/profile');
+                                                        setOpenMenu(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-150 cursor-pointer"
+                                                >
+                                                    <i className="bi bi-person text-base text-(--color-primary)"></i>
+                                                    <span>My Profile</span>
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        navigate('/appointment');
+                                                        setOpenMenu(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-150 cursor-pointer"
+                                                >
+                                                    <i className="bi bi-calendar-check text-base text-(--color-primary)"></i>
+                                                    <span>Appointments</span>
+                                                </button>
+
+                                                <div className="border-t border-slate-100"></div>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        logout();
+                                                        setOpenMenu(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm text-red-500 hover:bg-red-50 transition-colors duration-150 cursor-pointer"
+                                                >
+                                                    <i className="bi bi-box-arrow-right text-base"></i>
+                                                    <span>Logout</span>
+                                                </button>
+
+                                            </div>
+                                        )}
+
+                                    </div>
+
+                                </>
+                            ) : (
+                                <Button
+                                    children="Login"
+                                    primary="bg-(--color-primary) text-white hover:opacity-90 px-4 sm:px-5 py-2 rounded-lg flex items-center justify-center cursor-pointer text-sm font-medium transition-opacity duration-200"
+                                    onclick={() => navigate('/login')}
+                                />
+                            )}
+
+
+                            {/* Mobile Menu Button */}
+                            <button
+                                type="button"
+                                className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:text-(--color-primary) hover:bg-slate-50 transition-colors duration-200 cursor-pointer"
+                                onClick={() => setMenu(true)}
+                                title="Menu"
+                            >
+                                <i className="bi bi-list text-xl sm:text-2xl"></i>
+                            </button>
+
+                        </div>
+
                     </div>
 
 
-                    {/* <Theme /> */}
+                    {/* ================= MOBILE MENU ================= */}
+                    {menu && (
+                        <div className={`fixed w-60 right-0 top-0 h-full transform transition-transform duration-500 ease-in-out ${menu ? "translate-x-0" : "translate-x-full"}`}>
+                            <div className='absolute top-0 right-0 flex flex-col w-full justify-start items-center h-screen py-10 gap-10'>
+                                {/* Backdrop */}
+                                <div
+                                    className="absolute inset-0"
+                                    onClick={() => setMenu(false)}
+                                />
 
-                </section >
+                                {/* Drawer */}
+                                <div className="absolute top-0 right-0 h-full w-[350px] max-w-[110%] bg-gray-100 shadow-[-8px_0_30px_rgba(15,23,42,0.10)]">
+
+                                    {/* Drawer Header */}
+                                    <div className="h-16 sm:h-[70px] px-5 flex items-center justify-between border-b border-slate-100">
+
+                                        <div className="flex items-center gap-2">
+                                            {backendImg && (
+                                                <img
+                                                    src={backendImg}
+                                                    alt="Logo"
+                                                    className="w-8 h-8 object-contain"
+                                                />
+                                            )}
+
+                                            {name && (
+                                                <span className="font-semibold text-slate-800">
+                                                    {name}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setMenu(false)}
+                                            className="w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors duration-150 cursor-pointer"
+                                        >
+                                            <i className="bi bi-x-lg text-sm"></i>
+                                        </button>
+
+                                    </div>
+
+
+                                    {/* Links */}
+                                    <nav className="px-5 py-6">
+
+                                        <div className="flex flex-col gap-1">
+
+                                            {navItems.map((item, index) => (
+                                                <NavLink
+                                                    key={index}
+                                                    to={item.link}
+                                                    onClick={() => setMenu(false)}
+                                                    className={({ isActive }) =>
+                                                        `px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-150 ${isActive
+                                                            ? 'bg-(--color-primary)/10 text-(--color-primary)'
+                                                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                                        }`
+                                                    }
+                                                >
+                                                    {item.name}
+                                                </NavLink>
+                                            ))}
+
+                                        </div>
+
+                                    </nav>
+
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                </section>
             }
 
         </>

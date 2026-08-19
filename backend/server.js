@@ -39,7 +39,7 @@ initiSocket(io);
 //middleware
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:5174", "https://doctor-metix.netlify.app"],
+    origin: ["http://localhost:5173", "https://doctor-metix.netlify.app"],
     credentials: true
 }));
 app.use(cookieParser("metix"));
@@ -48,6 +48,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || "metixcentersecret",
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
         httpOnly: true,
