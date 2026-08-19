@@ -121,7 +121,7 @@ function Navbar() {
                 !hideNavbar &&
                 <section className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
 
-                    <div className="w-full max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-[70px] flex items-center justify-between">
+                    <div className="w-full max-w-[1980px] mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-[70px] flex items-center justify-between">
 
                         {/* ================= LOGO ================= */}
                         <div

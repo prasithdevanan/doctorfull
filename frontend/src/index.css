@@ -116,7 +116,7 @@ html {
     display: grid;
     border: 4px solid #0000;
     border-radius: 50%;
-    border-color: #ccc #0000;
+    border-color: #bfdbfe #0000;
     animation: l16 1s infinite linear;
 }
 
@@ -130,7 +130,7 @@ html {
 }
 
 .loader::before {
-    border-color: #f03355 #0000;
+    border-color: #2563EB #0000;
     animation: inherit;
     animation-duration: .5s;
     animation-direction: reverse;
@@ -142,7 +142,7 @@ html {
 
 @keyframes l16 {
     100% {
-        transform: rotate(1turn)
+        transform: rotate(1turn);
     }
 }
 

@@ -34,7 +34,7 @@ function Header() {
         <>
             {/* //------------------------------------------header----------------------- */}
             <header className="relative px-4 sm:px-6 lg:px-8 py-6 sm:py-8 bg-[#f7fafc]">
-                <div className="max-w-8xl mx-auto bg-white rounded-[28px] sm:rounded-[40px] overflow-hidden border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
+                <div className="max-w-[1900px] mx-auto bg-white rounded-[28px] sm:rounded-[40px] overflow-hidden border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
 
                     <div className="grid lg:grid-cols-2 items-center">
 

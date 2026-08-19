@@ -28,10 +28,10 @@ function Home() {
   })
 
   const messages = [
-    "Backend Server Loading...",
-    "This may take a few seconds. Please wait.",
-    "If this is taking too long, please check your internet connection or try refreshing the page."
-  ]
+    "Connecting to Metix...",
+    "Getting everything ready for you...",
+    "This is taking a little longer than expected. Please check your internet connection or try again."
+  ];
 
 
   const fetchWithRetry = async (url, retries = 3) => {
@@ -76,10 +76,20 @@ function Home() {
 
   return (
     <>
-      <div className={`fixed inset-0 bg-black/50 flex flex-col items-center justify-center z-999 transition-opacity ${loading ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <div className='loader'>
-        </div>
-        <p className='font-medium text-xl text-white text-center px-3'>{messages[messageStage]}</p>
+      <div
+        className={`fixed inset-0 z-[999] flex flex-col items-center justify-center
+    bg-slate-950/50 backdrop-blur-[3px]
+    transition-all duration-300 ease-out
+    ${loading
+            ? 'opacity-100 scale-100'
+            : 'opacity-0 scale-[0.98] pointer-events-none'
+          }`}
+      >
+        <div className="loader mb-5"></div>
+
+        <p className="px-4 text-center text-base sm:text-lg font-medium text-white tracking-wide">
+          {messages[messageStage]}
+        </p>
       </div>
       <Header />
       <Speciality />
