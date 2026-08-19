@@ -18,6 +18,7 @@ import cookieParser from 'cookie-parser';
 import { initiSocket } from './socket/socket.js';
 import session from "express-session";
 import passport from "passport";
+import MongoStore from "connect-mongo";
 
 //app config
 const app = express();
@@ -48,7 +49,9 @@ app.use(session({
     secret: process.env.SESSION_SECRET || "metixcentersecret",
     resave: false,
     saveUninitialized: false,
-    proxy: true,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+    }),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
         httpOnly: true,
