@@ -9,6 +9,8 @@ import upload from '../middlewares/multer.js';
 import getDoctorAppointments, { getPatientAppointments, deleteAppointments } from '../controller/appointmentSlot.js';
 import { updateSchedule } from '../controller/appointmentUpdate.js';
 import passport from '../controller/googleLogin.js';
+import jwt from 'jsonwebtoken';
+import signinModel from '../models/signinModel.js';
 
 
 
@@ -31,46 +33,44 @@ patientRouter.get(
     passport.authenticate("google", {
         failureRedirect: `${frontendUrl}/login?googleError=1`,
     }),
-    (req, res, next) => {
-        console.log("Google authenticated:", req.isAuthenticated());
-        console.log("User:", req.user);
-        console.log("Session ID:", req.sessionID);
-        console.log("Session:", req.session);
+    (req, res) => {
+        const token = jwt.sign(
+            { id: req.user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" }
+        );
 
-        req.session.save((err) => {
-            if (err) {
-                console.error("Session save error:", err);
-                return next(err);
-            }
+        res.redirect(`${frontendUrl}/googleSuccess?token=${token}`);
 
-            console.log("Session saved:", req.sessionID);
-
-            res.redirect(`${frontendUrl}/googleSuccess`);
-        });
     }
 );
-patientRouter.get("/auth/me", (req, res) => {
-    console.log("========== AUTH ME ==========");
-    console.log("isAuthenticated:", req.isAuthenticated());
-    console.log("user:", req.user);
-    console.log("sessionID:", req.sessionID);
-    console.log("session:", req.session);
-    console.log("cookie:", req.headers.cookie);
-    if (!req.isAuthenticated()) {
-        return res.status(401).json({
-            success: false,
-            message: "Not authenticated",
-        });
-    }
 
+// Auth middleware
+const requireAuth = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+        return res.status(401).json({ success: false, message: "Not authenticated" });
+    }
+    try {
+        const decoded = jwt.verify(authHeader.split(" ")[1], process.env.JWT_SECRET);
+        req.userId = decoded.id;
+        next();
+    } catch (err) {
+        return res.status(401).json({ success: false, message: "Invalid or expired token" });
+    }
+};
+
+patientRouter.get("/auth/me", requireAuth, async(req, res) => {
+    const user = await signinModel.findById(req.userId);
+    if (!user) return res.status(401).json({ success: false, message: "Not authenticated" });
     return res.json({
         success: true,
         user: {
-            id: req.user._id,
-            email: req.user.email,
-            name: req.user.username,
-            profileImage: req.user.image,
-            patientId: req.user.patientId,
+            id: user._id,
+            email: user.email,
+            name: user.username,
+            profileImage: user.image,
+            patientId: user.patientId,
         },
     });
 });
