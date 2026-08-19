@@ -11,6 +11,7 @@ const GoogleSuccess = () => {
     useEffect(() => {
         const getUser = async () => {
             const token = searchParams.get("token");
+            console.log(token);
             if (!token) {
                 toast.error("Missing auth token");
                 navigate("/login");

@@ -30,105 +30,639 @@ function PaymentSuccess() {
 
     const [orderId, setOrderId] = useState("");
     const [amount, setAmount] = useState("");
+    const [patientName, setPatientName] = useState("");
+    const [patientEmail, setPatientEmail] = useState("");
+    const [patientPhone, setPatientPhone] = useState("");
 
     useEffect(() => {
-        setOrderId(element?.body?.razorpay_payment_id || "");
-        setAmount(element?.amount || "");
+        setOrderId(element?.body?.razorpay_payment_id || "Transaction ID not found");
+        setAmount(element?.amount != null ? element.amount / 100 : 0);
+        setPatientName(element?.name || "Name not found");
+        setPatientEmail(element?.email || "Email not found");
+        setPatientPhone(element?.phone || "Phone not found");
     }, [element]);
 
     // Download PDF
-    const handleDownload = () => {
+    const handleDownload = async () => {
+        if (!pdfRef.current) return;
 
-        html2pdf(pdfRef.current, {
-            margin: [10, 40, 10, 40],
+        let pdfContainer = null;
 
-            filename: "payment_receipt.pdf",
+        try {
+            const original = pdfRef.current;
+            const clone = original.cloneNode(true);
 
-            image: {
-                type: "jpeg",
-                quality: 0.98,
-            },
+            // ==========================================
+            // PDF SAFE CSS
+            // ==========================================
 
-            html2canvas: {
-                scale: 2,
-            },
+            const style = document.createElement("style");
 
-            jsPDF: {
-                unit: "mm",
-                format: "a4",
-                orientation: "portrait",
-            },
-        });
+            style.textContent = `
+            /* Safe colors for html2canvas */
+
+            .pdf-safe-root {
+                background: rgb(255,255,255) !important;
+                color: rgb(15,23,42) !important;
+            }
+
+            .pdf-safe-root .bg-white {
+                background-color: rgb(255,255,255) !important;
+            }
+
+            .pdf-safe-root .bg-slate-50 {
+                background-color: rgb(248,250,252) !important;
+            }
+
+            .pdf-safe-root .bg-slate-900 {
+                background-color: rgb(15,23,42) !important;
+            }
+
+            .pdf-safe-root .bg-blue-50 {
+                background-color: rgb(239,246,255) !important;
+            }
+
+            .pdf-safe-root .bg-blue-100 {
+                background-color: rgb(219,234,254) !important;
+            }
+
+            .pdf-safe-root .bg-emerald-50 {
+                background-color: rgb(236,253,245) !important;
+            }
+
+            .pdf-safe-root .bg-emerald-500 {
+                background-color: rgb(16,185,129) !important;
+            }
+
+            .pdf-safe-root .bg-violet-50 {
+                background-color: rgb(245,243,255) !important;
+            }
+
+            .pdf-safe-root .bg-amber-50 {
+                background-color: rgb(255,251,235) !important;
+            }
+
+            /* Text */
+
+            .pdf-safe-root .text-white {
+                color: rgb(255,255,255) !important;
+            }
+
+            .pdf-safe-root .text-slate-300 {
+                color: rgb(203,213,225) !important;
+            }
+
+            .pdf-safe-root .text-slate-400 {
+                color: rgb(148,163,184) !important;
+            }
+
+            .pdf-safe-root .text-slate-500 {
+                color: rgb(100,116,139) !important;
+            }
+
+            .pdf-safe-root .text-slate-600 {
+                color: rgb(71,85,105) !important;
+            }
+
+            .pdf-safe-root .text-slate-700 {
+                color: rgb(51,65,85) !important;
+            }
+
+            .pdf-safe-root .text-slate-800 {
+                color: rgb(30,41,59) !important;
+            }
+
+            .pdf-safe-root .text-slate-900 {
+                color: rgb(15,23,42) !important;
+            }
+
+            .pdf-safe-root .text-emerald-400 {
+                color: rgb(52,211,153) !important;
+            }
+
+            .pdf-safe-root .text-emerald-500 {
+                color: rgb(16,185,129) !important;
+            }
+
+            .pdf-safe-root .text-emerald-600 {
+                color: rgb(5,150,105) !important;
+            }
+
+            .pdf-safe-root .text-emerald-700 {
+                color: rgb(4,120,87) !important;
+            }
+
+            .pdf-safe-root .text-emerald-50 {
+                color: rgb(236,253,245) !important;
+            }
+
+            .pdf-safe-root .text-blue-600 {
+                color: rgb(37,99,235) !important;
+            }
+
+            .pdf-safe-root .text-violet-600 {
+                color: rgb(124,58,237) !important;
+            }
+
+            .pdf-safe-root .text-amber-700 {
+                color: rgb(180,83,9) !important;
+            }
+
+            /* Borders */
+
+            .pdf-safe-root .border-slate-100 {
+                border-color: rgb(241,245,249) !important;
+            }
+
+            .pdf-safe-root .border-slate-200 {
+                border-color: rgb(226,232,240) !important;
+            }
+
+            .pdf-safe-root .border-emerald-200 {
+                border-color: rgb(167,243,208) !important;
+            }
+
+            .pdf-safe-root .divide-slate-100
+                > :not([hidden]) ~ :not([hidden]) {
+                border-color: rgb(241,245,249) !important;
+            }
+
+            /* Header */
+
+            .pdf-safe-root [data-pdf-header] {
+                background-color: rgb(16,185,129) !important;
+
+                background-image: linear-gradient(
+                    135deg,
+                    rgb(16,185,129),
+                    rgb(5,150,105)
+                ) !important;
+            }
+
+            /* Header circles */
+
+            .pdf-safe-root .bg-white\\/10 {
+                background-color: rgba(
+                    255,
+                    255,
+                    255,
+                    0.10
+                ) !important;
+            }
+
+            .pdf-safe-root .bg-white\\/5 {
+                background-color: rgba(
+                    255,
+                    255,
+                    255,
+                    0.05
+                ) !important;
+            }
+
+            /* Shadows */
+
+            .pdf-safe-root .shadow-lg {
+                box-shadow:
+                    0 10px 15px -3px rgba(0,0,0,0.10),
+                    0 4px 6px -4px rgba(0,0,0,0.10) !important;
+            }
+
+            .pdf-safe-root [class*="shadow-"] {
+                box-shadow:
+                    0 20px 60px rgba(15,23,42,0.10) !important;
+            }
+
+            .pdf-safe-root .bg-emerald-500\\/15 {
+                background-color:
+                    rgba(16,185,129,0.15) !important;
+            }
+
+            /* --------------------------------------
+               HIDE WEBSITE BUTTONS FROM PDF
+            -------------------------------------- */
+
+            .pdf-hide {
+                display: none !important;
+            }
+        `;
+
+            // ==========================================
+            // ADD PDF CLASS
+            // ==========================================
+
+            clone.classList.add("pdf-safe-root");
+
+            // ==========================================
+            // HIDE BUTTONS
+            // ==========================================
+
+            const buttons = clone.querySelectorAll("button");
+
+            buttons.forEach((button) => {
+                button.classList.add("pdf-hide");
+            });
+
+            // ==========================================
+            // CREATE A4 CONTENT WRAPPER
+            // This makes receipt centered
+            // ==========================================
+
+            const page = document.createElement("div");
+
+            page.style.width = "718px";
+            page.style.minHeight = "100px";
+            page.style.backgroundColor = "#ffffff";
+            page.style.display = "flex";
+            page.style.justifyContent = "center";
+            page.style.alignItems = "flex-start";
+            page.style.boxSizing = "border-box";
+            page.style.margin = "0 auto";
+            page.style.padding = "0";
+
+            // ==========================================
+            // RECEIPT WIDTH
+            // ==========================================
+
+            clone.style.width = "512px";
+            clone.style.maxWidth = "512px";
+            clone.style.margin = "0 auto";
+
+            // ==========================================
+            // PDF CONTAINER
+            // ==========================================
+
+            pdfContainer = document.createElement("div");
+
+            pdfContainer.style.position = "fixed";
+            pdfContainer.style.left = "-100000px";
+            pdfContainer.style.top = "0";
+            pdfContainer.style.width = "718px";
+            pdfContainer.style.backgroundColor = "#ffffff";
+            pdfContainer.style.zIndex = "-999999";
+
+            page.appendChild(clone);
+
+            pdfContainer.appendChild(style);
+            pdfContainer.appendChild(page);
+
+            document.body.appendChild(pdfContainer);
+
+            // ==========================================
+            // WAIT FOR FONTS
+            // ==========================================
+
+            if (document.fonts?.ready) {
+                await document.fonts.ready;
+            }
+
+            await new Promise((resolve) =>
+                setTimeout(resolve, 200)
+            );
+
+            // ==========================================
+            // GENERATE PDF
+            // ==========================================
+
+            await html2pdf()
+                .set({
+                    margin: [10, 10, 10, 10],
+
+                    filename: "payment_receipt.pdf",
+
+                    image: {
+                        type: "jpeg",
+                        quality: 0.98,
+                    },
+
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: false,
+                        backgroundColor: "#ffffff",
+                        logging: false,
+                    },
+
+                    jsPDF: {
+                        unit: "mm",
+                        format: "a4",
+                        orientation: "portrait",
+                    },
+                })
+                .from(page)
+                .save();
+
+        } catch (error) {
+            console.error(
+                "PDF generation failed:",
+                error
+            );
+        } finally {
+            if (
+                pdfContainer &&
+                pdfContainer.parentNode
+            ) {
+                pdfContainer.parentNode.removeChild(
+                    pdfContainer
+                );
+            }
+        }
     };
 
+
     return (
-        <div className="flex items-center justify-center bg-[#f0fdf4] px-4 h-[calc(100vh-82px)] py-10">
+        <div className="flex min-h-[calc(100vh-82px)] items-center justify-center overflow-y-auto bg-gradient-to-br from-emerald-50 via-white to-blue-50 px-3 py-6 sm:px-5 sm:py-8">
+
             <div
                 ref={pdfRef}
-                className="bg-[#ffffff] shadow-xl rounded-3xl p-8 max-w-md w-full text-center border border-[#f3f4f6]"
+                className="w-full max-w-lg overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.10)]"
             >
-                {/* Success Icon */}
-                <div className="flex justify-center mb-5">
-                    <div className="bg-[#dcfce7] text-[#16a34a] rounded-full p-4 text-4xl">
-                        <i className="bi bi-check-circle-fill"></i>
+                {/* ================= HEADER ================= */}
+                <div
+                    data-pdf-header
+                    style={{
+                        backgroundImage:
+                            "linear-gradient(to bottom right, rgb(16,185,129), rgb(5,150,105))",
+                    }}
+                    className="relative overflow-hidden px-5 py-7 text-center text-white sm:px-8 sm:py-8"
+                >
+
+                    <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10"></div>
+                    <div className="absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/5"></div>
+
+                    <div className="relative">
+
+                        {/* Success Icon */}
+                        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg sm:h-20 sm:w-20">
+
+                            <i className="bi bi-check-lg text-4xl font-bold text-emerald-500 sm:text-5xl"></i>
+
+                        </div>
+
+                        <h1 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
+                            Payment Successful
+                        </h1>
+
+                        <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-emerald-50 sm:text-sm">
+                            Your payment has been successfully processed and your appointment is confirmed.
+                        </p>
+
                     </div>
+
                 </div>
 
-                {/* Title */}
-                <h2 className="text-3xl font-bold text-[#1f2937] mb-3">
-                    Payment Successful
-                </h2>
 
-                {/* Description */}
-                <p className="text-[#6b7280] mb-6 leading-relaxed">
-                    Your payment has been processed successfully.
-                    Thank you for choosing Metix.
-                </p>
+                {/* ================= RECEIPT BODY ================= */}
+                <div className="p-4 sm:p-6 md:p-7">
 
-                {/* Details */}
-                <div className="bg-[#f9fafb] rounded-2xl p-5 text-sm text-[#374151] mb-6 space-y-3 text-left">
-                    <div className="flex justify-between gap-4">
-                        <span className="font-semibold">Transaction ID</span>
-                        <span className="break-all text-right">{orderId}</span>
-                    </div>
+                    {/* Receipt Label */}
+                    <div className="mb-5 flex items-center justify-between">
 
-                    <div className="flex justify-between">
-                        <span className="font-semibold">Amount</span>
-                        <span>₹ {amount}</span>
-                    </div>
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 sm:text-[10px]">
+                                Payment Receipt
+                            </p>
 
-                    <div className="flex justify-between">
-                        <span className="font-semibold">Status</span>
-                        <span className="text-[#16a34a] font-medium">
+                            <p className="mt-1 text-xs text-slate-500">
+                                Metix Healthcare
+                            </p>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[9px] font-semibold text-emerald-700 sm:text-[10px]">
+
+                            <i className="bi bi-shield-check"></i>
+
                             Paid
-                        </span>
-                    </div>
-                </div>
 
-                {/* Buttons */}
-                <div className="flex flex-col gap-3">
-                    <button
-                        onClick={() => navigate("/appointment")}
-                        className="bg-[#22c55e] hover:bg-[#16a34a] text-white py-3 rounded-xl transition-all duration-300 cursor-pointer"
-                    >
-                        View Appointment
-                    </button>
+                        </div>
+
+                    </div>
+
+
+                    {/* ================= PATIENT ================= */}
+                    <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 sm:p-5">
+
+                        <div className="mb-4 flex items-center gap-3">
+
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+
+                                <i className="bi bi-person-fill text-lg"></i>
+
+                            </div>
+
+                            <div>
+                                <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-400">
+                                    Patient Details
+                                </p>
+
+                                <h2 className="mt-0.5 text-base font-bold text-slate-900 sm:text-lg">
+                                    {patientName}
+                                </h2>
+                            </div>
+
+                        </div>
+
+
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+
+                            {/* Email */}
+                            <div className="min-w-0">
+
+                                <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-400">
+                                    Email
+                                </p>
+
+                                <p className="mt-1 truncate text-xs font-medium text-slate-700 sm:text-sm">
+                                    {patientEmail}
+                                </p>
+
+                            </div>
+
+
+                            {/* Phone */}
+                            <div>
+
+                                <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-400">
+                                    Phone
+                                </p>
+
+                                <p className="mt-1 text-xs font-medium text-slate-700 sm:text-sm">
+                                    {patientPhone}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ================= PAYMENT DETAILS ================= */}
+                    <div className="mt-4">
+
+                        <div className="mb-3 flex items-center gap-2">
+
+                            <i className="bi bi-receipt text-sm text-slate-400"></i>
+
+                            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                                Transaction Details
+                            </h2>
+
+                        </div>
+
+
+                        <div className="divide-y divide-slate-100 rounded-2xl border border-slate-100">
+
+                            {/* Transaction */}
+                            <div className="flex items-start justify-between gap-4 px-4 py-3.5">
+
+                                <div className="flex items-center gap-2.5">
+
+                                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-50 text-violet-600">
+                                        <i className="bi bi-hash text-xs"></i>
+                                    </div>
+
+                                    <span className="text-xs font-medium text-slate-500">
+                                        Transaction ID
+                                    </span>
+
+                                </div>
+
+                                <span className="max-w-[55%] break-all text-right text-[10px] font-semibold text-slate-800 sm:text-xs">
+                                    {orderId}
+                                </span>
+
+                            </div>
+
+
+                            {/* Amount */}
+                            <div className="flex items-center justify-between gap-4 px-4 py-3.5">
+
+                                <div className="flex items-center gap-2.5">
+
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                                        <i className="bi bi-currency-rupee text-xs"></i>
+                                    </div>
+
+                                    <span className="text-xs font-medium text-slate-500">
+                                        Amount Paid
+                                    </span>
+
+                                </div>
+
+                                <span className="text-lg font-bold text-emerald-600 sm:text-xl">
+                                    ₹ {Number(amount || 0).toLocaleString("en-IN")}
+                                </span>
+
+                            </div>
+
+
+                            {/* Status */}
+                            <div className="flex items-center justify-between gap-4 px-4 py-3.5">
+
+                                <div className="flex items-center gap-2.5">
+
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                                        <i className="bi bi-check-circle text-xs"></i>
+                                    </div>
+
+                                    <span className="text-xs font-medium text-slate-500">
+                                        Payment Status
+                                    </span>
+
+                                </div>
+
+                                <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+
+                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+
+                                    Successful
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ================= TOTAL ================= */}
+                    <div className="mt-4 rounded-2xl bg-slate-900 p-4 text-white sm:p-5">
+
+                        <div className="flex items-center justify-between gap-4">
+
+                            <div>
+
+                                <p className="text-[9px] font-medium uppercase tracking-[0.15em] text-slate-400">
+                                    Total Paid
+                                </p>
+
+                                <p className="mt-1 text-2xl font-bold sm:text-3xl">
+                                    ₹ {Number(amount || 0).toLocaleString("en-IN")}
+                                </p>
+
+                            </div>
+
+                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400 sm:h-12 sm:w-12">
+
+                                <i className="bi bi-wallet2 text-xl"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ================= BUTTONS ================= */}
+                    <div className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+
+                        <button
+                            onClick={() => navigate("/appointment")}
+                            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-600 hover:shadow-md sm:text-sm"
+                        >
+                            <i className="bi bi-calendar-check"></i>
+                            View Appointment
+                        </button>
+
+                        <button
+                            onClick={handleDownload}
+                            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-amber-50 px-4 py-3 text-xs font-semibold text-amber-700 transition-all duration-200 hover:bg-amber-100 sm:text-sm"
+                        >
+                            <i className="bi bi-download"></i>
+                            Download Receipt
+                        </button>
+
+                    </div>
+
 
                     <button
                         onClick={() => navigate("/")}
-                        className="border border-[#d1d5db] hover:bg-[#f3f4f6] py-3 rounded-xl transition-all duration-300 cursor-pointer"
+                        className="mt-2.5 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 sm:text-sm"
                     >
+                        <i className="bi bi-house"></i>
                         Back to Home
                     </button>
 
-                    <button
-                        onClick={handleDownload}
-                        className="bg-[#fef3c7] hover:bg-[#fde68a] text-[#b45309] py-3 rounded-xl transition-all duration-300 cursor-pointer"
-                    >
-                        Download Receipt
-                    </button>
+
+                    {/* Footer */}
+                    <div className="mt-5 text-center">
+
+                        <p className="text-[9px] text-slate-400 sm:text-[10px]">
+                            Thank you for choosing Metix Healthcare
+                        </p>
+
+                        <div className="mt-1 flex items-center justify-center gap-1 text-[9px] text-slate-300">
+                            <i className="bi bi-shield-lock"></i>
+                            Secure digital receipt
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
+
         </div>
     );
 }

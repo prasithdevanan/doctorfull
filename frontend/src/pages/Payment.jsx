@@ -8,11 +8,11 @@ import { toast } from 'react-toastify';
 
 function Payment() {
 
-  useEffect(() => {
-    if (!location.state?.fromBooking) {
-      navigate('/doctor');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!location.state?.fromBooking) {
+  //     navigate('/doctor');
+  //   }
+  // }, []);
 
 
   useEffect(() => {
@@ -40,6 +40,9 @@ function Payment() {
   const date = location.state ? location?.state?.selectDate : false;
   const time = location.state ? location?.state?.selectTime : false;
   const fees = location.state ? location?.state?.fees : false;
+  const patientName = location.state ? location?.state?.patientName : "Name not found";
+  const patientPhone = location.state ? location?.state?.patientPhone : "Phone not found";
+  const patientEmail = location.state ? location?.state?.patientEmail : "Email not found";
   const [appCharge, setAppCharge] = useState(200);
   const [loading, setLoading] = useState(false);
 
@@ -51,8 +54,6 @@ function Payment() {
   const amount = fees * 100 + appCharge * 100;
   const currency = "INR";
   const receiptId = "order_rcptid_11";
-
-
 
   //handle payment method
   const handlePayment = async (e) => {
@@ -83,7 +84,7 @@ function Payment() {
           const body = { ...response }
           const validation = await axios.post(`${BackendUrl}/api/admin/order/verify`, body, { headers: "Content-Type: application/json" });
           if (validation.data.success) {
-            navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, { state: { body, amount: amount, orderId: order_id, currency: currency, name: name, fromBooking: true } });
+            navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, { state: { body, amount: amount, orderId: order_id, currency: currency, name: patientName, email: patientEmail, phone: patientPhone, fromBooking: true } });
           }
         } catch (error) {
           console.log(error);
@@ -92,9 +93,9 @@ function Payment() {
         }
       },
       "prefill": {
-        "name":'Testing',
-        "email":'bH5ZG@example.com',
-        "contact":'9999999999'
+        "name": patientName,
+        "email": patientEmail,
+        "contact": patientPhone
       },
       "theme": {
         "color": "(--color-primary)"
@@ -136,327 +137,255 @@ function Payment() {
 
   return (
     <>
-      <div className="w-full min-h-screen bg-gradient-to-br from-violet-50 via-white to-blue-50 py-6 sm:py-10 px-3 sm:px-5">
+      <div className="h-[calc(100vh-72px)] overflow-hidden bg-gradient-to-br from-violet-50 via-white to-blue-50">
+        <div className="mx-auto h-full w-full max-w-7xl px-3 py-3 sm:px-4 md:px-5 lg:px-6">
+          <div className="grid h-full min-h-0 grid-cols-1 gap-3 lg:grid-cols-[0.85fr_1.15fr] lg:gap-4">
 
-        <div className="max-w-7xl mx-auto flex flex-col xl:flex-row gap-6 lg:gap-8 items-start">
+            {/* ================= LEFT : SUMMARY ================= */}
+            <section className="min-h-0 overflow-y-auto rounded-2xl border border-white/70 bg-white/90 p-4 shadow-sm backdrop-blur-xl no-scrollbar sm:p-5 lg:overflow-hidden">
 
-          {/* LEFT SIDE */}
-          <div className="w-full xl:w-[35%] xl:sticky xl:top-24">
+              <div className="flex h-full min-h-0 flex-col">
 
-            <div className="bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-4 sm:p-6 flex flex-col gap-5 sm:gap-6">
-
-              {/* Heading */}
-              <div>
-
-                <p className="text-sm text-gray-500">
-                  Appointment Summary
-                </p>
-
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mt-1">
-                  Confirm & Pay
-                </h1>
-
-              </div>
-
-              {/* Doctor Card */}
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 bg-gradient-to-r from-violet-50 to-blue-50 p-4 rounded-2xl border border-gray-100">
-
-                <div className="relative">
-
-                  <img
-                    src={element.image}
-                    alt="doctor"
-                    className="w-20 h-20 rounded-2xl object-cover"
-                  />
-
-                  <span className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
-
-                </div>
-
-                <div className="flex-1 text-center sm:text-left">
-
-                  <h2 className="font-semibold text-lg text-gray-800">
-                    {element.name}
-                  </h2>
-
-                  <p className="text-sm text-gray-500">
-                    {element.speciality}
-                  </p>
-
-                  <div className="mt-2 inline-flex items-center gap-2 bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
-                    Available Today
-                  </div>
-
-                </div>
-
-              </div>
-
-              {/* Date & Time */}
-              <div className="flex items-start gap-4">
-
-                <div className="min-w-12 w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center">
-                  <i className="bi bi-calendar4 text-blue-600 text-lg"></i>
-                </div>
-
-                <div>
-
-                  <p className="text-xs uppercase tracking-wide text-gray-400">
-                    Date & Time
-                  </p>
-
-                  <p className="text-sm sm:text-base text-gray-800 font-medium mt-1">
-                    {date}, {time}
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* Location */}
-              <div className="flex items-start gap-4">
-
-                <div className="min-w-12 w-12 h-12 rounded-2xl bg-violet-100 flex items-center justify-center">
-                  <i className="bi bi-geo-alt text-violet-600 text-lg"></i>
-                </div>
-
-                <div>
-
-                  <p className="text-xs uppercase tracking-wide text-gray-400">
-                    Location
-                  </p>
-
-                  <p className="text-sm sm:text-base text-gray-700 mt-1 leading-relaxed break-words">
-                    {element?.address?.address1}
-                    <br />
-                    {element?.address?.address2}
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* Fees */}
-              <div className="bg-gray-50 rounded-2xl p-4 sm:p-5 flex flex-col gap-4">
-
-                <div className="flex justify-between text-sm text-gray-600">
-                  <span>Consultation Fee</span>
-
-                  <span className="font-medium text-gray-800">
-                    ₹ {element.fees}
-                  </span>
-                </div>
-
-                <div className="flex justify-between text-sm text-gray-600">
-
-                  <span>Platform Charge</span>
-
-                  <span className="font-medium text-gray-800">
-                    ₹ {appCharge}
-                  </span>
-
-                </div>
-
-                <hr className="border-gray-200" />
-
-                <div className="flex justify-between items-center">
-
-                  <span className="font-semibold text-gray-900 text-sm sm:text-base">
-                    Total Amount
-                  </span>
-
-                  <span className="text-2xl font-bold text-(--color-primary)">
-                    ₹ {element.fees + appCharge}
-                  </span>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* RIGHT SIDE */}
-          <div className="w-full xl:w-[65%]">
-
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-4 sm:p-6 lg:p-8 flex flex-col gap-6 sm:gap-8">
-
-              {/* Header */}
-              <div className="text-center">
-
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-                  Payment
-                </h1>
-
-                <p className="text-sm sm:text-base text-gray-500 mt-2">
-                  Choose your preferred payment method
-                </p>
-
-              </div>
-
-              {/* Payment Methods */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-
-                {/* Apple Pay */}
-                <button
-                  onClick={() => setPaymentMethod(true)}
-                  className={`p-5 sm:p-6 rounded-3xl border transition-all duration-300 cursor-pointer
-
-            ${paymentMethod
-                      ? "border-(--color-primary) bg-(--color-primary)/10 shadow-xl shadow-blue-100/50"
-                      : "border-gray-200 hover:border-(--color-primary) hover:bg-(--color-primary)/4"
-                    }`}
-                >
-
-                  <div className="flex flex-col items-center gap-4">
-
-                    <div className={`w-14 sm:w-16 h-14 sm:h-16 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl
-
-              ${paymentMethod
-                        ? "bg-(--color-primary) text-white"
-                        : "bg-gray-100 text-gray-600"
-                      }`}>
-
-                      <i className="bi bi-apple"></i>
-
-                    </div>
-
-                    <div>
-
-                      <h2 className="font-semibold text-base sm:text-lg">
-                        Apple Pay
-                      </h2>
-
-                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                        Fast & Secure Payment
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                </button>
-
-                {/* Razorpay */}
-                <button
-                  onClick={() => setPaymentMethod(false)}
-                  className={`p-5 sm:p-6 rounded-3xl border transition-all duration-300 cursor-pointer
-
-            ${!paymentMethod
-                      ? "border-(--color-primary) bg-(--color-primary)/10 shadow-xl shadow-blue-100/50"
-                      : "border-gray-200 hover:border-violet-300 hover:bg-(--color-primary)/4"
-                    }`}
-                >
-
-                  <div className="flex flex-col items-center gap-4">
-
-                    <div className={`w-14 sm:w-16 h-14 sm:h-16 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl
-
-              ${!paymentMethod
-                        ? "bg-(--color-primary) text-white"
-                        : "bg-gray-100 text-gray-600"
-                      }`}>
-
-                      <i className="bi bi-credit-card"></i>
-
-                    </div>
-
-                    <div>
-
-                      <h2 className="font-semibold text-base sm:text-lg">
-                        Razorpay
-                      </h2>
-
-                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                        UPI, Card & Net Banking
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                </button>
-
-              </div>
-
-              {/* Payment Content */}
-              <div className="bg-linear-(--color-primary-gradient)/20 rounded-3xl p-5 sm:p-8 flex flex-col items-center justify-center text-center min-h-[220px] border border-violet-100">
-
-                {paymentMethod ? (
-
-                  <>
-                    <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-black text-white flex items-center justify-center text-3xl sm:text-4xl mb-5">
-                      <i className="bi bi-apple"></i>
-                    </div>
-
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-                      Apple Pay
-                    </h2>
-
-                    <p className="text-sm sm:text-base text-gray-500 mt-2 max-w-md">
-                      Complete your payment instantly using Apple Pay with enhanced security.
-                    </p>
-                  </>
-
-                ) : (
-
-                  <>
-                    <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-(--color-primary) text-white flex items-center justify-center text-3xl sm:text-4xl mb-5">
-                      <i className="bi bi-credit-card"></i>
-                    </div>
-
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-                      Razorpay
-                    </h2>
-
-                    <p className="text-sm sm:text-base text-gray-500 mt-2 max-w-md">
-                      Pay securely via UPI, Debit/Credit Card or Net Banking.
-                    </p>
-                  </>
-
-                )}
-
-              </div>
-
-              {/* Total Card */}
-              <div className="bg-[var(--color-primary)]/10 rounded-3xl p-5 sm:p-6 text-white">
-
-                <div className="flex items-center justify-between gap-4">
-
+                {/* Header */}
+                <div className="mb-4 flex items-center justify-between">
                   <div>
-
-                    <p className="text-(--color-primary) text-sm">
-                      Total Payable
-                    </p>
-
-                    <h1 className="text-3xl sm:text-4xl font-bold mt-1 text-(--color-primary)">
-                      ₹ {element.fees + appCharge}
-                    </h1>
-
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-violet-500">Appointment</p>
+                    <h1 className="mt-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Summary</h1>
                   </div>
 
-                  <div className="min-w-14 w-14 sm:w-16 h-14 sm:h-16 rounded-2xl bg-(--color-primary)/20 flex items-center justify-center">
-                    <i className="bi bi-shield-check text-2xl sm:text-3xl text-(--color-primary)"></i>
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                    <i className="bi bi-check-circle-fill text-base"></i>
+                  </div>
+                </div>
+
+                {/* Doctor */}
+                <div className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-gradient-to-r from-violet-50 to-blue-50 p-3 sm:p-4">
+
+                  <div className="relative shrink-0">
+                    <img src={element.image} alt={element.name} className="h-16 w-16 rounded-xl object-cover sm:h-[72px] sm:w-[72px]" />
+
+                    <span className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-white bg-emerald-500"></span>
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <h2 className="truncate text-base font-bold text-slate-900 sm:text-lg">{element.name}</h2>
+
+                    <p className="mt-0.5 truncate text-xs text-slate-500 sm:text-sm">{element.speciality}</p>
+
+                    <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-[9px] font-semibold text-emerald-700">
+                      <i className="bi bi-circle-fill text-[5px]"></i>
+                      Available
+                    </span>
+                  </div>
+
+                </div>
+
+                {/* Appointment Info */}
+                <div className="mt-4 grid grid-cols-2 gap-2.5">
+
+                  <div className="rounded-xl border border-slate-100 bg-slate-50 p-3">
+                    <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                      <i className="bi bi-calendar-event text-sm"></i>
+                    </div>
+
+                    <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-400">Date</p>
+
+                    <p className="mt-1 truncate text-xs font-semibold text-slate-800 sm:text-sm">{date}</p>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-100 bg-slate-50 p-3">
+                    <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-violet-100 text-violet-600">
+                      <i className="bi bi-clock text-sm"></i>
+                    </div>
+
+                    <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-400">Time</p>
+
+                    <p className="mt-1 truncate text-xs font-semibold text-slate-800 sm:text-sm">{time}</p>
+                  </div>
+
+                </div>
+
+                {/* Location */}
+                <div className="mt-3 flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-600">
+                    <i className="bi bi-geo-alt text-sm"></i>
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-400">Location</p>
+
+                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-600">
+                      {element?.address?.address1}
+                      {element?.address?.address2 && `, ${element?.address?.address2}`}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div className="mt-auto pt-4">
+
+                  <div className="rounded-2xl bg-slate-900 p-4 text-white sm:p-5">
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-slate-400">Consultation</span>
+                      <span className="text-sm font-medium">₹ {element.fees}</span>
+                    </div>
+
+                    <div className="mt-2 flex items-center justify-between">
+                      <span className="text-xs text-slate-400">Platform Charge</span>
+                      <span className="text-sm font-medium">₹ {appCharge}</span>
+                    </div>
+
+                    <div className="my-3 border-t border-white/10"></div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold">Total</span>
+                      <span className="text-2xl font-bold text-emerald-400">₹ {element.fees + appCharge}</span>
+                    </div>
+
                   </div>
 
                 </div>
 
               </div>
 
-              {/* Pay Button */}
-              <button
-                onClick={(e) => handlePayment(e)}
-                className="w-full py-3 sm:py-4 rounded-2xl bg-linear-(--color-primary-gradient) text-white font-semibold text-base sm:text-lg hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-(--color-primary) cursor-pointer"
-              >
-                {loading ? "Processing..." : "Pay Now"}
-              </button>
+            </section>
 
-            </div>
+
+            {/* ================= RIGHT : PAYMENT ================= */}
+            <section className="min-h-0 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-sm no-scrollbar sm:p-5 md:p-6 lg:overflow-hidden">
+
+              <div className="flex h-full min-h-0 flex-col">
+
+                {/* Header */}
+                <div className="shrink-0">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-500">Secure Checkout</p>
+
+                  <div className="mt-1 flex items-center justify-between gap-3">
+                    <div>
+                      <h1 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl md:text-3xl">Choose Payment</h1>
+
+                      <p className="mt-1 text-xs text-slate-500 sm:text-sm">Select your preferred payment method.</p>
+                    </div>
+
+                    <div className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 sm:flex">
+                      <i className="bi bi-shield-lock-fill"></i>
+                    </div>
+                  </div>
+                </div>
+
+
+                {/* Payment Methods */}
+                <div className="mt-5 grid shrink-0 grid-cols-2 gap-2.5 sm:gap-3">
+
+                  {/* Apple Pay */}
+                  <button onClick={() => setPaymentMethod(true)} className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 sm:p-4 ${paymentMethod ? "border-[var(--color-primary)] bg-[var(--color-primary)]/5 shadow-sm" : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"}`}>
+
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-lg sm:h-11 sm:w-11 ${paymentMethod ? "bg-[var(--color-primary)] text-white" : "bg-slate-100 text-slate-600"}`}>
+                      <i className="bi bi-apple"></i>
+                    </div>
+
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-bold text-slate-900 sm:text-sm">Apple Pay</p>
+                      <p className="mt-0.5 truncate text-[9px] text-slate-400 sm:text-[10px]">Fast & Secure</p>
+                    </div>
+
+                  </button>
+
+
+                  {/* Razorpay */}
+                  <button onClick={() => setPaymentMethod(false)} className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 sm:p-4 ${!paymentMethod ? "border-[var(--color-primary)] bg-[var(--color-primary)]/5 shadow-sm" : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"}`}>
+
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-lg sm:h-11 sm:w-11 ${!paymentMethod ? "bg-[var(--color-primary)] text-white" : "bg-slate-100 text-slate-600"}`}>
+                      <i className="bi bi-credit-card"></i>
+                    </div>
+
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-bold text-slate-900 sm:text-sm">Razorpay</p>
+                      <p className="mt-0.5 truncate text-[9px] text-slate-400 sm:text-[10px]">UPI, Card & Net Banking</p>
+                    </div>
+
+                  </button>
+
+                </div>
+
+
+                {/* Payment Information */}
+                <div className="mt-4 flex min-h-[170px] flex-1 items-center justify-center rounded-2xl border border-slate-100 bg-gradient-to-br from-violet-50 via-white to-blue-50 p-5 text-center sm:min-h-[190px]">
+
+                  {paymentMethod ? (
+
+                    <div className="max-w-sm">
+                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-2xl text-white shadow-lg sm:h-16 sm:w-16 sm:text-3xl">
+                        <i className="bi bi-apple"></i>
+                      </div>
+
+                      <h2 className="mt-4 text-lg font-bold text-slate-900 sm:text-xl">Apple Pay</h2>
+
+                      <p className="mt-1.5 text-xs leading-5 text-slate-500 sm:text-sm">
+                        Complete your payment securely using Apple Pay.
+                      </p>
+                    </div>
+
+                  ) : (
+
+                    <div className="max-w-sm">
+                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-2xl text-white shadow-lg sm:h-16 sm:w-16 sm:text-3xl">
+                        <i className="bi bi-credit-card"></i>
+                      </div>
+
+                      <h2 className="mt-4 text-lg font-bold text-slate-900 sm:text-xl">Razorpay</h2>
+
+                      <p className="mt-1.5 text-xs leading-5 text-slate-500 sm:text-sm">
+                        Pay securely using UPI, Debit/Credit Card or Net Banking.
+                      </p>
+                    </div>
+
+                  )}
+
+                </div>
+
+
+                {/* Bottom Payment Area */}
+                <div className="mt-4 shrink-0 rounded-2xl border border-[var(--color-primary)]/10 bg-[var(--color-primary)]/5 p-3 sm:p-4">
+
+                  <div className="flex items-center justify-between gap-4">
+
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 sm:text-[10px]">Total Payable</p>
+
+                      <p className="mt-0.5 text-2xl font-bold text-[var(--color-primary)] sm:text-3xl">
+                        ₹ {element.fees + appCharge}
+                      </p>
+                    </div>
+
+                    <div className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] sm:flex">
+                      <i className="bi bi-shield-check text-lg"></i>
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                {/* Pay Button */}
+                <button onClick={(e) => handlePayment(e)} className="mt-3 flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-indigo-600 py-3 text-sm font-bold text-white shadow-lg shadow-blue-200/40 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 sm:py-3.5 sm:text-base">
+                  <i className="bi bi-lock-fill text-xs"></i>
+                  {loading ? "Processing..." : `Pay ₹${element.fees + appCharge}`}
+                  <i className="bi bi-arrow-right text-base"></i>
+                </button>
+
+                <p className="mt-2 shrink-0 text-center text-[9px] text-slate-400 sm:text-[10px]">
+                  <i className="bi bi-shield-check mr-1"></i>
+                  Your payment is securely processed.
+                </p>
+
+              </div>
+
+            </section>
 
           </div>
-
         </div>
-
       </div>
 
     </>

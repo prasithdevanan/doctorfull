@@ -42,6 +42,7 @@ initiSocket(io);
 const allowedOrigins = [
     "http://localhost:5173",
     "https://doctor-metix.netlify.app",
+    "https://doctor-metix-admin.netlify.app"
 ];
 //middleware
 app.use(express.json());
