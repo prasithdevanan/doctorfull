@@ -39,8 +39,8 @@ initiSocket(io);
 //middleware
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:5173", "https://doctor-metix.netlify.app"],
-    credentials: true
+    origin: "https://doctor-metix.netlify.app",
+    credentials: true,
 }));
 app.use(cookieParser("metix"));
 app.set("trust proxy", 1);

@@ -25,17 +25,29 @@ patientRouter.get('/appointment/patient', getPatientAppointments);
 patientRouter.patch('/appointment/reschedule/:id', updateSchedule);
 patientRouter.delete('/appointment/delete/:id', deleteAppointments);
 patientRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-patientRouter.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: `${frontendUrl}/login?googleError=1` }), (req, res, next) => {
-    req.session.save((err) => {
-        if (err) return next(err);
-
+patientRouter.get(
+    "/auth/google/callback",
+    passport.authenticate("google", {
+        failureRedirect: `${frontendUrl}/login?googleError=1`,
+    }),
+    (req, res, next) => {
         console.log("Google authenticated:", req.isAuthenticated());
+        console.log("User:", req.user);
         console.log("Session ID:", req.sessionID);
-        res.redirect(`${frontendUrl}/googleSuccess`);
-    });
+        console.log("Session:", req.session);
 
+        req.session.save((err) => {
+            if (err) {
+                console.error("Session save error:", err);
+                return next(err);
+            }
 
-});
+            console.log("Session saved:", req.sessionID);
+
+            res.redirect(`${frontendUrl}/googleSuccess`);
+        });
+    }
+);
 patientRouter.get("/auth/me", (req, res) => {
     console.log("========== AUTH ME ==========");
     console.log("isAuthenticated:", req.isAuthenticated());
