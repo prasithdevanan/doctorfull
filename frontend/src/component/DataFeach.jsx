@@ -27,5 +27,5 @@ export const useDoctors = () => {
         fetchDoctors();
     }, []);
 
-    return doctors;
+    return {doctorList: doctors, loading};
 };

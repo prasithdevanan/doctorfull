@@ -147,131 +147,482 @@ function Reschedule() {
 
     return (
         <>
-            <section className=''>
-                <Link to="/appointment" className='flex gap-1 px-2 w-fit items-center mt-4 ml-4 rounded-md py-2 hover:bg-gray-100'><span>{<i className="bi bi-arrow-left-short text-2xl"></i>}</span>Back</Link>
-                <div>
-                    <h2 className='text-center text-2xl font-medium mb-4'>Reschedule Appointment</h2>
+            <section className="h-[calc(100vh-90px)] bg-slate-50 overflow-y-auto">
 
-                    {/* -----------------------------Doctor Details------------------------ */}
-                    <div className="relative bg-gray-50 p-4 rounded-xl border border-gray-200 w-full max-w-sm flex mx-auto items-center gap-3 mb-4 shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
-                        <div className='p-2 bg-(--color-primary)/20 rounded-full px-3 text-(--color-primary)'>
-                            <span>{<i className="bi bi-calendar-x"></i>}</span>
-                        </div>
-                        <div>
+                {/* ================= TOP BAR ================= */}
+                <header className="h-14 sm:h-16 border-b bg-white border-slate-100 px-4 sm:px-6 lg:px-10 flex items-center shrink-0">
 
-                            <p className="text-xs font-medium text-gray-400 tracking-wide mb-1">
-                                CURRENT SCHEDULE
-                            </p>
+                    <div className="w-full max-w-6xl mx-auto flex items-center justify-between">
 
-                            <h2 className="text-base font-semibold text-gray-800 mb-2">
-                                {appointment?.doctorName}
-                            </h2>
+                        <Link to="/appointment" className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition cursor-pointer">
+                            <i className="bi bi-arrow-left text-sm"></i>
+                            <span>Back</span>
+                        </Link>
 
-                            <div className="space-y-1">
-                                <p className="text-sm text-gray-700">
-                                    {appointment?.appointmentDate}
-                                </p>
-                                <p className="text-sm text-gray-500">
-                                    {appointment?.appointmentTime}
-                                </p>
-                                <span className='tracking-wide text-xs bg-red-200 p-1 px-2 rounded-full text-red-600 absolute top-1/2 right-3 -translate-y-1/2'>TO BE CHANGE</span>
+                        <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-(--color-primary)/10 text-(--color-primary) flex items-center justify-center">
+                                <i className="bi bi-calendar2-event text-sm"></i>
                             </div>
-
+                            <span className="text-sm sm:text-base font-semibold text-slate-800">
+                                Reschedule Appointment
+                            </span>
                         </div>
+
+                        <div className="w-[80px] sm:w-[100px]"></div>
 
                     </div>
-                </div>
-                <div className="flex overflow-x-auto gap-3 px-4 scroll-smooth justify-start xl:justify-center mx-auto no-scrollbar">
-                    {dates.map((item, index) => {
-                        const formet = item.day + "," + item.fulldate;
 
-                        const isSelected =
-                            selectedIndex === index ||
-                            appointment?.appointmentDate === formet;
+                </header>
 
 
-                        return (
-                            <div
-                                key={index}
-                                ref={isSelected ? selectedRef : null}
-                                onClick={() => {
-                                    setSelectDate(item);
-                                    setSelectedIndex(index);
-                                }}
-                                className={`flex flex-col items-center justify-center border p-4 rounded-md min-w-[80px] cursor-pointer transition-all duration-200
-              ${isSelected
-                                        ? "bg-blue-500 text-white border-blue-500"
-                                        : "border-gray-300 hover:border-blue-500 hover:text-blue-500"
-                                    }`}
-                            >
-                                <p className="text-sm">{item.date}</p>
-                                <p className="text-xs">{item.day}</p>
-                            </div>
-                        );
-                    })}
-                </div>
-                <div className='flex justify-center gap-3 flex-col mt-4'>
-                    <p className='mx-auto mt-3'>Time Slot</p>
-                    <div className='flex flex-wrap gap-3 justify-center'>
-                        {
-                            timeSlots.map((item, index) => {
-                                const isBooked = bookedSlots.includes(item);
-                                return (
-                                    <div key={index}
-                                        className={`flex flex-col p-4 border mb-2 items-center rounded-md cursor-pointer transition justify-center min-w-[80px]
-                                        ${isBooked
-                                                ? 'bg-gray-100 text-gray-500 border-gray-300'
-                                                : selectTime === item
-                                                    ? 'bg-blue-500 text-white border-blue-500'
-                                                    : 'border-gray-300 hover:border-(--color-primary) hover:text-(--color-primary) w-fit'
-                                            }`}
-                                        onClick={() => { if (isBooked) return; setSelectTime(item); }}
-                                    >
-                                        <p className="text-sm">{item}</p>
-                                        {isBooked && <p className='text-xs'>Booked</p>}
+                {/* ================= MAIN ================= */}
+                <main className="h-[calc(100%-56px)] sm:h-[calc(100%-64px)] px-3 sm:px-5 lg:px-8 py-3 sm:py-5">
+
+                    <div className="h-full max-w-6xl mx-auto flex flex-col min-h-0">
+
+
+                     
+
+
+                        {/* ================= TWO COLUMN LAYOUT ================= */}
+                        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-3 sm:gap-4">
+
+
+                            {/* ===================================================== */}
+                            {/* LEFT PANEL */}
+                            {/* ===================================================== */}
+                            <aside className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col">
+
+
+                                {/* CURRENT APPOINTMENT */}
+                                <div>
+
+                                    <div className="flex items-center gap-2 mb-3">
+
+                                        <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center">
+                                            <i className="bi bi-calendar-x text-sm"></i>
+                                        </div>
+
+                                        <div>
+                                            <p className="text-xs font-semibold text-slate-800">
+                                                Current Appointment
+                                            </p>
+
+                                            <p className="text-[10px] text-slate-400">
+                                                Existing schedule
+                                            </p>
+                                        </div>
 
                                     </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
 
-               { selectTime && <button className='bg-(--color-primary) py-2 px-4 text-(--color-white) hover:bg-(--color-primary)/90 transition-all duration-300 hover:scale-105 rounded-md cursor-pointer mt-4 mx-auto flex mb-4' onClick={checkPopup}>Reschedule</button>}
 
-                {popup &&
-                    <div className='absolute top-0 left-0 w-full flex items-center justify-center bg-black/20 bg-opacity-50 z-999'>
-                        <div className="fixed inset-0 flex items-center justify-center bg-black/20 z-50 backdrop-blur-md">
-                            <div className="bg-white p-6 rounded-xl shadow-lg w-[90%] max-w-md animate-fadeIn">
+                                    <div className="bg-slate-50 border border-slate-100 rounded-xl p-3">
 
-                                <h2 className="text-xl font-semibold mb-3">
-                                    Reschedule Appointment
-                                </h2>
+                                        <p className="text-[10px] uppercase tracking-wide text-slate-400 font-medium">
+                                            Doctor
+                                        </p>
 
-                                <p className="text-gray-600 mb-6">
-                                    Are you sure you want to reschedule this appointment?
-                                </p>
+                                        <p className="text-sm font-semibold text-slate-800 mt-1 truncate">
+                                            {appointment?.doctorName}
+                                        </p>
 
-                                <div className="flex justify-end gap-3">
-                                    <button
 
-                                        className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 cursor-pointer" onClick={() => setPopup(false)}
-                                    >
-                                        Cancel
-                                    </button>
+                                        <div className="border-t border-slate-200 my-3"></div>
 
-                                    <button
 
-                                        className="px-4 py-2 rounded-md bg-(--color-primary) text-white hover:bg-(--color-primary)/90 cursor-pointer" onClick={handleReschedule}
-                                    >
-                                        {loading ? 'Rescheduling...' : 'Yes, Reschedule'}
-                                    </button>
+                                        <div className="flex items-center gap-2">
+
+                                            <i className="bi bi-calendar3 text-(--color-primary) text-xs"></i>
+
+                                            <div>
+                                                <p className="text-[9px] text-slate-400">
+                                                    Date
+                                                </p>
+
+                                                <p className="text-xs font-medium text-slate-700">
+                                                    {appointment?.appointmentDate}
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="flex items-center gap-2 mt-3">
+
+                                            <i className="bi bi-clock text-(--color-primary) text-xs"></i>
+
+                                            <div>
+                                                <p className="text-[9px] text-slate-400">
+                                                    Time
+                                                </p>
+
+                                                <p className="text-xs font-medium text-slate-700">
+                                                    {appointment?.appointmentTime}
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                 </div>
+
+
+                                {/* DIVIDER */}
+                                <div className="border-t border-slate-100 my-4"></div>
+
+
+                                {/* NEW APPOINTMENT SUMMARY */}
+                                <div className="flex-1 min-h-0">
+
+                                    <div className="flex items-center gap-2 mb-3">
+
+                                        <div className="w-8 h-8 rounded-lg bg-(--color-primary)/10 text-(--color-primary) flex items-center justify-center">
+                                            <i className="bi bi-calendar2-check text-sm"></i>
+                                        </div>
+
+                                        <div>
+                                            <p className="text-xs font-semibold text-slate-800">
+                                                New Appointment
+                                            </p>
+
+                                            <p className="text-[10px] text-slate-400">
+                                                Your new schedule
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+
+                                    {selectTime ? (
+
+                                        <div className="bg-(--color-primary)/5 border border-(--color-primary)/10 rounded-xl p-3">
+
+                                            <div className="flex items-center gap-2">
+
+                                                <div className="w-7 h-7 rounded-lg bg-(--color-primary)/10 text-(--color-primary) flex items-center justify-center">
+                                                    <i className="bi bi-calendar3 text-xs"></i>
+                                                </div>
+
+                                                <div>
+
+                                                    <p className="text-[9px] text-slate-400">
+                                                        New Date
+                                                    </p>
+
+                                                    <p className="text-xs font-semibold text-slate-700">
+                                                        {selectDate?.day}, {selectDate?.fulldate}
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div className="flex items-center gap-2 mt-3">
+
+                                                <div className="w-7 h-7 rounded-lg bg-(--color-primary)/10 text-(--color-primary) flex items-center justify-center">
+                                                    <i className="bi bi-clock text-xs"></i>
+                                                </div>
+
+                                                <div>
+
+                                                    <p className="text-[9px] text-slate-400">
+                                                        New Time
+                                                    </p>
+
+                                                    <p className="text-xs font-semibold text-slate-700">
+                                                        {selectTime}
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    ) : (
+
+                                        <div className="h-24 rounded-xl border border-dashed border-slate-200 flex flex-col items-center justify-center text-center px-3">
+
+                                            <i className="bi bi-calendar-plus text-lg text-slate-300"></i>
+
+                                            <p className="text-[11px] text-slate-400 mt-1">
+                                                Select a date and time
+                                            </p>
+
+                                        </div>
+
+                                    )}
+
+                                </div>
+
+
+                                {/* STATUS */}
+                                <div className="mt-4">
+
+                                    <div className="flex items-center gap-2 text-[10px] text-slate-400">
+
+                                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                        Available
+
+                                        <span className="w-2 h-2 rounded-full bg-slate-300 ml-2"></span>
+                                        Booked
+
+                                    </div>
+
+                                </div>
+
+                            </aside>
+
+
+                            {/* ===================================================== */}
+                            {/* RIGHT PANEL */}
+                            {/* ===================================================== */}
+                            <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col">
+
+
+                                {/* DATE HEADER */}
+                                <div className="shrink-0 flex items-center justify-between mb-3">
+
+                                    <div>
+
+                                        <h2 className="text-sm sm:text-base font-semibold text-slate-800">
+                                            Select Date
+                                        </h2>
+
+                                        <p className="text-[10px] sm:text-xs text-slate-400 mt-0.5">
+                                            Choose your preferred date
+                                        </p>
+
+                                    </div>
+
+                                    <div className="w-8 h-8 rounded-lg bg-slate-50 text-slate-400 flex items-center justify-center">
+                                        <i className="bi bi-calendar3 text-sm"></i>
+                                    </div>
+
+                                </div>
+
+
+                                {/* DATE SELECTOR */}
+                                <div className="shrink-0 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+
+                                    {dates.map((item, index) => {
+
+                                        const formet = item.day + "," + item.fulldate;
+
+                                        const isSelected =
+                                            selectedIndex === index ||
+                                            appointment?.appointmentDate === formet;
+
+                                        return (
+
+                                            <button
+                                                key={index}
+                                                ref={isSelected ? selectedRef : null}
+                                                onClick={() => {
+                                                    setSelectDate(item);
+                                                    setSelectedIndex(index);
+                                                    setSelectTime("");
+                                                }}
+                                                className={`shrink-0 w-[62px] sm:w-[72px] h-[64px] rounded-xl border flex flex-col items-center justify-center transition cursor-pointer ${isSelected ? "bg-(--color-primary) border-(--color-primary) text-white" : "bg-white border-slate-200 text-slate-600 hover:border-(--color-primary) hover:text-(--color-primary)"}`}
+                                            >
+
+                                                <span className={`text-[9px] font-medium ${isSelected ? "text-white/75" : "text-slate-400"}`}>
+                                                    {item.day}
+                                                </span>
+
+                                                <span className="text-base font-semibold mt-0.5">
+                                                    {item.date}
+                                                </span>
+
+                                            </button>
+
+                                        );
+
+                                    })}
+
+                                </div>
+
+
+                                {/* DIVIDER */}
+                                <div className="border-t border-slate-100 my-4"></div>
+
+
+                                {/* TIME HEADER */}
+                                <div className="shrink-0 flex items-center justify-between mb-3">
+
+                                    <div>
+
+                                        <h2 className="text-sm sm:text-base font-semibold text-slate-800">
+                                            Select Time
+                                        </h2>
+
+                                        <p className="text-[10px] sm:text-xs text-slate-400 mt-0.5">
+                                            Available time slots for the selected date
+                                        </p>
+
+                                    </div>
+
+                                    {selectTime && (
+                                        <span className="text-[10px] font-medium text-(--color-primary) bg-(--color-primary)/10 px-2 py-1 rounded-full">
+                                            {selectTime}
+                                        </span>
+                                    )}
+
+                                </div>
+
+
+                                {/* TIME SLOTS */}
+                                <div className="flex-1 min-h-0">
+
+                                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-2">
+
+                                        {timeSlots.map((item, index) => {
+
+                                            const isBooked = bookedSlots.includes(item);
+                                            const isSelected = selectTime === item;
+
+                                            return (
+
+                                                <button
+                                                    key={index}
+                                                    disabled={isBooked}
+                                                    onClick={() => {
+                                                        if (isBooked) return;
+                                                        setSelectTime(item);
+                                                    }}
+                                                    className={`h-10 sm:h-11 rounded-lg border text-[10px] sm:text-xs font-medium transition cursor-pointer flex items-center justify-center ${isBooked ? "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed" : isSelected ? "bg-(--color-primary) border-(--color-primary) text-white" : "bg-white border-slate-200 text-slate-600 hover:border-(--color-primary) hover:text-(--color-primary)"}`}
+                                                >
+                                                    {item}
+                                                </button>
+
+                                            );
+
+                                        })}
+
+                                    </div>
+
+                                </div>
+
+
+                                {/* ACTION AREA */}
+                                <div className="shrink-0 pt-4 mt-3 border-t border-slate-100">
+
+                                    {selectTime ? (
+
+                                        <button
+                                            onClick={checkPopup}
+                                            className="w-full h-11 rounded-xl bg-(--color-primary) hover:bg-(--color-primary)/90 text-white text-sm font-medium transition cursor-pointer flex items-center justify-center gap-2"
+                                        >
+                                            <i className="bi bi-calendar2-check"></i>
+                                            Confirm New Appointment Time
+                                        </button>
+
+                                    ) : (
+
+                                        <div className="h-11 rounded-xl bg-slate-50 border border-slate-100 text-slate-400 text-xs sm:text-sm flex items-center justify-center">
+                                            Select a time slot to continue
+                                        </div>
+
+                                    )}
+
+                                </div>
+
                             </div>
+
                         </div>
 
                     </div>
-                }
+
+                </main>
+
+
+                {/* ================= CONFIRMATION MODAL ================= */}
+                {popup && (
+
+                    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
+
+                        <div className="w-full max-w-sm bg-white rounded-2xl border border-slate-200 p-5 sm:p-6">
+
+                            <div className="flex justify-center">
+
+                                <div className="w-12 h-12 rounded-xl bg-(--color-primary)/10 text-(--color-primary) flex items-center justify-center">
+                                    <i className="bi bi-calendar2-check text-xl"></i>
+                                </div>
+
+                            </div>
+
+
+                            <div className="text-center mt-4">
+
+                                <h2 className="text-base sm:text-lg font-semibold text-slate-800">
+                                    Confirm Reschedule
+                                </h2>
+
+                                <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-5">
+                                    Please confirm the new date and time for your appointment.
+                                </p>
+
+                            </div>
+
+
+                            {/* SUMMARY */}
+                            <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 mt-5">
+
+                                <div className="flex items-center justify-between gap-3">
+
+                                    <span className="text-xs text-slate-400">
+                                        Date
+                                    </span>
+
+                                    <span className="text-xs font-semibold text-slate-700 text-right">
+                                        {selectDate?.day}, {selectDate?.fulldate}
+                                    </span>
+
+                                </div>
+
+                                <div className="flex items-center justify-between gap-3 mt-3">
+
+                                    <span className="text-xs text-slate-400">
+                                        Time
+                                    </span>
+
+                                    <span className="text-xs font-semibold text-slate-700">
+                                        {selectTime}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            {/* MODAL ACTIONS */}
+                            <div className="grid grid-cols-2 gap-2 mt-5">
+
+                                <button
+                                    onClick={() => setPopup(false)}
+                                    className="h-10 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs sm:text-sm font-medium transition cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    onClick={handleReschedule}
+                                    disabled={loading}
+                                    className="h-10 rounded-lg bg-(--color-primary) hover:bg-(--color-primary)/90 text-white text-xs sm:text-sm font-medium transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                                >
+                                    {loading ? "Rescheduling..." : "Confirm"}
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                )}
+
             </section>
 
         </>

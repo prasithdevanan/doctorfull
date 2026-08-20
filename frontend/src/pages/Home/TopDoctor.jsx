@@ -3,7 +3,7 @@ import DoctorList from '../../component/DoctorList';
 import { useDoctors } from '../../component/DataFeach';
 
 function TopDoctor() {
-    const doctorList = useDoctors();
+    const { doctorList, loading } = useDoctors();
     const visibleDoctor = doctorList.slice(0, 5);
     return (
         <>
@@ -15,7 +15,7 @@ function TopDoctor() {
                     <p className='font-light text-center'>Simply browse through our extensive list of trusted doctors.</p>
                 </div>
                 <div className='mt-5 mb-4 overflow-hidden w-full flex justify-center items-center'>
-                <DoctorList selectSpeciality={visibleDoctor} isHome={true} />
+                    <DoctorList selectSpeciality={visibleDoctor} isHome={true} loading= {loading} />
                 </div>
             </section>
 

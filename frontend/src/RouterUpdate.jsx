@@ -19,6 +19,7 @@ import Reschedule from "./pages/Reschedule";
 import PaymentSuccess from "./pages/paymentStatus";
 import Notification from "./Notification/Notification";
 import GoogleSuccess from "./pages/Login/Sign/googleSuccess";
+import ViewAppointment from "./pages/ViewAppointment";
 
 
 export const router = createBrowserRouter([
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
             {
                 path: "/appointment",
                 element: <Appointment />,
+            },
+            {
+                path: "/appointment/:id",
+                element: <ViewAppointment />,
             },
             {
                 path: "/appointment/:id/reschedule",

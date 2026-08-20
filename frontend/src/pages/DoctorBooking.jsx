@@ -387,7 +387,7 @@ function DoctorBooking() {
 
                                     ) : (
 
-                                        <div className="min-h-0 flex-1 overflow-y-auto pr-1 no-scrollbar">
+                                        <div className="min-h-0 flex-1 pr-1 no-scrollbar">
 
                                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
                                                 {timeSlots.map((item, index) => {

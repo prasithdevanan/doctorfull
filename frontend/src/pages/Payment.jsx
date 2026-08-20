@@ -43,8 +43,13 @@ function Payment() {
   const patientName = location.state ? location?.state?.patientName : "Name not found";
   const patientPhone = location.state ? location?.state?.patientPhone : "Phone not found";
   const patientEmail = location.state ? location?.state?.patientEmail : "Email not found";
+  const appointmentId = location.state ? location?.state?.appointmentId : false;
   const [appCharge, setAppCharge] = useState(200);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("appointmentId", appointmentId);
+  }, []);
 
   ///check the active button
   const [paymentMethod, setPaymentMethod] = useState(true);
@@ -70,6 +75,8 @@ function Payment() {
     }
 
     const order_id = res.data.order.id;
+    const appointmentId = localStorage.getItem("appointmentId");
+    console.log(appointmentId);
 
 
     const options = {
@@ -81,8 +88,9 @@ function Payment() {
       "order_id": order_id, // This is the order_id created in the backend
       "handler": async function (response) {
         try {
-          const body = { ...response }
+          const body = { ...response, appointmentId };
           const validation = await axios.post(`${BackendUrl}/api/admin/order/verify`, body, { headers: "Content-Type: application/json" });
+          console.log(validation);
           if (validation.data.success) {
             navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, { state: { body, amount: amount, orderId: order_id, currency: currency, name: patientName, email: patientEmail, phone: patientPhone, fromBooking: true } });
           }
@@ -90,6 +98,7 @@ function Payment() {
           console.log(error);
         } finally {
           setLoading(false);
+          localStorage.removeItem("appointmentId");
         }
       },
       "prefill": {
