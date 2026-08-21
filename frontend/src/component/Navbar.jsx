@@ -103,6 +103,7 @@ function Navbar() {
 
     const logout = () => {
         localStorage.removeItem('userId');
+        localStorage.clear();
         setToken(false);
         setUserId(null);
         setUser(null);
