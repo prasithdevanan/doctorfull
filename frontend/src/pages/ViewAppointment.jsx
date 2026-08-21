@@ -87,350 +87,44 @@ function AppointmentView() {
     const handleDownload = async () => {
         if (!pdfRef.current) return;
 
-        let pdfContainer = null;
+        let container;
 
         try {
-            const original = pdfRef.current;
-            const clone = original.cloneNode(true);
-
-            // ==========================================
-            // PDF SAFE STYLE
-            // ==========================================
-
-            const style = document.createElement("style");
-
-            style.textContent = `
-            * {
-                box-sizing: border-box !important;
-                color-scheme: light !important;
-            }
-
-            .pdf-safe-root {
-                background: #ffffff !important;
-                color: #0f172a !important;
-                font-family: Arial, Helvetica, sans-serif !important;
-                overflow: visible !important;
-            }
-
-            .pdf-safe-root * {
-                font-family: Arial, Helvetica, sans-serif !important;
-            }
-
-            /* =========================
-               BACKGROUNDS
-            ========================= */
-
-            .pdf-safe-root .bg-white {
-                background-color: #ffffff !important;
-            }
-
-            .pdf-safe-root .bg-slate-50 {
-                background-color: #f8fafc !important;
-            }
-
-            .pdf-safe-root .bg-slate-900 {
-                background-color: #0f172a !important;
-            }
-
-            .pdf-safe-root .bg-emerald-50 {
-                background-color: #ecfdf5 !important;
-            }
-
-            .pdf-safe-root .bg-emerald-100 {
-                background-color: #d1fae5 !important;
-            }
-
-            .pdf-safe-root .bg-blue-50 {
-                background-color: #eff6ff !important;
-            }
-
-            .pdf-safe-root .bg-blue-100 {
-                background-color: #dbeafe !important;
-            }
-
-            .pdf-safe-root .bg-violet-50 {
-                background-color: #f5f3ff !important;
-            }
-
-            .pdf-safe-root .bg-amber-50 {
-                background-color: #fffbeb !important;
-            }
-
-            .pdf-safe-root .bg-red-50 {
-                background-color: #fef2f2 !important;
-            }
-
-            /* =========================
-               TEXT
-            ========================= */
-
-            .pdf-safe-root .text-white {
-                color: #ffffff !important;
-            }
-
-            .pdf-safe-root .text-slate-300 {
-                color: #cbd5e1 !important;
-            }
-
-            .pdf-safe-root .text-slate-400 {
-                color: #94a3b8 !important;
-            }
-
-            .pdf-safe-root .text-slate-500 {
-                color: #64748b !important;
-            }
-
-            .pdf-safe-root .text-slate-600 {
-                color: #475569 !important;
-            }
-
-            .pdf-safe-root .text-slate-700 {
-                color: #334155 !important;
-            }
-
-            .pdf-safe-root .text-slate-800 {
-                color: #1e293b !important;
-            }
-
-            .pdf-safe-root .text-slate-900 {
-                color: #0f172a !important;
-            }
-
-            .pdf-safe-root .text-emerald-400 {
-                color: #34d399 !important;
-            }
-
-            .pdf-safe-root .text-emerald-500 {
-                color: #10b981 !important;
-            }
-
-            .pdf-safe-root .text-emerald-600 {
-                color: #059669 !important;
-            }
-
-            .pdf-safe-root .text-emerald-700 {
-                color: #047857 !important;
-            }
-
-            .pdf-safe-root .text-blue-600 {
-                color: #2563eb !important;
-            }
-
-            .pdf-safe-root .text-violet-600 {
-                color: #7c3aed !important;
-            }
-
-            .pdf-safe-root .text-amber-600 {
-                color: #d97706 !important;
-            }
-
-            .pdf-safe-root .text-amber-700 {
-                color: #b45309 !important;
-            }
-
-            .pdf-safe-root .text-red-500 {
-                color: #ef4444 !important;
-            }
-
-            .pdf-safe-root .text-red-600 {
-                color: #dc2626 !important;
-            }
-
-            /* =========================
-               BORDERS
-            ========================= */
-
-            .pdf-safe-root .border-slate-100 {
-                border-color: #f1f5f9 !important;
-            }
-
-            .pdf-safe-root .border-slate-200 {
-                border-color: #e2e8f0 !important;
-            }
-
-            .pdf-safe-root .border-emerald-200 {
-                border-color: #a7f3d0 !important;
-            }
-
-            .pdf-safe-root .border-blue-200 {
-                border-color: #bfdbfe !important;
-            }
-
-            /* =========================
-               HEADER
-            ========================= */
-
-            .pdf-safe-root [data-pdf-header] {
-                background-color: #10b981 !important;
-                background-image: linear-gradient(
-                    135deg,
-                    #10b981,
-                    #059669
-                ) !important;
-            }
-
-            /* =========================
-               HEADER DECORATION
-            ========================= */
-
-            .pdf-safe-root .bg-white\\/10 {
-                background-color: rgba(
-                    255,
-                    255,
-                    255,
-                    0.10
-                ) !important;
-            }
-
-            .pdf-safe-root .bg-white\\/5 {
-                background-color: rgba(
-                    255,
-                    255,
-                    255,
-                    0.05
-                ) !important;
-            }
-
-            /* =========================
-               REMOVE SHADOWS
-            ========================= */
-
-            .pdf-safe-root * {
-                box-shadow: none !important;
-                text-shadow: none !important;
-            }
-
-            /* =========================
-               REMOVE ANIMATION
-            ========================= */
-
-            .pdf-safe-root *,
-            .pdf-safe-root *::before,
-            .pdf-safe-root *::after {
-                transition: none !important;
-                animation: none !important;
-            }
-
-            /* =========================
-               HIDE WEBSITE ELEMENTS
-            ========================= */
-
-            .pdf-hide {
-                display: none !important;
-            }
-        `;
-
-            // ==========================================
-            // SAFE ROOT
-            // ==========================================
-
-            clone.classList.add("pdf-safe-root");
-
-            // ==========================================
-            // HIDE BUTTONS
-            // ==========================================
-
-            clone.querySelectorAll("button").forEach((button) => {
-                button.classList.add("pdf-hide");
-            });
-
-            // Hide anything explicitly marked
-            clone.querySelectorAll("[data-pdf-hide]").forEach((element) => {
-                element.classList.add("pdf-hide");
-            });
-
-            // ==========================================
-            // REMOVE TAILWIND CSS VARIABLES
-            // ==========================================
-
-            clone.querySelectorAll("*").forEach((element) => {
-                element.style.setProperty(
-                    "color-scheme",
-                    "light",
-                    "important"
-                );
-
-                element.style.removeProperty("--tw-ring-color");
-                element.style.removeProperty("--tw-shadow");
-                element.style.removeProperty("--tw-shadow-colored");
-                element.style.removeProperty("--tw-ring-shadow");
-                element.style.removeProperty("--tw-inset-shadow");
-                element.style.removeProperty("--tw-inset-ring-shadow");
-                element.style.removeProperty("--tw-ring-offset-shadow");
-            });
-
-            // ==========================================
-            // PDF PAGE
-            // ==========================================
-
-            const page = document.createElement("div");
-
-            page.style.width = "718px";
-            page.style.backgroundColor = "#ffffff";
-            page.style.display = "flex";
-            page.style.justifyContent = "center";
-            page.style.alignItems = "flex-start";
-            page.style.boxSizing = "border-box";
-            page.style.margin = "0 auto";
-            page.style.padding = "0";
-            page.style.overflow = "visible";
-
-            // ==========================================
-            // PDF CONTENT WIDTH
-            // ==========================================
-
-            clone.style.width = "620px";
-            clone.style.maxWidth = "620px";
+            const clone = pdfRef.current.cloneNode(true);
+
+            // Fixed desktop width for PDF
+            clone.style.width = "700px";
+            clone.style.minWidth = "700px";
+            clone.style.maxWidth = "700px";
             clone.style.margin = "0 auto";
             clone.style.backgroundColor = "#ffffff";
-            clone.style.color = "#0f172a";
-            clone.style.overflow = "visible";
 
-            // ==========================================
-            // PDF CONTAINER
-            // ==========================================
+            // Hide buttons from PDF
+            clone.querySelectorAll("button").forEach((el) => {
+                el.style.display = "none";
+            });
 
-            pdfContainer = document.createElement("div");
+            // Create hidden container
+            container = document.createElement("div");
 
-            pdfContainer.style.position = "fixed";
-            pdfContainer.style.left = "-100000px";
-            pdfContainer.style.top = "0";
-            pdfContainer.style.width = "718px";
-            pdfContainer.style.backgroundColor = "#ffffff";
-            pdfContainer.style.zIndex = "-999999";
-            pdfContainer.style.color = "#0f172a";
-            pdfContainer.style.overflow = "visible";
+            container.style.position = "fixed";
+            container.style.left = "-10000px";
+            container.style.top = "0";
+            container.style.width = "700px";
+            container.style.backgroundColor = "#ffffff";
 
-            // ==========================================
-            // APPEND
-            // ==========================================
+            container.appendChild(clone);
+            document.body.appendChild(container);
 
-            page.appendChild(clone);
-
-            pdfContainer.appendChild(style);
-            pdfContainer.appendChild(page);
-
-            document.body.appendChild(pdfContainer);
-
-            // ==========================================
-            // WAIT FOR FONTS
-            // ==========================================
-
+            // Wait for fonts
             if (document.fonts?.ready) {
                 await document.fonts.ready;
             }
 
-            // ==========================================
-            // WAIT FOR IMAGES
-            // ==========================================
-
-            const images = clone.querySelectorAll("img");
-
+            // Wait for images
             await Promise.all(
-                [...images].map((img) => {
-                    if (img.complete) {
-                        return Promise.resolve();
-                    }
+                [...clone.querySelectorAll("img")].map((img) => {
+                    if (img.complete) return Promise.resolve();
 
                     return new Promise((resolve) => {
                         img.onload = resolve;
@@ -439,47 +133,35 @@ function AppointmentView() {
                 })
             );
 
-            // ==========================================
-            // SMALL RENDER DELAY
-            // ==========================================
-
+            // Give browser time to calculate layout
             await new Promise((resolve) => {
-                setTimeout(resolve, 500);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(resolve);
+                });
             });
 
-            // ==========================================
-            // GENERATE PDF
-            // ==========================================
-
+            // Generate PDF
             await html2pdf()
                 .set({
-                    margin: [10, 10, 10, 10],
+                    margin: 10,
 
-                    filename: `appointment_${appointment?._id || "details"}.pdf`,
+                    filename: `appointment_${appointment?._id || "details"
+                        }.pdf`,
 
                     image: {
                         type: "jpeg",
-                        quality: 0.98,
+                        quality: 0.95,
                     },
 
                     html2canvas: {
                         scale: 2,
                         useCORS: true,
-                        allowTaint: false,
                         backgroundColor: "#ffffff",
-                        logging: false,
 
-                        onclone: (documentClone) => {
-                            documentClone
-                                .querySelectorAll("*")
-                                .forEach((element) => {
-                                    element.style.setProperty(
-                                        "color-scheme",
-                                        "light",
-                                        "important"
-                                    );
-                                });
-                        },
+                        // Render using desktop viewport
+                        windowWidth: 1440,
+
+                        logging: false,
                     },
 
                     jsPDF: {
@@ -487,28 +169,24 @@ function AppointmentView() {
                         format: "a4",
                         orientation: "portrait",
                     },
+
+                    pagebreak: {
+                        mode: ["css", "legacy"],
+                    },
                 })
-                .from(page)
+                .from(clone)
                 .save();
 
         } catch (error) {
-            console.error(
-                "PDF generation failed:",
-                error
-            );
+            console.error("PDF generation failed:", error);
 
             alert(
                 "Unable to generate the appointment PDF. Please try again."
             );
 
         } finally {
-            if (
-                pdfContainer &&
-                pdfContainer.parentNode
-            ) {
-                pdfContainer.parentNode.removeChild(
-                    pdfContainer
-                );
+            if (container) {
+                container.remove();
             }
         }
     };

@@ -146,12 +146,12 @@ function Payment() {
 
   return (
     <>
-      <div className="h-[calc(100vh-72px)] overflow-hidden bg-gradient-to-br from-violet-50 via-white to-blue-50">
+      <div className="h-[calc(100vh-72px)] bg-gradient-to-br from-violet-50 via-white to-blue-50">
         <div className="mx-auto h-full w-full max-w-7xl px-3 py-3 sm:px-4 md:px-5 lg:px-6">
           <div className="grid h-full min-h-0 grid-cols-1 gap-3 lg:grid-cols-[0.85fr_1.15fr] lg:gap-4">
 
             {/* ================= LEFT : SUMMARY ================= */}
-            <section className="min-h-0 overflow-y-auto rounded-2xl border border-white/70 bg-white/90 p-4 shadow-sm backdrop-blur-xl no-scrollbar sm:p-5 lg:overflow-hidden">
+            <section className="rounded-2xl border border-white/70 bg-white/90 p-4 shadow-sm backdrop-blur-xl no-scrollbar sm:p-5 lg:overflow-auto">
 
               <div className="flex h-full min-h-0 flex-col">
 
@@ -262,7 +262,7 @@ function Payment() {
 
 
             {/* ================= RIGHT : PAYMENT ================= */}
-            <section className="min-h-0 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-sm no-scrollbar sm:p-5 md:p-6 lg:overflow-hidden">
+            <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm no-scrollbar sm:p-5 md:p-6 lg:overflow-auto">
 
               <div className="flex h-full min-h-0 flex-col">
 

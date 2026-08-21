@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from './Home/Header';
 import Speciality from './Home/Speciality';
 import TopDoctor from './Home/TopDoctor';
@@ -6,9 +6,9 @@ import TrustCard from './Home/TrustCard';
 import { AppContext } from '../component/CreateContext';
 import { toast } from 'react-toastify';
 import Footer from './Home/Footer';
-import axios from 'axios';
 import Choose from './Home/Choose';
 import Flow from './Home/Flow';
+
 
 
 
