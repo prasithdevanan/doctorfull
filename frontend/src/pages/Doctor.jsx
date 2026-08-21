@@ -15,6 +15,7 @@ function Doctor() {
   const [selectSpeciality, setSelectSpeciality] = useState(
     location.state ? location.state.speciality : null
   );
+  const sliceCount = window.innerWidth >= 1024 ? 5 : 4;
 
   const filterDoctor = selectSpeciality
     ? doctorList.filter((doc) => doc.speciality === selectSpeciality.name)
@@ -22,7 +23,7 @@ function Doctor() {
 
   const visibleDoctor = show
     ? filterDoctor
-    : filterDoctor.slice(0, 5);
+    : filterDoctor.slice(0, sliceCount);
 
   const btnName = show ? 'Show Less' : 'Show More';
 

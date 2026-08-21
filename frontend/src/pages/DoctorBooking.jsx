@@ -371,7 +371,7 @@ function DoctorBooking() {
 
                                     {selectedIndex === null ? (
 
-                                        <div className="flex min-h-[180px] flex-1 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50">
+                                        <div className="flex min-h-[100px] flex-1 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50">
 
                                             <div className="px-4 text-center">
 
@@ -387,7 +387,7 @@ function DoctorBooking() {
 
                                     ) : (
 
-                                        <div className="min-h-0 flex-1 pr-1 no-scrollbar">
+                                        <div className="flex-1 pr-1 no-scrollbar h-fit overflow-y-auto">
 
                                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
                                                 {timeSlots.map((item, index) => {

@@ -46,299 +46,80 @@ function PaymentSuccess() {
     const handleDownload = async () => {
         if (!pdfRef.current) return;
 
-        let pdfContainer = null;
+        let container;
 
         try {
-            const original = pdfRef.current;
-            const clone = original.cloneNode(true);
+            const clone = pdfRef.current.cloneNode(true);
 
-            // ==========================================
-            // PDF SAFE CSS
-            // ==========================================
+            // Fixed desktop width for PDF
+            clone.style.width = "700px";
+            clone.style.minWidth = "700px";
+            clone.style.maxWidth = "700px";
+            clone.style.margin = "0 auto";
+            clone.style.backgroundColor = "#ffffff";
 
-            const style = document.createElement("style");
-
-            style.textContent = `
-            /* Safe colors for html2canvas */
-
-            .pdf-safe-root {
-                background: rgb(255,255,255) !important;
-                color: rgb(15,23,42) !important;
-            }
-
-            .pdf-safe-root .bg-white {
-                background-color: rgb(255,255,255) !important;
-            }
-
-            .pdf-safe-root .bg-slate-50 {
-                background-color: rgb(248,250,252) !important;
-            }
-
-            .pdf-safe-root .bg-slate-900 {
-                background-color: rgb(15,23,42) !important;
-            }
-
-            .pdf-safe-root .bg-blue-50 {
-                background-color: rgb(239,246,255) !important;
-            }
-
-            .pdf-safe-root .bg-blue-100 {
-                background-color: rgb(219,234,254) !important;
-            }
-
-            .pdf-safe-root .bg-emerald-50 {
-                background-color: rgb(236,253,245) !important;
-            }
-
-            .pdf-safe-root .bg-emerald-500 {
-                background-color: rgb(16,185,129) !important;
-            }
-
-            .pdf-safe-root .bg-violet-50 {
-                background-color: rgb(245,243,255) !important;
-            }
-
-            .pdf-safe-root .bg-amber-50 {
-                background-color: rgb(255,251,235) !important;
-            }
-
-            /* Text */
-
-            .pdf-safe-root .text-white {
-                color: rgb(255,255,255) !important;
-            }
-
-            .pdf-safe-root .text-slate-300 {
-                color: rgb(203,213,225) !important;
-            }
-
-            .pdf-safe-root .text-slate-400 {
-                color: rgb(148,163,184) !important;
-            }
-
-            .pdf-safe-root .text-slate-500 {
-                color: rgb(100,116,139) !important;
-            }
-
-            .pdf-safe-root .text-slate-600 {
-                color: rgb(71,85,105) !important;
-            }
-
-            .pdf-safe-root .text-slate-700 {
-                color: rgb(51,65,85) !important;
-            }
-
-            .pdf-safe-root .text-slate-800 {
-                color: rgb(30,41,59) !important;
-            }
-
-            .pdf-safe-root .text-slate-900 {
-                color: rgb(15,23,42) !important;
-            }
-
-            .pdf-safe-root .text-emerald-400 {
-                color: rgb(52,211,153) !important;
-            }
-
-            .pdf-safe-root .text-emerald-500 {
-                color: rgb(16,185,129) !important;
-            }
-
-            .pdf-safe-root .text-emerald-600 {
-                color: rgb(5,150,105) !important;
-            }
-
-            .pdf-safe-root .text-emerald-700 {
-                color: rgb(4,120,87) !important;
-            }
-
-            .pdf-safe-root .text-emerald-50 {
-                color: rgb(236,253,245) !important;
-            }
-
-            .pdf-safe-root .text-blue-600 {
-                color: rgb(37,99,235) !important;
-            }
-
-            .pdf-safe-root .text-violet-600 {
-                color: rgb(124,58,237) !important;
-            }
-
-            .pdf-safe-root .text-amber-700 {
-                color: rgb(180,83,9) !important;
-            }
-
-            /* Borders */
-
-            .pdf-safe-root .border-slate-100 {
-                border-color: rgb(241,245,249) !important;
-            }
-
-            .pdf-safe-root .border-slate-200 {
-                border-color: rgb(226,232,240) !important;
-            }
-
-            .pdf-safe-root .border-emerald-200 {
-                border-color: rgb(167,243,208) !important;
-            }
-
-            .pdf-safe-root .divide-slate-100
-                > :not([hidden]) ~ :not([hidden]) {
-                border-color: rgb(241,245,249) !important;
-            }
-
-            /* Header */
-
-            .pdf-safe-root [data-pdf-header] {
-                background-color: rgb(16,185,129) !important;
-
-                background-image: linear-gradient(
-                    135deg,
-                    rgb(16,185,129),
-                    rgb(5,150,105)
-                ) !important;
-            }
-
-            /* Header circles */
-
-            .pdf-safe-root .bg-white\\/10 {
-                background-color: rgba(
-                    255,
-                    255,
-                    255,
-                    0.10
-                ) !important;
-            }
-
-            .pdf-safe-root .bg-white\\/5 {
-                background-color: rgba(
-                    255,
-                    255,
-                    255,
-                    0.05
-                ) !important;
-            }
-
-            /* Shadows */
-
-            .pdf-safe-root .shadow-lg {
-                box-shadow:
-                    0 10px 15px -3px rgba(0,0,0,0.10),
-                    0 4px 6px -4px rgba(0,0,0,0.10) !important;
-            }
-
-            .pdf-safe-root [class*="shadow-"] {
-                box-shadow:
-                    0 20px 60px rgba(15,23,42,0.10) !important;
-            }
-
-            .pdf-safe-root .bg-emerald-500\\/15 {
-                background-color:
-                    rgba(16,185,129,0.15) !important;
-            }
-
-            /* --------------------------------------
-               HIDE WEBSITE BUTTONS FROM PDF
-            -------------------------------------- */
-
-            .pdf-hide {
-                display: none !important;
-            }
-        `;
-
-            // ==========================================
-            // ADD PDF CLASS
-            // ==========================================
-
-            clone.classList.add("pdf-safe-root");
-
-            // ==========================================
-            // HIDE BUTTONS
-            // ==========================================
-
-            const buttons = clone.querySelectorAll("button");
-
-            buttons.forEach((button) => {
-                button.classList.add("pdf-hide");
+            // Hide buttons from PDF
+            clone.querySelectorAll("button").forEach((el) => {
+                el.style.display = "none";
             });
 
-            // ==========================================
-            // CREATE A4 CONTENT WRAPPER
-            // This makes receipt centered
-            // ==========================================
+            // Create hidden container
+            container = document.createElement("div");
 
-            const page = document.createElement("div");
+            container.style.position = "fixed";
+            container.style.left = "-10000px";
+            container.style.top = "0";
+            container.style.width = "700px";
+            container.style.backgroundColor = "#ffffff";
 
-            page.style.width = "718px";
-            page.style.minHeight = "100px";
-            page.style.backgroundColor = "#ffffff";
-            page.style.display = "flex";
-            page.style.justifyContent = "center";
-            page.style.alignItems = "flex-start";
-            page.style.boxSizing = "border-box";
-            page.style.margin = "0 auto";
-            page.style.padding = "0";
+            container.appendChild(clone);
+            document.body.appendChild(container);
 
-            // ==========================================
-            // RECEIPT WIDTH
-            // ==========================================
-
-            clone.style.width = "512px";
-            clone.style.maxWidth = "512px";
-            clone.style.margin = "0 auto";
-
-            // ==========================================
-            // PDF CONTAINER
-            // ==========================================
-
-            pdfContainer = document.createElement("div");
-
-            pdfContainer.style.position = "fixed";
-            pdfContainer.style.left = "-100000px";
-            pdfContainer.style.top = "0";
-            pdfContainer.style.width = "718px";
-            pdfContainer.style.backgroundColor = "#ffffff";
-            pdfContainer.style.zIndex = "-999999";
-
-            page.appendChild(clone);
-
-            pdfContainer.appendChild(style);
-            pdfContainer.appendChild(page);
-
-            document.body.appendChild(pdfContainer);
-
-            // ==========================================
-            // WAIT FOR FONTS
-            // ==========================================
-
+            // Wait for fonts
             if (document.fonts?.ready) {
                 await document.fonts.ready;
             }
 
-            await new Promise((resolve) =>
-                setTimeout(resolve, 200)
+            // Wait for images
+            await Promise.all(
+                [...clone.querySelectorAll("img")].map((img) => {
+                    if (img.complete) return Promise.resolve();
+
+                    return new Promise((resolve) => {
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                    });
+                })
             );
 
-            // ==========================================
-            // GENERATE PDF
-            // ==========================================
+            // Give browser time to calculate layout
+            await new Promise((resolve) => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(resolve);
+                });
+            });
 
+            // Generate PDF
             await html2pdf()
                 .set({
-                    margin: [10, 10, 10, 10],
+                    margin: 10,
 
-                    filename: "payment_receipt.pdf",
+                    filename: `appointment_${appointment?._id || "details"
+                        }.pdf`,
 
                     image: {
                         type: "jpeg",
-                        quality: 0.98,
+                        quality: 0.95,
                     },
 
                     html2canvas: {
                         scale: 2,
                         useCORS: true,
-                        allowTaint: false,
                         backgroundColor: "#ffffff",
+
+                        // Render using desktop viewport
+                        windowWidth: 1440,
+
                         logging: false,
                     },
 
@@ -347,23 +128,24 @@ function PaymentSuccess() {
                         format: "a4",
                         orientation: "portrait",
                     },
+
+                    pagebreak: {
+                        mode: ["css", "legacy"],
+                    },
                 })
-                .from(page)
+                .from(clone)
                 .save();
 
         } catch (error) {
-            console.error(
-                "PDF generation failed:",
-                error
+            console.error("PDF generation failed:", error);
+
+            alert(
+                "Unable to generate the appointment PDF. Please try again."
             );
+
         } finally {
-            if (
-                pdfContainer &&
-                pdfContainer.parentNode
-            ) {
-                pdfContainer.parentNode.removeChild(
-                    pdfContainer
-                );
+            if (container) {
+                container.remove();
             }
         }
     };

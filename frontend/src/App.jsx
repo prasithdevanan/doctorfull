@@ -4,6 +4,7 @@ import Navbar from '../src/component/Navbar';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToUp from './component/ScrollToUp';
+import AppointmentBtn from './component/AppointmentBtn';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       <ScrollToUp />
       <Outlet />
       <ToastContainer />
+      <AppointmentBtn />
     </>
   )
 }
