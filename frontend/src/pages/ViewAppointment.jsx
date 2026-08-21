@@ -90,41 +90,72 @@ function AppointmentView() {
         let container;
 
         try {
+            // Clone the content
             const clone = pdfRef.current.cloneNode(true);
 
-            // Fixed desktop width for PDF
-            clone.style.width = "700px";
-            clone.style.minWidth = "700px";
-            clone.style.maxWidth = "700px";
-            clone.style.margin = "0 auto";
-            clone.style.backgroundColor = "#ffffff";
+            // ---------------------------------------
+            // Create a fixed desktop-size PDF wrapper
+            // ---------------------------------------
+            container = document.createElement("div");
 
-            // Hide buttons from PDF
+            Object.assign(container.style, {
+                position: "absolute",
+                left: "-100000px",
+                top: "0",
+                width: "700px",
+                minWidth: "700px",
+                maxWidth: "700px",
+                padding: "0",
+                margin: "0",
+                background: "#ffffff",
+                overflow: "visible",
+                display: "block",
+            });
+
+            // ---------------------------------------
+            // Force the cloned content to desktop size
+            // ---------------------------------------
+            Object.assign(clone.style, {
+                width: "700px",
+                minWidth: "700px",
+                maxWidth: "700px",
+                margin: "0",
+                padding: "0",
+                backgroundColor: "#ffffff",
+                boxSizing: "border-box",
+                display: "block",
+            });
+
+            // Hide buttons
             clone.querySelectorAll("button").forEach((el) => {
                 el.style.display = "none";
             });
 
-            // Create hidden container
-            container = document.createElement("div");
-
-            container.style.position = "fixed";
-            container.style.left = "-10000px";
-            container.style.top = "0";
-            container.style.width = "700px";
-            container.style.backgroundColor = "#ffffff";
+            // Prevent mobile responsive styles from shrinking things
+            clone.querySelectorAll("*").forEach((el) => {
+                el.style.boxSizing = "border-box";
+            });
 
             container.appendChild(clone);
             document.body.appendChild(container);
 
+            // ---------------------------------------
             // Wait for fonts
+            // ---------------------------------------
             if (document.fonts?.ready) {
                 await document.fonts.ready;
             }
 
+            // ---------------------------------------
             // Wait for images
+            // ---------------------------------------
+            const images = [...clone.querySelectorAll("img")];
+
             await Promise.all(
-                [...clone.querySelectorAll("img")].map((img) => {
-                    if (img.complete) return Promise.resolve();
+                images.map((img) => {
+                    if (img.complete && img.naturalWidth > 0) {
+                        return Promise.resolve();
+                    }
 
                     return new Promise((resolve) => {
                         img.onload = resolve;
@@ -133,17 +164,21 @@ function AppointmentView() {
                 })
             );
 
-            // Give browser time to calculate layout
+            // ---------------------------------------
+            // Wait for browser layout
+            // ---------------------------------------
             await new Promise((resolve) => {
                 requestAnimationFrame(() => {
                     requestAnimationFrame(resolve);
                 });
             });
 
+            // ---------------------------------------
             // Generate PDF
+            // ---------------------------------------
             await html2pdf()
                 .set({
-                    margin: 10,
+                    margin: [10, 10, 10, 10],
 
                     filename: `appointment_${appointment?._id || "details"
                         }.pdf`,
@@ -155,11 +190,20 @@ function AppointmentView() {
 
                     html2canvas: {
                         scale: 2,
+
                         useCORS: true,
+
+                        allowTaint: false,
+
                         backgroundColor: "#ffffff",
 
-                        // Render using desktop viewport
+                        // IMPORTANT:
+                        // Force html2canvas to use desktop dimensions
                         windowWidth: 1440,
+                        windowHeight: 2000,
+
+                        scrollX: 0,
+                        scrollY: 0,
 
                         logging: false,
                     },
@@ -168,6 +212,7 @@ function AppointmentView() {
                         unit: "mm",
                         format: "a4",
                         orientation: "portrait",
+                        compress: true,
                     },
 
                     pagebreak: {
