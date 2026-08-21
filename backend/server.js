@@ -41,6 +41,7 @@ initiSocket(io);
 // --- CORS ---
 const allowedOrigins = [
     "http://localhost:5173",
+    "http://192.168.0.138:5173",
     "https://doctor-metix.netlify.app",
     "https://doctor-metix-admin.netlify.app"
 ];
@@ -99,6 +100,6 @@ app.get("/home", (req, res) => {
     res.status(200).send("This is the home page");
 })
 
-server.listen(port, () => console.log(`listening on port ${port}`));
+server.listen(port, "0.0.0.0", () => console.log(`listening on port ${port}`));
 
 // app.listen(port, "0.0.0.0", () => console.log(`listening on port ${port}`));
