@@ -283,3 +283,18 @@ html {
 .Toastify__toast {
     animation: toastSlide 0.35s ease-out;
 }
+
+
+@media (max-width: 768px) {
+    .appointment {
+        width: 100%;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    .details {
+        display: block;
+    }
+}

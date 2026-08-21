@@ -46,31 +46,45 @@ function PaymentSuccess() {
     const handleDownload = async () => {
         if (!pdfRef.current) return;
 
-        let container;
+        let container = null;
 
         try {
             const clone = pdfRef.current.cloneNode(true);
 
-            // Fixed desktop width for PDF
-            clone.style.width = "700px";
-            clone.style.minWidth = "700px";
-            clone.style.maxWidth = "700px";
-            clone.style.margin = "0 auto";
-            clone.style.backgroundColor = "#ffffff";
-
-            // Hide buttons from PDF
-            clone.querySelectorAll("button").forEach((el) => {
-                el.style.display = "none";
+            // Hide buttons in PDF
+            clone.querySelectorAll("button").forEach((button) => {
+                button.style.display = "none";
             });
 
-            // Create hidden container
+            // Create PDF container
             container = document.createElement("div");
 
-            container.style.position = "fixed";
-            container.style.left = "-10000px";
-            container.style.top = "0";
-            container.style.width = "700px";
-            container.style.backgroundColor = "#ffffff";
+            Object.assign(container.style, {
+                position: "fixed",
+                left: "-10000px",
+                top: "0",
+                width: "794px",
+                minWidth: "794px",
+                background: "#ffffff",
+                padding: "0",
+                margin: "0",
+                zIndex: "-9999",
+            });
+
+            // Force receipt to desktop width
+            Object.assign(clone.style, {
+                width: "700px",
+                minWidth: "700px",
+                maxWidth: "700px",
+                margin: "0 auto",
+                backgroundColor: "#ffffff",
+                boxSizing: "border-box",
+            });
+
+            // Remove responsive problems
+            clone.querySelectorAll("*").forEach((element) => {
+                element.style.boxSizing = "border-box";
+            });
 
             container.appendChild(clone);
             document.body.appendChild(container);
@@ -81,9 +95,13 @@ function PaymentSuccess() {
             }
 
             // Wait for images
+            const images = [...clone.querySelectorAll("img")];
+
             await Promise.all(
-                [...clone.querySelectorAll("img")].map((img) => {
-                    if (img.complete) return Promise.resolve();
+                images.map((img) => {
+                    if (img.complete) {
+                        return Promise.resolve();
+                    }
 
                     return new Promise((resolve) => {
                         img.onload = resolve;
@@ -92,7 +110,7 @@ function PaymentSuccess() {
                 })
             );
 
-            // Give browser time to calculate layout
+            // Wait for layout
             await new Promise((resolve) => {
                 requestAnimationFrame(() => {
                     requestAnimationFrame(resolve);
@@ -104,7 +122,7 @@ function PaymentSuccess() {
                 .set({
                     margin: 10,
 
-                    filename: `appointment_${appointment?._id || "details"
+                    filename: `payment_receipt_${orderId || "receipt"
                         }.pdf`,
 
                     image: {
@@ -115,18 +133,20 @@ function PaymentSuccess() {
                     html2canvas: {
                         scale: 2,
                         useCORS: true,
+                        allowTaint: false,
                         backgroundColor: "#ffffff",
-
-                        // Render using desktop viewport
-                        windowWidth: 1440,
-
                         logging: false,
+
+                        windowWidth: 1440,
+                        scrollX: 0,
+                        scrollY: 0,
                     },
 
                     jsPDF: {
                         unit: "mm",
                         format: "a4",
                         orientation: "portrait",
+                        compress: true,
                     },
 
                     pagebreak: {
@@ -140,9 +160,8 @@ function PaymentSuccess() {
             console.error("PDF generation failed:", error);
 
             alert(
-                "Unable to generate the appointment PDF. Please try again."
+                "Unable to generate the payment receipt PDF. Please try again."
             );
-
         } finally {
             if (container) {
                 container.remove();
