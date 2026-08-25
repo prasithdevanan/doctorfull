@@ -11,7 +11,7 @@ function AppointmentBtn() {
 
     useEffect(() => {
         const user = localStorage.getItem('token') ? localStorage.getItem('token') === 'true' ? true : false : false;
-        console.log(user);
+    
         if (user) {
             setLoginStatus(user);
         }

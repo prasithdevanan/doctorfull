@@ -89,169 +89,400 @@ function DoctorList() {
   }, [doctorsList.length]);
 
   return (
-    <>
-      <section className="w-full h-[calc(100vh-60px)] bg-[#f6f8fc] px-4 sm:px-6 py-6 overflow-y-auto">
+    <section className="h-[calc(100vh-60px)] w-full overflow-y-auto bg-[#f8fafc]">
+
+      <div className="mx-auto w-full max-w-[1400px] px-4 py-5 sm:px-6 lg:px-8">
 
         {/* ================= HEADER ================= */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
+        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 
-          {/* Left */}
+          {/* TITLE */}
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-800">
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-blue-600">
+              Medical Directory
+            </p>
+
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
               Doctors
             </h1>
 
-            <p className="text-sm text-gray-500 mt-1">
-              Manage doctors & profiles
+            <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+              View and manage doctors registered in your system.
             </p>
           </div>
 
-          {/* Right */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+          {/* ACTIONS */}
+          <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
 
-            {/* Search */}
-            <div className="relative w-full sm:w-80">
+            {/* SEARCH */}
+            <div className="relative w-full sm:w-72">
 
-              <i className="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+              <i className="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400" />
 
               <input
                 type="text"
-                placeholder="Search doctor..."
+                placeholder="Search by name, email..."
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="w-full h-12 pl-11 pr-4 rounded-2xl border border-gray-200 bg-white text-sm outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition"
+                className="h-10 w-full rounded-lg border border-slate-200 bg-white pl-9 pr-3 text-xs text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
             </div>
 
-            {/* Add */}
+            {/* ADD DOCTOR */}
             {aToken && (
               <button
+                type="button"
                 onClick={() => navigate("/add-doctor")}
-                className="h-12 px-5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium shadow-md hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer"
+                className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-xs font-semibold text-white transition hover:bg-blue-700 active:scale-[0.98]"
               >
-                <i className="bi bi-plus-lg mr-2"></i>
+                <i className="bi bi-plus-lg" />
                 Add Doctor
               </button>
             )}
 
           </div>
+
         </div>
 
-        {/* ================= LOADING ================= */}
+
+        {/* ================= SUMMARY ================= */}
+        <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+
+          {/* TOTAL */}
+          <div className="border-l-2 border-blue-500 bg-white px-4 py-3 shadow-sm">
+            <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+              Total Doctors
+            </p>
+
+            <p className="mt-1 text-xl font-bold text-slate-800">
+              {doctorsList.length}
+            </p>
+          </div>
+
+
+          {/* ONLINE */}
+          <div className="border-l-2 border-emerald-500 bg-white px-4 py-3 shadow-sm">
+            <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+              Online
+            </p>
+
+            <p className="mt-1 text-xl font-bold text-slate-800">
+              {doctorsList.filter((item) => item.isOnline).length}
+            </p>
+          </div>
+
+
+          {/* OFFLINE */}
+          <div className="border-l-2 border-slate-300 bg-white px-4 py-3 shadow-sm">
+            <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+              Offline
+            </p>
+
+            <p className="mt-1 text-xl font-bold text-slate-800">
+              {doctorsList.filter((item) => !item.isOnline).length}
+            </p>
+          </div>
+
+
+          {/* DIRECTORY */}
+          <div className="border-l-2 border-indigo-500 bg-white px-4 py-3 shadow-sm">
+            <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+              Directory
+            </p>
+
+            <p className="mt-1 text-xl font-bold text-slate-800">
+              Active
+            </p>
+          </div>
+
+        </div>
+
+
+        {/* ================= CONTENT ================= */}
         {load ? (
 
-          <div className="h-[60vh] flex flex-col items-center justify-center">
+          <div className="flex min-h-[55vh] items-center justify-center">
 
-            <div className="w-12 h-12 rounded-full border-[3px] border-blue-500 border-t-transparent animate-spin"></div>
+            <div className="flex flex-col items-center gap-3">
 
-            <p className="text-sm text-gray-400 mt-4">
-              Loading doctors...
-            </p>
+              <div className="h-7 w-7 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600" />
+
+              <p className="text-xs text-slate-400">
+                Loading doctors...
+              </p>
+
+            </div>
 
           </div>
 
-        ) : (
+        ) : doctorsList.length > 0 ? (
 
-          <>
-            {/* ================= GRID ================= */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+          <div className="overflow-hidden border border-slate-200 bg-white shadow-sm">
+
+            {/* ================= TABLE HEADER ================= */}
+            <div className="hidden border-b border-slate-200 bg-slate-50 px-5 py-3 lg:grid lg:grid-cols-[2fr_1.4fr_1.2fr_1fr_auto] lg:items-center lg:gap-5">
+
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Doctor
+              </p>
+
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Specialization
+              </p>
+
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Contact
+              </p>
+
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Status
+              </p>
+
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Actions
+              </p>
+
+            </div>
+
+
+            {/* ================= DOCTOR LIST ================= */}
+            <div className="divide-y divide-slate-100">
 
               {doctorsList.map((item, index) => (
 
-                <div
-                  key={index}
-                  className="group relative overflow-hidden bg-white rounded-3xl border border-gray-100 p-5 shadow-sm transition duration-300"
-                >
+                <div key={index} className="px-4 py-4 transition hover:bg-slate-50 sm:px-5">
 
-                  {/* Glow Effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-blue-50/40 to-indigo-50/40 pointer-events-none"></div>
+                  {/* ================= DESKTOP ================= */}
+                  <div className="hidden lg:grid lg:grid-cols-[2fr_1.4fr_1.2fr_1fr_auto] lg:items-center lg:gap-5">
 
-                  <div className="relative flex flex-col sm:flex-row gap-5">
+                    {/* DOCTOR */}
+                    <div className="flex min-w-0 items-center gap-3">
 
-                    {/* IMAGE */}
-                    <div className="relative">
+                      <div className="relative shrink-0">
 
-                      <img
-                        src={item.image}
-                        alt="doctor"
-                        className="w-full sm:w-28 h-28 rounded-2xl object-cover border border-gray-100"
-                      />
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="h-11 w-11 rounded-full border border-slate-200 bg-slate-100 object-cover"
+                        />
 
-                      {/* Online Badge */}
-                      <div className='flex justify-center items-center mt-4 gap-2.5 relative'>
-                        <span className={`${item.isOnline ? "bg-green-500" : "bg-gray-300"} w-4 h-4 rounded-full border-2 border-white`}></span>
-                        <span className={`${item.isOnline ? "bg-green-500" : "bg-gray-300"} absolute left-5 ${item.isOnline && "animate-ping"} w-4 h-4 rounded-full border-2 border-white`}></span>
-                        <span>{item.isOnline ? "Online" : "Offline"}</span>
+                        <span className={`absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white ${item.isOnline ? "bg-emerald-500" : "bg-slate-300"}`} />
+
+                      </div>
+
+
+                      <div className="min-w-0">
+
+                        <h2 className="truncate text-sm font-semibold text-slate-800">
+                          {item.name}
+                        </h2>
+
+                        <p className="mt-0.5 truncate text-[11px] text-slate-400">
+                          {item.email}
+                        </p>
+
                       </div>
 
                     </div>
 
-                    {/* INFO */}
-                    <div className="flex-1">
 
-                      {/* Top */}
-                      <div className="flex items-start justify-between gap-3">
+                    {/* SPECIALIZATION */}
+                    <div>
 
-                        <div>
+                      <p className="text-xs font-medium text-slate-700">
+                        {item.speciality || "General"}
+                      </p>
 
-                          <h2 className="text-xl font-semibold text-gray-800">
-                            {item.name}
-                          </h2>
+                      <p className="mt-0.5 text-[10px] text-slate-400">
+                        {item.degree || "Medical Doctor"}
+                      </p>
 
-                          <p className="text-sm text-gray-400 mt-1 break-all">
-                            {item.email}
-                          </p>
+                    </div>
+
+
+                    {/* CONTACT */}
+                    <div className="min-w-0">
+
+                      <p className="truncate text-xs text-slate-600">
+                        {item.mobile || "No phone"}
+                      </p>
+
+                      <p className="mt-0.5 truncate text-[10px] text-slate-400">
+                        Contact number
+                      </p>
+
+                    </div>
+
+
+                    {/* STATUS */}
+                    <div>
+
+                      <span className={`inline-flex items-center gap-1.5 text-[10px] font-semibold ${item.isOnline ? "text-emerald-600" : "text-slate-400"}`}>
+
+                        <span className={`h-1.5 w-1.5 rounded-full ${item.isOnline ? "bg-emerald-500" : "bg-slate-300"}`} />
+
+                        {item.isOnline ? "Online" : "Offline"}
+
+                      </span>
+
+                    </div>
+
+
+                    {/* ACTIONS */}
+                    <div className="flex items-center gap-1">
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate("/doctor/details", {
+                            state: { body: item },
+                          })
+                        }
+                        className="flex h-8 cursor-pointer items-center gap-1.5 rounded-md px-3 text-[10px] font-semibold text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+                      >
+                        View
+                        <i className="bi bi-arrow-up-right text-[9px]" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedDoctorId(item._id);
+                          setShowConfirm(true);
+                        }}
+                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-slate-400 transition hover:bg-red-50 hover:text-red-500"
+                        title="Delete doctor"
+                      >
+                        <i className="bi bi-trash text-xs" />
+                      </button>
+
+                    </div>
+
+                  </div>
+
+
+                  {/* ================= MOBILE / TABLET ================= */}
+                  <div className="lg:hidden">
+
+                    <div className="flex items-start gap-3">
+
+                      {/* IMAGE */}
+                      <div className="relative shrink-0">
+
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="h-12 w-12 rounded-full border border-slate-200 object-cover"
+                        />
+
+                        <span className={`absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white ${item.isOnline ? "bg-emerald-500" : "bg-slate-300"}`} />
+
+                      </div>
+
+
+                      {/* INFO */}
+                      <div className="min-w-0 flex-1">
+
+                        <div className="flex items-start justify-between gap-2">
+
+                          <div className="min-w-0">
+
+                            <h2 className="truncate text-sm font-semibold text-slate-800">
+                              {item.name}
+                            </h2>
+
+                            <p className="mt-0.5 truncate text-[11px] text-slate-400">
+                              {item.email}
+                            </p>
+
+                          </div>
+
+
+                          <span className={`shrink-0 text-[10px] font-semibold ${item.isOnline ? "text-emerald-600" : "text-slate-400"}`}>
+                            {item.isOnline ? "Online" : "Offline"}
+                          </span>
 
                         </div>
 
-                        {/* Delete */}
-                        <button
-                          onClick={() => {
-                            setSelectedDoctorId(item._id);
-                            setShowConfirm(true);
-                          }}
-                          className="w-10 h-10 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition cursor-pointer"
-                        >
-                          <i className="bi bi-trash"></i>
-                        </button>
 
-                      </div>
+                        {/* DETAILS */}
+                        <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3">
 
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mt-4">
+                          <div>
 
-                        <span className="px-3 py-1 rounded-xl bg-gray-100 text-gray-700 text-xs font-medium">
-                          {item.degree}
-                        </span>
+                            <p className="text-[9px] uppercase tracking-wide text-slate-400">
+                              Specialty
+                            </p>
 
-                        <span className="px-3 py-1 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 text-xs font-medium">
-                          {item.speciality}
-                        </span>
+                            <p className="mt-0.5 truncate text-xs font-medium text-slate-700">
+                              {item.speciality || "General"}
+                            </p>
 
-                      </div>
+                          </div>
 
-                      {/* Bottom */}
-                      <div className="mt-5 flex items-center justify-between">
 
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <div>
 
-                          <i className="bi bi-telephone text-gray-400"></i>
+                            <p className="text-[9px] uppercase tracking-wide text-slate-400">
+                              Qualification
+                            </p>
 
-                          {item.mobile || "No Phone"}
+                            <p className="mt-0.5 truncate text-xs font-medium text-slate-700">
+                              {item.degree || "Medical Doctor"}
+                            </p>
+
+                          </div>
+
+
+                          <div>
+
+                            <p className="text-[9px] uppercase tracking-wide text-slate-400">
+                              Phone
+                            </p>
+
+                            <p className="mt-0.5 truncate text-xs text-slate-600">
+                              {item.mobile || "No phone"}
+                            </p>
+
+                          </div>
 
                         </div>
 
-                        <button
-                          className="cursor-pointer px-4 py-2 rounded-xl bg-gray-900 text-white text-sm hover:bg-black transition"
-                        >
-                          View Profile
-                        </button>
-
                       </div>
+
+                    </div>
+
+
+                    {/* MOBILE ACTIONS */}
+                    <div className="mt-4 flex gap-2 border-t border-slate-100 pt-3">
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate("/doctor/details", {
+                            state: { body: item },
+                          })
+                        }
+                        className="flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-slate-900 text-[10px] font-semibold text-white transition hover:bg-blue-600"
+                      >
+                        View Profile
+                        <i className="bi bi-arrow-up-right" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedDoctorId(item._id);
+                          setShowConfirm(true);
+                        }}
+                        className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-red-100 text-red-500 transition hover:bg-red-50"
+                      >
+                        <i className="bi bi-trash text-xs" />
+                      </button>
 
                     </div>
 
@@ -263,82 +494,104 @@ function DoctorList() {
 
             </div>
 
-            {/* ================= EMPTY ================= */}
-            {doctorsList.length === 0 && (
-              <div className="h-[50vh] flex flex-col items-center justify-center">
+          </div>
 
-                <div className="w-24 h-24 rounded-full bg-blue-50 flex items-center justify-center mb-4">
-                  <i className="bi bi-person-x text-4xl text-blue-400"></i>
-                </div>
+        ) : (
 
-                <h2 className="text-lg font-semibold text-gray-700">
-                  No Doctors Found
-                </h2>
+          /* ================= EMPTY ================= */
+          <div className="flex min-h-[55vh] flex-col items-center justify-center border border-dashed border-slate-200 bg-white">
 
-                <p className="text-sm text-gray-400 mt-1">
-                  Try searching with another keyword
-                </p>
+            <div className="flex h-12 w-12 items-center justify-center border border-slate-200 bg-slate-50 text-slate-300">
+              <i className="bi bi-person-x text-lg" />
+            </div>
 
-              </div>
+            <h2 className="mt-4 text-sm font-semibold text-slate-700">
+              No doctors found
+            </h2>
+
+            <p className="mt-1 max-w-xs text-center text-xs text-slate-400">
+              Try searching using another name, email or specialty.
+            </p>
+
+            {search && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setPage(1);
+                }}
+                className="mt-4 cursor-pointer text-xs font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Clear search
+              </button>
             )}
 
-            {/* ================= MODAL ================= */}
-            {showConfirm && (
-              <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4">
+          </div>
 
-                <div className="w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl">
-
-                  {/* Icon */}
-                  <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-5">
-                    <i className="bi bi-trash text-2xl text-red-500"></i>
-                  </div>
-
-                  {/* Content */}
-                  <div className="text-center">
-
-                    <h2 className="text-xl font-semibold text-gray-800">
-                      Delete Doctor
-                    </h2>
-
-                    <p className="text-sm text-gray-400 mt-2">
-                      This action cannot be undone.
-                    </p>
-
-                  </div>
-
-                  {/* Actions */}
-                  <div className="grid grid-cols-2 gap-3 mt-6">
-
-                    <button
-                      onClick={() => setShowConfirm(false)}
-                      className="cursor-pointer h-11 rounded-2xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        onDeleteHandle(selectedDoctorId);
-                        setShowConfirm(false);
-                      }}
-                      className="cursor-pointer h-11 rounded-2xl bg-red-500 text-white hover:bg-red-600 transition"
-                    >
-                      Delete
-                    </button>
-
-                  </div>
-
-                </div>
-
-              </div>
-            )}
-
-          </>
         )}
 
-      </section>
-    </>
-  )
+
+        {/* ================= DELETE MODAL ================= */}
+        {showConfirm && (
+
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/30 px-4 backdrop-blur-sm">
+
+            <div className="w-full max-w-sm border border-slate-200 bg-white p-5 shadow-2xl">
+
+              <div className="flex items-start gap-3">
+
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-red-50 text-red-500">
+                  <i className="bi bi-trash text-sm" />
+                </div>
+
+                <div>
+
+                  <h2 className="text-sm font-bold text-slate-800">
+                    Delete doctor?
+                  </h2>
+
+                  <p className="mt-1 text-xs leading-5 text-slate-400">
+                    This doctor will be permanently removed from the directory.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div className="mt-6 flex justify-end gap-2">
+
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(false)}
+                  className="h-9 cursor-pointer rounded-lg bg-slate-100 px-4 text-xs font-semibold text-slate-600 transition hover:bg-slate-200"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    onDeleteHandle(selectedDoctorId);
+                    setShowConfirm(false);
+                  }}
+                  className="h-9 cursor-pointer rounded-lg bg-red-500 px-4 text-xs font-semibold text-white transition hover:bg-red-600"
+                >
+                  Delete Doctor
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        )}
+
+      </div>
+
+    </section>
+  );
 }
 
 export default DoctorList

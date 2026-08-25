@@ -55,53 +55,65 @@ function Sidebar() {
 
     return (
         <>
-            <section className={`w-fit relative ${isOpen ? "sm:w-56" : "sm:w-fit"} bg-white/80 backdrop-blur-lg border-r border-gray-200 flex flex-col py-6 px-2 shadow-sm shrink-0 group/sidebar transition-all duration-300 ease-in-out justify-between overflow-hidden`}>
+            <aside className={`relative z-[999] flex h-[calc(100vh-100px)] shrink-0 flex-col overflow-visible border-r border-gray-200/70 bg-white/80 shadow-sm backdrop-blur-xl transition-all duration-300 ease-in-out md:h-[calc(100vh-70px)] ${isOpen ? "w-56" : "w-[68px]"}`}>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-1 flex-col gap-1.5 overflow-visible px-2.5 py-5">
 
                     {featues.map((item, index) => (
-                        <NavLink
-                            key={index}
-                            to={item.path}
-                            className="group relative flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300"
-                        >
+                        <NavLink key={index} to={item.path} className="group relative z-10 overflow-visible">
                             {({ isActive }) => (
-                                <>
-                                    {/* Active background */}
-                                    <div
-                                        className={`absolute inset-0 rounded-xl transition-all duration-300 
-              ${isActive ? "bg-blue-50 shadow-sm" : "group-hover:bg-gray-100"}`}
-                                    />
+                                <div className={`relative flex h-11 items-center overflow-visible rounded-xl transition-all duration-200 ${isOpen ? "gap-3 px-3" : "justify-center px-0"} ${isActive ? "bg-blue-50 text-blue-600" : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"}`}>
 
-                                    {/* Active indicator */}
-                                    <span
-                                        className={`absolute left-0 top-2 bottom-2 w-1 rounded-r-md bg-blue-600 transition-all 
-              ${isActive ? "opacity-100" : "opacity-0"}`}
-                                    />
+                                    <span className={`absolute left-0 top-2.5 h-6 w-1 rounded-r-full bg-blue-600 transition-all duration-200 ${isActive ? "opacity-100" : "opacity-0"}`} />
 
-                                    {/* Icon */}
-                                    <i
-                                        className={`${item.iconClass} text-xl z-10 transition-all duration-300 
-              ${isActive ? "text-blue-600 scale-110" : "text-gray-600 group-hover:text-gray-900"}`}
-                                    />
+                                    <span className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${isActive ? "bg-blue-100 text-blue-600" : "text-gray-500 group-hover:text-gray-800"}`}>
+                                        <i className={`${item.iconClass} text-[18px]`} />
+                                    </span>
 
-                                    {/* Text */}
-                                    {isOpen && <span
-                                        className={`hidden sm:inline z-10 text-sm transition-all duration-300 
-              ${isActive ? "font-semibold text-blue-600" : "text-gray-700 group-hover:text-black"}`}
-                                    >
+                                    <span className={`relative z-10 overflow-hidden whitespace-nowrap text-sm transition-all duration-300 ${isOpen ? "w-auto opacity-100" : "pointer-events-none w-0 opacity-0"} ${isActive ? "font-semibold text-blue-600" : "font-medium text-gray-600 group-hover:text-gray-900"}`}>
                                         {item.name}
-                                    </span>}
-                                </>
+                                    </span>
+
+                                    {!isOpen && (
+                                        <span className="pointer-events-none absolute left-full top-1/2 z-[99999] ml-3 -translate-y-1/2 translate-x-1 whitespace-nowrap rounded-lg bg-gray-900 px-3 py-2 text-xs font-medium text-white opacity-0 shadow-xl transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
+                                            {item.name}
+                                            <span className="absolute right-full top-1/2 -translate-y-1/2 border-y-[5px] border-r-[5px] border-y-transparent border-r-gray-900" />
+                                        </span>
+                                    )}
+
+                                </div>
                             )}
                         </NavLink>
                     ))}
 
                 </div>
-                <button onClick={() => { setIsOpen(!isOpen); localStorage.setItem("isOpen", !isOpen) }} className="hidden w-fit ml-auto opacity-50 translate-x-2 group-hover/sidebar:opacity-100 group-hover/sidebar:translate-x-0 sm:flex cursor-pointer justify-end p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 ease-in-out" title="Toggle Sidebar">
-                    <i className={`text-2xl bi ${isOpen ? "bi-layout-sidebar-inset" : "bi-layout-sidebar-inset-reverse"} text-gray-600`}></i>
-                </button>
-            </section >
+
+                <div className="shrink-0 border-t border-gray-100 px-2.5 py-3">
+
+                    <button
+                        type="button"
+                        onClick={() => {
+                            const newState = !isOpen;
+                            setIsOpen(newState);
+                            localStorage.setItem("isOpen", JSON.stringify(newState));
+                        }}
+                        className={`group flex h-10 w-full cursor-pointer items-center rounded-xl text-gray-500 transition-all duration-200 hover:bg-gray-50 hover:text-gray-900 ${isOpen ? "justify-end px-3" : "justify-center"}`}
+                        title={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+                    >
+
+                        <i className={`bi ${isOpen ? "bi-layout-sidebar-inset" : "bi-layout-sidebar-inset-reverse"} text-lg transition-transform duration-300`} />
+
+                        {isOpen && (
+                            <span className="ml-2 text-xs font-medium text-gray-500">
+                                Collapse
+                            </span>
+                        )}
+
+                    </button>
+
+                </div>
+
+            </aside>
         </>
     )
 }

@@ -76,7 +76,6 @@ function Payment() {
 
     const order_id = res.data.order.id;
     const appointmentId = localStorage.getItem("appointmentId");
-    console.log(appointmentId);
 
 
     const options = {
@@ -90,7 +89,6 @@ function Payment() {
         try {
           const body = { ...response, appointmentId };
           const validation = await axios.post(`${BackendUrl}/api/admin/order/verify`, body, { headers: "Content-Type: application/json" });
-          console.log(validation);
           if (validation.data.success) {
             navigate(`/doctor/${location?.state?.element._id}/patientdetails/payment/success`, { state: { body, amount: amount, orderId: order_id, currency: currency, name: patientName, email: patientEmail, phone: patientPhone, fromBooking: true } });
           }

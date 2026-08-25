@@ -51,50 +51,65 @@ function PaymentSuccess() {
         try {
             const clone = pdfRef.current.cloneNode(true);
 
-            // Hide buttons in PDF
+            clone.classList.add("pdf-mode");
+
             clone.querySelectorAll("button").forEach((button) => {
                 button.style.display = "none";
             });
 
-            // Create PDF container
             container = document.createElement("div");
 
             Object.assign(container.style, {
                 position: "fixed",
-                left: "-10000px",
+                left: "0",
                 top: "0",
                 width: "794px",
                 minWidth: "794px",
-                background: "#ffffff",
+                maxWidth: "794px",
                 padding: "0",
                 margin: "0",
-                zIndex: "-9999",
+                background: "#ffffff",
+                overflow: "visible",
+                zIndex: "999999",
+                visibility: "visible",
+                pointerEvents: "none",
             });
 
-            // Force receipt to desktop width
             Object.assign(clone.style, {
                 width: "700px",
                 minWidth: "700px",
                 maxWidth: "700px",
                 margin: "0 auto",
+                padding: "0",
                 backgroundColor: "#ffffff",
                 boxSizing: "border-box",
+                position: "relative",
+                left: "auto",
+                right: "auto",
+                top: "auto",
+                bottom: "auto",
+                transform: "none",
             });
 
-            // Remove responsive problems
             clone.querySelectorAll("*").forEach((element) => {
+                element.style.boxSizing = "border-box";
+                element.style.transform = "none";
+            });
+
+            clone.querySelectorAll(
+                ".container, .row, .content, .receipt, .receipt-container, .payment-container"
+            ).forEach((element) => {
+                element.style.width = "100%";
                 element.style.boxSizing = "border-box";
             });
 
             container.appendChild(clone);
             document.body.appendChild(container);
 
-            // Wait for fonts
             if (document.fonts?.ready) {
                 await document.fonts.ready;
             }
 
-            // Wait for images
             const images = [...clone.querySelectorAll("img")];
 
             await Promise.all(
@@ -110,52 +125,43 @@ function PaymentSuccess() {
                 })
             );
 
-            // Wait for layout
             await new Promise((resolve) => {
                 requestAnimationFrame(() => {
                     requestAnimationFrame(resolve);
                 });
             });
 
-            // Generate PDF
             await html2pdf()
                 .set({
-                    margin: 10,
-
-                    filename: `payment_receipt_${orderId || "receipt"
-                        }.pdf`,
-
+                    margin: [10, 10, 10, 10],
+                    filename: `payment_receipt_${orderId || "receipt"}.pdf`,
                     image: {
                         type: "jpeg",
                         quality: 0.95,
                     },
-
                     html2canvas: {
                         scale: 2,
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: "#ffffff",
                         logging: false,
-
                         windowWidth: 1440,
+                        windowHeight: 2000,
                         scrollX: 0,
                         scrollY: 0,
                     },
-
                     jsPDF: {
                         unit: "mm",
                         format: "a4",
                         orientation: "portrait",
                         compress: true,
                     },
-
                     pagebreak: {
                         mode: ["css", "legacy"],
                     },
                 })
                 .from(clone)
                 .save();
-
         } catch (error) {
             console.error("PDF generation failed:", error);
 
