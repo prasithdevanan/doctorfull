@@ -42,7 +42,7 @@ initiSocket(io);
 const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:5174",
-    "http://192.168.0.138:5173",
+    "http://192.168.0.55:5173",
     "https://doctor-metix.netlify.app",
     "https://doctor-metix-admin.netlify.app"
 ];

@@ -105,7 +105,6 @@ function Appointment() {
             return item.doctorName.toLowerCase().includes(searchTerm.toLowerCase());
         }).sort((a, b) => new Date(formatToISO(a.appointmentDate)) - new Date(formatToISO(b.appointmentDate)));
         setUpdatedAppointments(processedAppointments);
-        console.log(processedAppointments);
     }, [appointments, searchTerm])
 
     const [filter, setFilter] = useState(true);
@@ -144,7 +143,6 @@ function Appointment() {
     }
 
     const clickevent = (items) => {
-        console.log(items);
         navigate(`/appointment/${items._id}`, { state: items });
     }
 

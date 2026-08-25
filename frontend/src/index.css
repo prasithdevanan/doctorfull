@@ -149,23 +149,45 @@ html {
 
 
 
-@media print {
-    body * {
-        visibility: hidden;
-    }
-
-    #pdf-content,
-    #pdf-content * {
-        visibility: visible;
-    }
-
-    #pdf-content {
-        position: absolute;
-        top: 0;
-        left: 0;
+/* Mobile layout */
+@media (max-width: 768px) {
+    .receipt {
         width: 100%;
+        max-width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .receipt-content {
+        display: block;
     }
 }
+
+/* PDF export mode */
+.pdf-mode {
+    width: 100%;
+    max-width: 700px;
+    /* allow shrinking on mobile */
+    margin: 0 auto;
+    padding: 0;
+    background: #ffffff;
+    box-sizing: border-box;
+    transform: none;
+}
+
+.pdf-mode .receipt-content {
+    display: flex;
+}
+
+.pdf-mode .receipt {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.pdf-mode button {
+    display: none;
+}
+
 
 
 .main-card {

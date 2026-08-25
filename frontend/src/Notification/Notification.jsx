@@ -9,7 +9,6 @@ function Notification() {
 
   // Mark as seen
   useEffect(() => {
-    console.log('mark as seen');
     if (!data || !data.length) return setLoading(false);
     const ids = data.map((data) => data.notificationId);
     socket.emit("user_seen", { notificationId: ids });
