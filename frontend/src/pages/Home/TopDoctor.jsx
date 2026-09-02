@@ -13,7 +13,7 @@ function TopDoctor() {
                 <div className='flex flex-col justify-center items-center gap-2'>
                     <h1 className='text-3xl font-semibold'>Top
                         <span className='text-(--color-primary)'> Doctors</span> to Book</h1>
-                    <p className='font-light text-center'>Simply browse through our extensive list of trusted doctors.</p>
+                    <p className='text-xs sm:text-sm md:text-base leading-6 text-slate-500'>Simply browse through our extensive list of trusted doctors.</p>
                 </div>
                 <div className='mt-5 mb-4 overflow-hidden w-full flex justify-center items-center'>
                     <DoctorList selectSpeciality={visibleDoctor} isHome={true} loading={loading} />

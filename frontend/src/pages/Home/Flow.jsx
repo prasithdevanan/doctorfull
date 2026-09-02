@@ -31,8 +31,8 @@ function Flow() {
 
                     {/* ------- Heading */}
                     <div className="flex flex-col items-center gap-3 text-center max-w-2xl mx-auto">
-                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-slate-800">
-                            How it works
+                        <h1 className="text-3xl font-semibold tracking-tight text-slate-800">
+                            How <span className="text-(--color-primary)">it works</span>
                         </h1>
 
                         <p className="text-sm sm:text-base font-light leading-6 text-slate-500">

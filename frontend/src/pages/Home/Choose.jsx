@@ -50,8 +50,8 @@ function Choose() {
                         Why Metix
                     </span>
 
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-800">
-                        Why Choose Us
+                    <h1 className="text-3xl font-semibold text-slate-800">
+                        Why <span className="text-(--color-primary)">Choose</span> Us
                     </h1>
 
                     <p className="text-sm sm:text-base font-light leading-6 text-slate-500">

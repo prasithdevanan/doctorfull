@@ -58,7 +58,7 @@ function Speciality() {
                         Explore Our Services
                     </span>
 
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-800">
+                    <h1 className="text-3xl font-semibold tracking-tight text-slate-800">
                         Find by <span className="text-blue-600">Speciality</span>
                     </h1>
 
