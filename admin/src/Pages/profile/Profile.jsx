@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function Profile() {
-    const { aToken, dToken, BackendUrl } = useContext(AdminContext);
+    const { aToken, dToken, BackendUrl, user } = useContext(AdminContext);
     const [edit, setEdit] = useState(false);
     const [name, setName] = useState(aToken ? "Admin" : localStorage.getItem("dEmail").split("@")[0]);
     const [loading, setLoading] = useState(false);
@@ -16,8 +16,23 @@ function Profile() {
         email: aToken ? "admin@metix.com" : localStorage.getItem("dEmail"),
         mobile: aToken ? "N/A" : "Enter phone number",
         role: aToken ? "Admin" : "Doctor",
+        ...(aToken ? {} : { specialty: user?.speciality || "N/A" }),
         image: null,
+        ...(aToken ? {} : { fees: user?.fees || "N/A" }),
     });
+
+    // Update profile when user data changes
+    useEffect(() => {
+        if (user) {
+            setProfile((prev) => ({
+                ...prev,
+                specialty: user?.speciality || "N/A",
+                fees: user?.fees || "N/A",
+            }));
+        }
+        console.log("Profile updated with user data:", user);
+    }, [user]);
+
 
     // handle the change on Edit
     const handleChange = (e) => {
@@ -50,6 +65,7 @@ function Profile() {
         formData.append("email", profile.email);
         formData.append("mobile", profile.mobile);
         formData.append("image", profile.imageFile);
+        formData.append("fees", profile.fees);
         try {
             const res = await axios.post(`${BackendUrl}/api/doctor/doctor/profile/update/${localStorage.getItem("id")}`, formData);
 
@@ -232,8 +248,8 @@ function Profile() {
                                     type="button"
                                     onClick={() => setEdit(!edit)}
                                     className={`flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl px-4 text-xs font-semibold transition-all active:scale-[0.98] ${edit
-                                            ? "border border-slate-200 bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                            : "bg-slate-900 text-white shadow-sm hover:bg-blue-600"
+                                        ? "border border-slate-200 bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                        : "bg-slate-900 text-white shadow-sm hover:bg-blue-600"
                                         }`}
                                 >
 
@@ -293,8 +309,8 @@ function Profile() {
                                         onChange={handleChange}
                                         disabled={!edit}
                                         className={`h-11 w-full rounded-xl border pl-9 pr-3 text-xs outline-none transition ${edit
-                                                ? "border-slate-200 bg-white text-slate-700 focus:border-blue-400 focus:ring-4 focus:ring-blue-50"
-                                                : "border-slate-100 bg-slate-50 text-slate-500"
+                                            ? "border-slate-200 bg-white text-slate-700 focus:border-blue-400 focus:ring-4 focus:ring-blue-50"
+                                            : "border-slate-100 bg-slate-50 text-slate-500"
                                             }`}
                                     />
 
@@ -346,8 +362,8 @@ function Profile() {
                                         onChange={handleChange}
                                         disabled={!edit}
                                         className={`h-11 w-full rounded-xl border pl-9 pr-3 text-xs outline-none transition ${edit
-                                                ? "border-slate-200 bg-white text-slate-700 focus:border-blue-400 focus:ring-4 focus:ring-blue-50"
-                                                : "border-slate-100 bg-slate-50 text-slate-500"
+                                            ? "border-slate-200 bg-white text-slate-700 focus:border-blue-400 focus:ring-4 focus:ring-blue-50"
+                                            : "border-slate-100 bg-slate-50 text-slate-500"
                                             }`}
                                     />
 
@@ -380,6 +396,60 @@ function Profile() {
                                 </p>
 
                             </div>
+                            {/* Specialty */}
+                            <div>
+
+                                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                                    Specialty
+                                </label>
+
+                                <div className="relative">
+
+                                    <i className="bi bi-heart-pulse absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-300" />
+
+                                    <input
+                                        value={profile.specialty}
+                                        disabled
+                                        className="h-11 w-full rounded-xl border border-slate-100 bg-slate-50 pl-9 pr-3 text-xs font-medium text-slate-500 outline-none"
+                                    />
+
+                                </div>
+
+                                <p className="mt-1 text-[9px] text-slate-300">
+                                    Enter your medical specialty
+                                </p>
+
+                            </div>
+                            {/* ROLE */}
+                            <div>
+
+                                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                                    Fees
+                                </label>
+
+                                <div className="relative">
+
+                                    <i className="bi bi-cash absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-300" />
+
+                                    <input
+                                        name="fees"
+                                        value={profile.fees}
+                                        disabled={!edit}
+                                        onChange={handleChange}
+                                        className={`h-11 w-full rounded-xl border pl-9 pr-3 text-xs outline-none transition ${edit
+                                            ? "border-slate-200 bg-white text-slate-700 focus:border-blue-400 focus:ring-4 focus:ring-blue-50"
+                                            : "border-slate-100 bg-slate-50 text-slate-500"
+                                            }`}
+                                    />
+
+                                </div>
+
+                                <p className="mt-1 text-[9px] text-slate-300">
+                                    Role is managed by the administrator
+                                </p>
+
+                            </div>
+
 
                         </div>
 
