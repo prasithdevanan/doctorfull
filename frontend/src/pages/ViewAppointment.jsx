@@ -552,7 +552,7 @@ function AppointmentView() {
                         <div className="flex items-start gap-3">
 
                             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-sm">
-                                <i className="bi bi-chat-left-medical text-lg"></i>
+                               <i class="bi bi-heart-pulse"></i>
                             </div>
 
                             <div className="min-w-0">
