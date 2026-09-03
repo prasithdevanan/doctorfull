@@ -68,9 +68,9 @@ function Speciality() {
                 </div>
 
                 {/* ------- Speciality List */}
-                <div className="w-full max-w-[340px] sm:max-w-2xl lg:max-w-7xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:flex lg:flex-nowrap gap-3 sm:gap-4">
+                <div className="w-full max-w-[340px] sm:max-w-2xl lg:max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-nowrap gap-3 sm:gap-4">
                     {speciality.map((item, index) => (
-                        <Link to="/doctor" key={index} state={{ speciality: item }} className="group w-full lg:flex-1 last:col-span-2 last:justify-self-center lg:last:col-span-auto lg:last:justify-self-auto">
+                        <Link to="/doctor" key={index} state={{ speciality: item }} className="group w-full lg:flex-1">
                             <div className="relative min-h-[125px] sm:min-h-[140px] md:min-h-[150px] lg:min-h-[155px] flex flex-col items-center justify-center gap-2 sm:gap-3 px-2 sm:px-3 py-4 sm:py-5 rounded-xl sm:rounded-2xl bg-white border border-slate-100 shadow-[0_4px_20px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-2 hover:border-blue-100 hover:shadow-[0_15px_35px_rgba(37,99,235,0.12)]">
 
                                 {/* Glow */}
